@@ -1,40 +1,31 @@
 package com.lms.membershipService.entities;
 
-import java.util.Date;
-import java.util.List;
-
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Membership {
+public class BookInstance {
 
     @Id
     @GeneratedValue
-    private long memberShipId;
+    private long instanceId;
+
+    @ManyToOne
+    private Books book;
+
+    private String imprint;
+
+    private String status;  // issue, not issue
 
     @OneToOne
-    private Member member;
-
-    private Date startDate;
-
-    private Date endDate;
-
-    private String status;
-  
-    @OneToOne
-    private MembershipPlan membershipPlan;
-
-    private int transactionId;
-
+    private Bookshelf bookshelf;
 }

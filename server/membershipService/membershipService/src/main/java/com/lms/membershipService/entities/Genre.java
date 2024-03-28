@@ -1,4 +1,4 @@
-package com.lms.libraryService.entities;
+package com.lms.membershipService.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

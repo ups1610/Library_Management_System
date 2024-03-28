@@ -1,4 +1,4 @@
-package com.lms.libraryService.entities;
+package com.lms.membershipService.entities;
 
 import java.util.Date;
 
@@ -16,20 +16,24 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookReturn {
+public class BookIssue {
 
     @Id
     @GeneratedValue
-    private long bookReturnId;
+    private long bookIssueId;
+
+    private Books book; // book object
 
     @OneToOne
-    private BookIssue bookIssue;
+    private BookInstance bookInstance; // bookInstance object
 
     @OneToOne
-    private Member member;
-    private Date date;
+    private Member member; // member object
 
-    @OneToOne
-    private User collectBy;
+    private Date dateOfIssue;
+
+    private Date dateOfReturn;
+
+    private User issueBy;
 
 }

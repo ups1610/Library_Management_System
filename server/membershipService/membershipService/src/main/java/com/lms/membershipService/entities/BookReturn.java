@@ -1,4 +1,4 @@
-package com.lms.libraryService.entities;
+package com.lms.membershipService.entities;
 
 import java.util.Date;
 
@@ -24,8 +24,6 @@ public class BookReturn {
 
     @OneToOne
     private BookIssue bookIssue;
-
-    @OneToOne
     private Member member;
     private Date date;
 

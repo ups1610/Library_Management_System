@@ -38,6 +38,6 @@ public class Transaction {
     private String mode;
 
     @OneToOne
-    private User user;
+    private User initiatedBy;
 
 }
