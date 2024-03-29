@@ -8,7 +8,8 @@
             "mainClass": "com.lms.registryServer.RegistryServerApplication",
             "projectName": "registryServer",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=57271 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=registryServer"
         },
         {
             "type": "java",
@@ -17,6 +18,48 @@
             "cwd": "${workspaceFolder}",
             "mainClass": "com.lms.authService.AuthServiceApplication",
             "projectName": "authService",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=64085 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=authService"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-CatalogueServiceApplication<catalogueService>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.lms.catalogueService.CatalogueServiceApplication",
+            "projectName": "catalogueService",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=57314 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=catalogueService"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-MembershipServiceApplication<membershipService>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.lms.membershipService.MembershipServiceApplication",
+            "projectName": "membershipService",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-LibraryServiceApplication<libraryService>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.lms.libraryService.LibraryServiceApplication",
+            "projectName": "libraryService",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-TransactionServiceApplication<transactionService>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.lms.transactionService.TransactionServiceApplication",
+            "projectName": "transactionService",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
         }
