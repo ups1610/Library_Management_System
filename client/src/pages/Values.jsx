@@ -12,7 +12,7 @@ function Values() {
 
   return (
     <>
-    <section className="r-wrapper">
+    <section className="r-wrapper" id="value">
       <div className="paddings innerWidth r-container relative">
         <div className="r-head mb-2 flexColStart">
           <span className="orangeText">Best Libraries</span>

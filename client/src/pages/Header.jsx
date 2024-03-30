@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import logo from '../assets/logo.png';
 import { BiMenuAltRight } from 'react-icons/bi';
 import '../styles/Header.css';
+import {Link} from "react-scroll"
 
 function Header() {
   const [menuOpened, setMenuOpened] = useState(false);
@@ -22,18 +23,18 @@ function Header() {
             className='flexCenter h-menu'
             style={{ right: !menuOpened && '-100%' }}
           >
-            <a href='/' className='transition-all hover:transition-transform hover:scale-105 hover:duration-500'>
+            <Link to='hero' href='/' className='transition-all hover:transition-transform hover:scale-105 hover:duration-500'>
               Home
-            </a>
-            <a href='/' className='transition-all hover:transition-transform hover:scale-105 hover:duration-500'>
+            </Link>
+            <Link to='value' href='/' className='transition-all hover:transition-transform hover:scale-105 hover:duration-500'>
               Our Value
-            </a>
-            <a href='/' className='transition-all hover:transition-transform hover:scale-105 hover:duration-500'>
+            </Link>
+            <Link to='contact' href='/' className='transition-all hover:transition-transform hover:scale-105 hover:duration-500'>
               Contact Us
-            </a>
-            <a href='/' className='transition-all hover:transition-transform hover:scale-105 hover:duration-500'>
+            </Link>
+            <Link to='about' href='/' className='transition-all hover:transition-transform hover:scale-105 hover:duration-500'>
               About
-            </a>
+            </Link>
             <button className='button'>
               <a href='/'>Get Started</a>
             </button>

@@ -2,21 +2,29 @@ import React from "react";
 import "../styles/Hero.css";
 import heroImage from "../assets/hero-image.webp";
 import CountUp from "react-countup"
+import {motion} from "framer-motion"
 
 function Hero() {
   return (
     <div>
-      <section className="hero-wrapper">
+      <section className="hero-wrapper" id="hero">
         <div className="paddings innerWidth flexCenter hero-container">
           {/* left-section */}
           <div className="flexColStart hero-left">
             <div className="hero-title">
               <div className="orange-circle"></div>
-              <h1>
+              <motion.h1
+              initial={{y: "2rem", opacity: 0}}
+              animate={{y: 0, opacity: 1}}
+              transition={{
+                duration: 2,
+                type: "spring"
+              }}
+              >
                 Empower <br />
                 Your Library <br />
                 Experience
-              </h1>
+              </motion.h1>
             </div>
 
             <div className="flexColStart hero-desc">
@@ -64,9 +72,16 @@ function Hero() {
           </div>
           {/* right-section */}
           <div className="flexCenter hero-right">
-            <div className="image-container">
+            <motion.div
+            initial={{x :"7rem", opacity: 0}}
+            animate={{x:0, opacity: 1}}
+            transition={{
+              duration: 2,
+              type: "spring"
+            }}
+             className="image-container">
               <img src={heroImage} alt="" srcset="" />
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
