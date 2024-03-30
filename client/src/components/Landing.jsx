@@ -1,5 +1,5 @@
 import React from "react";
-import { Header, Hero } from "../pages";
+import { Header, Hero, Values, Contact, Footer } from "../pages";
 import "../styles/Landing.css";
 
 function Landing() {
@@ -7,10 +7,13 @@ function Landing() {
     <div className="Landing">
       <div>
         <div className="white-gradient" />
-          <Header />
-          <Hero />
-        </div>
+        <Header />
+        <Hero />
       </div>
+      <Values />
+      <Contact />
+      <Footer />
+    </div>
   );
 }
 

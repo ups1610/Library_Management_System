@@ -28,7 +28,7 @@ function Hero() {
 
             <div className="exp-bar p-1">
               <input
-                className="text-blue-600 font-medium text-2xl p-2 border-none"
+                className="text-blue-600 font-medium text-2xl p-2 border-none hidden sm:inline-block"
                 type="text"
                 value=">>>"
                 disabled
