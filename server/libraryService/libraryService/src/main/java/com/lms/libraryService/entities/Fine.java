@@ -9,23 +9,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Fine {
 
-    @Id
-    @GeneratedValue
+  
     private long fineId;
 
-    @OneToOne
+  
     private BookReturn bookReturn;
 
     private String isWaveOff;  // fineSet or fineNotSet
 
-    @OneToOne
-    private Transaction transaction;
+  
+    private long transaction;
 
 }

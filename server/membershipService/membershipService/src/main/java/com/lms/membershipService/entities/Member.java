@@ -31,11 +31,11 @@ public class Member {
     private String number;
 
     private String email;
-   @OneToMany(mappedBy = "member")
-    private List<BookIssue> issueBooks;
+ 
+    private List<Long> issueBooks;
 
-    @OneToMany(mappedBy = "member")
-    private List<BookReturn> returnBooks;
+    
+    private List<Long> returnBooks;
     @OneToOne
     @JoinColumn(name = "current_address_id", referencedColumnName = "addressId")
     private Address currentAddress;

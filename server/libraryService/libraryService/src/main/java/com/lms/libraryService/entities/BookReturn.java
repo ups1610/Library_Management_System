@@ -25,11 +25,12 @@ public class BookReturn {
     @OneToOne
     private BookIssue bookIssue;
 
-    @OneToOne
-    private Member member;
+  
+    private long member;
+
     private Date date;
 
-    @OneToOne
-    private User collectBy;
+ 
+    private long collectBy;
 
 }
