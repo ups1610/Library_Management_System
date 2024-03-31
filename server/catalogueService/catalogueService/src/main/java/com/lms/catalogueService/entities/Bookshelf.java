@@ -32,5 +32,5 @@ public class Bookshelf {
     private String description;
 
     @OneToMany(mappedBy = "bookshelf")
-    private List<BookInstance> books=new ArrayList<>();
+    private List<BookInstance> books=new ArrayList<BookInstance>();
 }

@@ -9,6 +9,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
@@ -31,8 +33,12 @@ public class Books {
     @JoinColumn(name = "authorId")
     private Author author;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<Genre> genre;
+  @ManyToMany
+    @JoinTable(
+        name = "book_genre",
+        joinColumns = @JoinColumn(name = "book_id"),
+        inverseJoinColumns = @JoinColumn(name = "genre_id"))
+    private List<Genre> genre=new ArrayList<>();
 
     @OneToMany(mappedBy = "book")
     private List<BookInstance> instances = new ArrayList<BookInstance>();

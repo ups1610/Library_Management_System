@@ -14,7 +14,7 @@ public interface BooksService {
 
     public BookResponseDTO getParitcularBook(long id);
     public BookResponseDTO updateParitcularBook(long id,BookRequestDTO book);
-    public BookResponseDTO deleteParitcularBook(long id);
+    public String deleteParitcularBook(long id);
 
     public List<BookInstanceResponseDTO> getBookIntances(long id);
 

@@ -2,6 +2,8 @@ package com.lms.catalogueService.contollers;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,11 +23,17 @@ import com.lms.catalogueService.service.BooksService;
 import lombok.AllArgsConstructor;
 
 @RestController
-@AllArgsConstructor
+
 @RequestMapping("/api/books")
 public class BooksController {
 
+    private Logger log=LoggerFactory.getLogger(BooksController.class);
+
     private BooksService booksService;
+
+    public BooksController( BooksService booksService){
+        this.booksService=booksService;
+    }
 
     @PostMapping("/create")
     public ResponseEntity<BookResponseDTO> addNewBook(@RequestBody BookRequestDTO bookRequest) {
@@ -35,6 +43,7 @@ public class BooksController {
 
     @GetMapping("/all")
     public ResponseEntity<List<BookResponseDTO>> getAllBooks() {
+        log.debug("Getting gel All request");
         List<BookResponseDTO> books = booksService.getAllBook();
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
@@ -52,8 +61,8 @@ public class BooksController {
     }
 
     @DeleteMapping("/{id}/delete")
-    public ResponseEntity<BookResponseDTO> deleteBook(@PathVariable("id") long id) {
-        BookResponseDTO deletedBook = booksService.deleteParitcularBook(id);
+    public ResponseEntity<String> deleteBook(@PathVariable("id") long id) {
+        String deletedBook = booksService.deleteParitcularBook(id);
         return new ResponseEntity<>(deletedBook, HttpStatus.OK);
     }
 

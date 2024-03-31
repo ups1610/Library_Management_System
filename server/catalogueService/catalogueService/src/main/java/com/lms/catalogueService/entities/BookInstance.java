@@ -28,6 +28,6 @@ public class BookInstance {
 
     private String status;  // issue, not issue
 
-    @OneToOne
+    @ManyToOne
     private Bookshelf bookshelf;
 }

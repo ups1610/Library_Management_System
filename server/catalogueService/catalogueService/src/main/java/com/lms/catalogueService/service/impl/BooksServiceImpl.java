@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,17 +34,22 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @Service
-@AllArgsConstructor
-@NoArgsConstructor
 public class BooksServiceImpl implements BooksService {
 
+        private Logger log= LoggerFactory.getLogger(BooksServiceImpl.class);
     private BooksRepository booksRepository;
-
-    private BookInstanceRepository bookInstanceRepository;
 
     private AuthorRepository authorRepository;
 
     private GenreRepository genreRepository;
+public BooksServiceImpl(BooksRepository booksRepository,AuthorRepository authorRepository,GenreRepository genreRepository){
+        this.booksRepository=booksRepository;
+        this.authorRepository=authorRepository;
+        this.genreRepository=genreRepository;
+}
+
+
+   
 
     @Override
     public BookResponseDTO addNewBook(BookRequestDTO bookRequest) {
@@ -72,6 +79,7 @@ public class BooksServiceImpl implements BooksService {
 
     @Override
     public List<BookResponseDTO> getAllBook() {
+        log.debug("calling books Service");
         return booksRepository.findAll()
                 .stream()
                 .map(this::mapToBooksResponseDTO)
@@ -113,11 +121,11 @@ public class BooksServiceImpl implements BooksService {
     }
 
     @Override
-    public BookResponseDTO deleteParitcularBook(long id) {
+    public String deleteParitcularBook(long id) {
         Books book = booksRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Book not found with id: " + id));
         booksRepository.deleteById(id);
-        return mapToBooksResponseDTO(book);
+        return "Success";
     }
 
     @Override
