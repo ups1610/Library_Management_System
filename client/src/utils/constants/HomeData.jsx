@@ -1,9 +1,9 @@
 import { HiShieldCheck } from "react-icons/hi";
-import lib1 from "../assets/lib-1.jpg";
-import lib2 from "../assets/lib-2.jpg";
-import lib3 from "../assets/lib-3.webp";
-import lib4 from "../assets/lib-4.jpg";
-import lib5 from "../assets/lib-5.webp";
+import lib1 from "../../assets/lib-1.jpg";
+import lib2 from "../../assets/lib-2.jpg";
+import lib3 from "../../assets/lib-3.webp";
+import lib4 from "../../assets/lib-4.jpg";
+import lib5 from "../../assets/lib-5.webp";
 
 export const DATA = [
   {

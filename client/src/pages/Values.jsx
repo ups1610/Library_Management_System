@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "../styles/Values.css";
-import { DATA, accordian, sliderSettings } from "../constants/HomeData";
+import { DATA, accordian, sliderSettings } from "../utils/constants/HomeData";
 import {Accordion, AccordionItem, AccordionItemHeading, AccordionItemButton, AccordionItemPanel} from "react-accessible-accordion"
 import {MdOutlineArrowDropDown} from "react-icons/md"
 import value from "../assets/feature.jpeg"
