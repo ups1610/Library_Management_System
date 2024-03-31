@@ -1,10 +1,12 @@
 package com.lms.catalogueService.dto;
 
-public record BookshelfRequestSTO(
+public record BookshelfRequestDTO(
     String shelfName,
     String location,
     long capacity,
     String description
+
+    
 ) {
 
 }

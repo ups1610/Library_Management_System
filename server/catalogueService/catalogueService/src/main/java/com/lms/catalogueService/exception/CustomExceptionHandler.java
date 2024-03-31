@@ -11,6 +11,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class CustomExceptionHandler {
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public Map<String,String> illegalExp(IllegalArgumentException ex){
+        Map<String,String> error= new HashMap<>();
+        error.put("error", ex.getMessage());
+
+        return error;
+    }  
+
     @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
     @ExceptionHandler(Exception.class)
     public Map<String,String> exphandle(Exception ex){

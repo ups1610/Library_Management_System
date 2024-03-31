@@ -1,6 +1,7 @@
 package com.lms.catalogueService.entities;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,5 +34,5 @@ public class Author {
     private String biography;
 
     @OneToMany(mappedBy = "author")
-    List<Books> books;
+    List<Books> books=new ArrayList<>() ;
 }
