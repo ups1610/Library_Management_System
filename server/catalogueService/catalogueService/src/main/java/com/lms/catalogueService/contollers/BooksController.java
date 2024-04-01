@@ -24,7 +24,7 @@ import lombok.AllArgsConstructor;
 
 @RestController
 
-@RequestMapping("/api/books")
+@RequestMapping("/catalog/books")
 public class BooksController {
 
     private Logger log=LoggerFactory.getLogger(BooksController.class);
