@@ -1,11 +1,11 @@
 import React from 'react'
 
-function Dashboard() {
+function Books() {
   return (
     <div>
-      Dashboard
+      Books
     </div>
   )
 }
 
-export default Dashboard
+export default Books

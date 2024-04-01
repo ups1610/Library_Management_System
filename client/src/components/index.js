@@ -1,6 +1,13 @@
-import Landing from "./Landing";
-import Dashboard from "./Dashboard";
-import Catalouge from "./Catalouge";
+import Header from "./Header";
+import Hero from "./Hero";
+import Values from "./Values";
+import Contact from "./Contact";
+import Footer from "./Footer";
 
-export {Dashboard, Catalouge}
-export default Landing
+export {
+    Header,
+    Hero,
+    Values,
+    Contact,
+    Footer
+}
