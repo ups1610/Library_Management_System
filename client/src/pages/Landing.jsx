@@ -1,5 +1,5 @@
 import React from "react";
-import { Header, Hero, Values, Contact, Footer } from "../pages";
+import { Header, Hero, Values, Contact, Footer } from "../components";
 import "../styles/Landing.css";
 
 function Landing() {

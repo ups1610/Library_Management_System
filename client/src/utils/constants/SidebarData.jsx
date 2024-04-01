@@ -19,7 +19,7 @@ export const DASHBOARD_SIDEBAR_LINKS = [
 	{
 		key: 'member',
 		label: 'Member',
-		path: '/member',
+		path: '/dashboard/member',
 		icon: <MdRememberMe />
 	},
 	{
@@ -56,3 +56,36 @@ export const DASHBOARD_SIDEBAR_BOTTOM_LINKS = [
 		icon: <HiOutlineQuestionMarkCircle />
 	}
 ]
+
+export const SUB_MENU_ITEMS = [
+    {
+      key: "books",
+      label: "Books",
+      path: "/dashboard/books",
+      icon: <MdLocalLibrary />,
+    },
+    {
+      key: "books_instance",
+      label: "Books Instance",
+      path: "/catalog/books_instance",
+      icon: <MdLocalLibrary />,
+    },
+    {
+      key: "author",
+      label: "Author",
+      path: "/catalog/author",
+      icon: <MdLocalLibrary />,
+    },
+    {
+      key: "genre",
+      label: "Genre",
+      path: "/catalog/genre",
+      icon: <MdLocalLibrary />,
+    },
+    {
+      key: "shelf",
+      label: "Shelf",
+      path: "/catalog/shelf",
+      icon: <MdLocalLibrary />,
+    },
+  ];
