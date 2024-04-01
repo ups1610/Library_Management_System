@@ -28,6 +28,7 @@ public class BookshelfServiceImpl implements BookshelfService {
         bookshelf.setCapacity(bookshelfRequestDTO.capacity());
         bookshelf.setDescription(bookshelfRequestDTO.description());
         bookshelf = bookshelfRepository.save(bookshelf);
+        
         return mapToBookShelfResponseDTO(bookshelf);
     }
 

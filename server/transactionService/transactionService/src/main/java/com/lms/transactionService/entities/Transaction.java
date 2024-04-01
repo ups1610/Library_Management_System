@@ -24,17 +24,14 @@ public class Transaction {
   
     private long member;
 
-    private String transactionType; // cash , upi 
-
-    private Date date;
+    private Date transactionTimeStamp;
 
     private double amount;
 
-    private String naration;
+    private String narration;
 
-    private String mode;
+    private String paidMode;
 
-  
     private long initiatedBy;
 
 }

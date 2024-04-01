@@ -29,107 +29,118 @@ public class BookInstanceServiceImpl implements BookInstanceService {
     private BooksRepository booksRepository;
     private BookshelfRepository bookshelfRepository;
 
-    
     @Override
     public BookInstanceResponseDTO newInstance(BookInstanceRequestDTO entity) {
 
-        Books book= booksRepository.findById(entity.book()).orElseThrow(()-> new IllegalArgumentException("Invalid Book id: "+entity.book()));
+        Books book = booksRepository.findById(entity.book())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid Book id: " + entity.book()));
 
-        Bookshelf shelf=bookshelfRepository.findById(entity.bookshelf()).orElseThrow(()->new IllegalArgumentException("Invalid Booksheld id: "+entity.bookshelf()));
-
-       
+        Bookshelf shelf = bookshelfRepository.findById(entity.bookshelf())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid Booksheld id: " + entity.bookshelf()));
+        if (shelf.getCapacity() <= 0) {
+            throw new IllegalStateException("Cannot add new book instance. Shelf is full.");
+        }
+        shelf.setCapacity(shelf.getCapacity() - 1);
+        bookshelfRepository.save(shelf);
         BookInstance bookInstance = new BookInstance();
         bookInstance.setBook(book);
         bookInstance.setImprint(entity.imprint());
         bookInstance.setStatus("Available");
         bookInstance.setBookshelf(shelf);
-      
+
         BookInstance savedInstance = bookInstanceRepository.save(bookInstance);
-       
+
         return mapToBookInstanceResponseDTO(savedInstance);
     }
 
     @Override
     public BookInstanceResponseDTO getParticularInstance(long id) {
-      
-        BookInstance instance = bookInstanceRepository.findById(id).orElseThrow(()->new IllegalArgumentException("Invalid book instance id: "+id));
-        
-            return mapToBookInstanceResponseDTO(instance);
-       
+
+        BookInstance instance = bookInstanceRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid book instance id: " + id));
+
+        return mapToBookInstanceResponseDTO(instance);
+
     }
 
     @Override
     public BookInstanceResponseDTO updateInstance(long id, BookInstanceRequestDTO instance) {
-        BookInstance bookInstance = bookInstanceRepository.findById(id).orElseThrow(()->new IllegalArgumentException("Invalid book instance id: "+id));
-        
-        Books book= booksRepository.findById(instance.book()).orElseThrow(()-> new IllegalArgumentException("Invalid Book id: "+instance.book()));
+        BookInstance bookInstance = bookInstanceRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid book instance id: " + id));
 
-        Bookshelf shelf=bookshelfRepository.findById(instance.bookshelf()).orElseThrow(()->new IllegalArgumentException("Invalid Booksheld id: "+instance.bookshelf()));
+        Books book = booksRepository.findById(instance.book())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid Book id: " + instance.book()));
 
-         
-            
+        Bookshelf shelf = bookshelfRepository.findById(instance.bookshelf())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid Booksheld id: " + instance.bookshelf()));
+        if (shelf.getCapacity() <= 0) {
+            throw new IllegalStateException("Cannot update book instance. Target shelf is full.");
+        }
+
+        Bookshelf oldShelf = bookInstance.getBookshelf();
+        oldShelf.setCapacity(oldShelf.getCapacity() + 1);
+        bookshelfRepository.save(oldShelf);
+
+        shelf.setCapacity(shelf.getCapacity() - 1);
+        bookshelfRepository.save(shelf);
+
         bookInstance.setBook(book);
         bookInstance.setImprint(instance.imprint());
         bookInstance.setBookshelf(shelf);
-         BookInstance updatedInstance = bookInstanceRepository.save(bookInstance);
-           
+        BookInstance updatedInstance = bookInstanceRepository.save(bookInstance);
+
         return mapToBookInstanceResponseDTO(updatedInstance);
-       
+
     }
+
     @Override
     public BookInstanceResponseDTO updateStatus(long id, String status) {
-        BookInstance bookInstance = bookInstanceRepository.findById(id).orElseThrow(()->new IllegalArgumentException("Invalid book instance id: "+id));
-        
-      
-            
+        BookInstance bookInstance = bookInstanceRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid book instance id: " + id));
+
         bookInstance.setStatus(status);
-      
-         BookInstance updatedInstance = bookInstanceRepository.save(bookInstance);
-           
+
+        BookInstance updatedInstance = bookInstanceRepository.save(bookInstance);
+
         return mapToBookInstanceResponseDTO(updatedInstance);
-       
+
     }
-
-
 
     @Override
     public BookInstanceResponseDTO deleteInstance(long id) {
-     
-        Optional<BookInstance> optionalBookInstance = bookInstanceRepository.findById(id);
-        if (optionalBookInstance.isPresent()) {
-         
-            BookInstance bookInstance = optionalBookInstance.get();
-            bookInstanceRepository.deleteById(id);
-            return mapToBookInstanceResponseDTO(bookInstance);
-        } else {
-         
-            throw new IllegalArgumentException("Book instance not found with ID: " + id);
-        }
+
+        BookInstance bookInstance = bookInstanceRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid book instance id: " + id));
+
+        
+        Bookshelf shelf = bookInstance.getBookshelf();
+        shelf.setCapacity(shelf.getCapacity() + 1);
+        bookshelfRepository.save(shelf);
+        bookInstanceRepository.deleteById(id);
+
+        return mapToBookInstanceResponseDTO(bookInstance);
     }
 
     @Override
     public List<BookInstanceResponseDTO> getAllInstance() {
 
         List<BookInstance> allInstances = bookInstanceRepository.findAll();
-      
+
         return allInstances.stream()
                 .map(this::mapToBookInstanceResponseDTO)
                 .collect(Collectors.toList());
     }
-    
 
-   private BookInstanceResponseDTO mapToBookInstanceResponseDTO(BookInstance instance) {
+    private BookInstanceResponseDTO mapToBookInstanceResponseDTO(BookInstance instance) {
 
-        
-           BookShelfResponseDTO bookShelfResponseDTO = null;
+        BookShelfResponseDTO bookShelfResponseDTO = null;
         if (instance.getBookshelf() != null) {
             bookShelfResponseDTO = new BookShelfResponseDTO(
                     instance.getBookshelf().getShelfId(),
                     instance.getBookshelf().getShelfName(),
                     instance.getBookshelf().getLocation(),
                     instance.getBookshelf().getCapacity(),
-                    instance.getBookshelf().getDescription()
-            );
+                    instance.getBookshelf().getDescription());
         }
 
         return new BookInstanceResponseDTO(
@@ -137,9 +148,7 @@ public class BookInstanceServiceImpl implements BookInstanceService {
                 instance.getBook().getBookTitle(),
                 instance.getImprint(),
                 instance.getStatus(),
-                bookShelfResponseDTO
-        );
+                bookShelfResponseDTO);
     }
 
-    
 }
