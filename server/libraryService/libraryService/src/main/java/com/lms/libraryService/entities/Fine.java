@@ -4,7 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +19,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Fine {
 
-  
     @Id
     @GeneratedValue
     private long fineId;
@@ -28,7 +29,6 @@ public class Fine {
 
     private String isWaveOff;  // fineSet or fineNotSet
 
-  
     private long transaction;
 
 }

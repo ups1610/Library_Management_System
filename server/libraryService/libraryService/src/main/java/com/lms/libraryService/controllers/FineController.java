@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.lms.libraryService.dto.FineRequestDTO;
 import com.lms.libraryService.dto.FineResponseDTO;
@@ -19,7 +20,7 @@ import com.lms.libraryService.service.FineService;
 
 import lombok.AllArgsConstructor;
 
-@Controller
+@RestController
 @RequestMapping("/library/fines")
 @AllArgsConstructor
 public class FineController {
