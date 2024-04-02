@@ -26,7 +26,6 @@ public class BookIssue {
 
     private long bookInstance; // bookInstance object
 
-    
     private long member; // member object
 
     private Date dateOfIssue;
