@@ -2,11 +2,11 @@ package com.lms.membershipService.entities;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,22 +28,19 @@ public class Member {
 
     private String familyName;
 
-    private String number;
+    private String mobile;
 
     private String email;
- 
+
     private List<Long> issueBooks;
 
-    
     private List<Long> returnBooks;
-    @OneToOne
+
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "current_address_id", referencedColumnName = "addressId")
     private Address currentAddress;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "permanent_address_id", referencedColumnName = "addressId")
     private Address permanentAddress;
-
-
-
 }
