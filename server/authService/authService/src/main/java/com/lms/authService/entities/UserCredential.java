@@ -15,24 +15,26 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="USERS")
-public class User {
+public class UserCredential {
 
     @Id
     @GeneratedValue
     private long userId;
 
-    private String userName;
+    private String username;
 
-    private String firstName;
+    private String firstname;
 
-    private String lastName;
+    private String lastname;
 
-    private String mobile;
+    private long mobile;
 
     private String email;
 
     private String role;
 
-    private String status;
+    private String password;
+    
+    private String status="active";
 
 }
