@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/bookshelves")
+@RequestMapping("/catalog/bookshelves")
 public class BookshelfController {
 
     private final BookshelfService bookshelfService;

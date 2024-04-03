@@ -21,7 +21,7 @@ import com.lms.catalogueService.service.AuthorService;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/api/authors")
+@RequestMapping("/catalog/authors")
 @AllArgsConstructor
 public class AuthorController {
 

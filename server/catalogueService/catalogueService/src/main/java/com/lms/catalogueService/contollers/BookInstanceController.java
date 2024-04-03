@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/book-instances")
+@RequestMapping("/catalog/book-instances")
 @AllArgsConstructor
 public class BookInstanceController {
 

@@ -22,7 +22,7 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/genre")
+@RequestMapping("/catalog/genre")
 public class GenreController {
 
     private GenreService genreService;

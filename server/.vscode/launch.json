@@ -18,7 +18,8 @@
             "mainClass": "com.lms.catalogueService.CatalogueServiceApplication",
             "projectName": "catalogueService",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=49895 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=catalogueService"
         },
         {
             "type": "java",
@@ -48,7 +49,8 @@
             "mainClass": "com.lms.registryServer.RegistryServerApplication",
             "projectName": "registryServer",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=49884 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=registryServer"
         },
         {
             "type": "java",
@@ -57,6 +59,16 @@
             "cwd": "${workspaceFolder}",
             "mainClass": "com.lms.transactionService.TransactionServiceApplication",
             "projectName": "transactionService",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-ApiGatewayApplication<ApiGateway>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.gateway.ApiGateway.ApiGatewayApplication",
+            "projectName": "ApiGateway",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
         }
