@@ -1,6 +1,6 @@
 import Landing from "./Landing";
 import Dashboard from "./Dashboard";
-import Catalouge from "./Catalouge";
+import Catalog from "./Catalog";
 
-export {Dashboard, Catalouge}
+export {Dashboard, Catalog}
 export default Landing
