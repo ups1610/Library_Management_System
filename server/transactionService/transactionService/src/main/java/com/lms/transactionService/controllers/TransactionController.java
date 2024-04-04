@@ -17,7 +17,7 @@ import com.lms.transactionService.dto.TransactionResponseDTO;
 import com.lms.transactionService.service.TransactionService;
 
 @RestController
-@RequestMapping("/api/transactions")
+@RequestMapping("/transaction")
 public class TransactionController {
 
      private final TransactionService transactionService;
@@ -32,7 +32,7 @@ public class TransactionController {
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<TransactionResponseDTO>> getAllTransactions() {
         List<TransactionResponseDTO> transactionList = transactionService.getAll();
         return new ResponseEntity<>(transactionList, HttpStatus.OK);

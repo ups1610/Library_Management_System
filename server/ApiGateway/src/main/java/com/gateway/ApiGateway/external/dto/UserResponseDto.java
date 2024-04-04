@@ -1,4 +1,4 @@
-package com.lms.authService.dto;
+package com.gateway.ApiGateway.external.dto;
 
 public record UserResponseDto(
     
