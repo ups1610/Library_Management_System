@@ -1,8 +1,8 @@
 package com.lms.membershipService.entities;
 
 import java.util.Date;
-import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -23,7 +23,7 @@ public class Membership {
     @GeneratedValue
     private long memberShipId;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Member member;
 
     private Date startDate;
@@ -31,8 +31,8 @@ public class Membership {
     private Date endDate;
 
     private String status;
-  
-    @OneToOne
+
+    @OneToOne(cascade = CascadeType.ALL)
     private MembershipPlan membershipPlan;
 
     private int transactionId;
