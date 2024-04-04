@@ -158,9 +158,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserCredential> getAllUser() {
+    public List<UserResponseDto> getAllUser() {
         List<UserCredential> users = userRepository.findAll();
-        return users;
+        return users.stream()
+                .map(user -> new UserResponseDto(
+                        user.getUserId(),
+                        user.getUsername(),
+                        user.getFirstname(),
+                        user.getLastname(),
+                        user.getMobile(),
+                        user.getEmail(),
+                        user.getRole(),
+                        user.getStatus()))
+                .collect(Collectors.toList());
     }
 
    

@@ -11,6 +11,8 @@ import com.lms.membershipService.dto.MemberResponseDTO;
 import com.lms.membershipService.entities.Address;
 import com.lms.membershipService.entities.Member;
 import com.lms.membershipService.exceptions.DuplicateDataException;
+import com.lms.membershipService.external.dto.TransactionResponseDTO;
+import com.lms.membershipService.external.services.TransactionService;
 import com.lms.membershipService.repositories.MemberRepository;
 import com.lms.membershipService.services.MemberService;
 
@@ -21,6 +23,7 @@ import lombok.AllArgsConstructor;
 public class MemberServiceImpl implements MemberService {
 
     private MemberRepository memberRepository;
+      private TransactionService transactionService;
 
     @Override
     public MemberResponseDTO newMember(MemberRequestDTO memberRequest) {
@@ -104,4 +107,9 @@ public class MemberServiceImpl implements MemberService {
             address.getPincode()
     );
 }
+
+    @Override
+    public List<TransactionResponseDTO> getMemberTransactions(long id) {
+        return transactionService.getTransactionsByMember(id);
+    }
 }

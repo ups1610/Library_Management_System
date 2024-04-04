@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lms.membershipService.dto.MemberRequestDTO;
 import com.lms.membershipService.dto.MemberResponseDTO;
+import com.lms.membershipService.external.dto.TransactionResponseDTO;
 import com.lms.membershipService.services.MemberService;
 
 import lombok.AllArgsConstructor;
@@ -44,6 +45,12 @@ public class MemberController {
         return new ResponseEntity<>(member, HttpStatus.OK);
     }
 
+    @GetMapping("/transaction/{id}")
+    public ResponseEntity< List<TransactionResponseDTO>> getTransactionOfMember(@PathVariable("id") long id) {
+        List<TransactionResponseDTO> transaction = memberService.getMemberTransactions(id);
+        return new ResponseEntity<>(transaction, HttpStatus.OK);
+    }
+
     @PutMapping("/{id}/update")
     public ResponseEntity<MemberResponseDTO> updateMember(@PathVariable("id") long id,
             @RequestBody MemberRequestDTO memberRequest) {
@@ -56,5 +63,7 @@ public class MemberController {
         MemberResponseDTO deletedMember = memberService.deleteMember(id);
         return new ResponseEntity<>(deletedMember, HttpStatus.OK);
     }
+
+    
 
 }

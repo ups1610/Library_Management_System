@@ -13,7 +13,7 @@ public interface UserService {
     public UserResponseDto addUser(UserRequestDto userRequest);
     public LoginResponseDto generateToken(LoginRequestDto user);
     
-    public List<UserCredential> getAllUser();
+    public List<UserResponseDto> getAllUser();
    
 
     public UserResponseDto activateOrBlockUser(long id);

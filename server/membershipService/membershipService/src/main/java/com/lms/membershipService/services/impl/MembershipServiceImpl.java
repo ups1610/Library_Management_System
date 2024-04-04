@@ -76,7 +76,7 @@ public class MembershipServiceImpl implements MembershipService {
     membership.setMembershipPlan(membershipPlan);
 
     TransactionResponseDTO transactionResponse = transactionService.transaction(
-            new TransactionRequestDTO(member.getMemberId(), membershipPlan.getPrice(), "Membership", membershipRequest.modeOfPayment(), 1));
+            new TransactionRequestDTO(member.getMemberId(), membershipPlan.getPrice(), "Membership", membershipRequest.modeOfPayment(), 2));
 
     membership.setTransactionId(transactionResponse.transactionId());
 

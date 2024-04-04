@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 import com.lms.transactionService.dto.TransactionRequestDTO;
 import com.lms.transactionService.dto.TransactionResponseDTO;
 import com.lms.transactionService.entities.Transaction;
+import com.lms.transactionService.external.dto.MemberResponseDTO;
+import com.lms.transactionService.external.dto.UserResponseDto;
+import com.lms.transactionService.external.services.MemberService;
+import com.lms.transactionService.external.services.UserService;
 import com.lms.transactionService.repositry.TransactionRepositry;
 import com.lms.transactionService.service.TransactionService;
 
@@ -19,11 +23,14 @@ import lombok.AllArgsConstructor;
 public class TransactionServiceImpl implements TransactionService{
 
     private final TransactionRepositry transactionRepository;
-    public TransactionServiceImpl(TransactionRepositry transactionRepository){
-        this.transactionRepository=transactionRepository;
-    }
+   private final UserService userService;
+   private final MemberService memberService;
 
-    
+    public TransactionServiceImpl( TransactionRepositry transactionRepository,UserService userService,MemberService memberService){
+        this.memberService=memberService;
+        this.transactionRepository=transactionRepository;
+        this.userService=userService;
+    }
     @Override
     public TransactionResponseDTO create(TransactionRequestDTO transaction) {
         Transaction entity = new Transaction();
@@ -36,7 +43,9 @@ public class TransactionServiceImpl implements TransactionService{
         entity.setPaidMode(transaction.mode());
         entity.setInitiatedBy(transaction.initiatedBy());
         entity = transactionRepository.save(entity);
-        return convertToTransactionResponseDTO(entity,"dummy","dummy");
+
+
+        return convertToTransactionResponseDTO(entity);
     }
 
     @Override
@@ -46,7 +55,7 @@ public class TransactionServiceImpl implements TransactionService{
     return transactions.stream()
     .map(transaction -> {
        
-        return convertToTransactionResponseDTO(transaction, "dummy", "fetch from other service");
+        return convertToTransactionResponseDTO(transaction);
     })
     .collect(Collectors.toList());
     }
@@ -55,7 +64,7 @@ public class TransactionServiceImpl implements TransactionService{
     public TransactionResponseDTO getParticular(long id) {
         Transaction entity = transactionRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Invald transaction id: "+id));
        
-        return convertToTransactionResponseDTO(entity,"dummy","dummy");
+        return convertToTransactionResponseDTO(entity);
     }
 
     @Override
@@ -71,7 +80,7 @@ public class TransactionServiceImpl implements TransactionService{
         return transactions.stream()
         .map(transaction -> {
            
-            return convertToTransactionResponseDTO(transaction, "dummy", "fetch from other service");
+            return convertToTransactionResponseDTO(transaction);
         })
         .collect(Collectors.toList());
     }
@@ -82,20 +91,25 @@ public class TransactionServiceImpl implements TransactionService{
         return transactions.stream()
         .map(transaction -> {
            
-            return convertToTransactionResponseDTO(transaction, "dummy", "fetch from other service");
+            return convertToTransactionResponseDTO(transaction);
         })
         .collect(Collectors.toList());
     }
     
-    private TransactionResponseDTO convertToTransactionResponseDTO(Transaction entity,String member,String initatedBy) {
+    private TransactionResponseDTO convertToTransactionResponseDTO(Transaction entity) {
+
+        
+        MemberResponseDTO member= memberService.getMember(entity.getMember());
+
+        UserResponseDto user=userService.getUser(entity.getInitiatedBy());
         return new TransactionResponseDTO(
                 entity.getTransactionId(),
-                member,
+                member.familyName()+" "+member.familyName(),
                 entity.getPaidMode(),
                 entity.getTransactionTimeStamp(),
                 entity.getAmount(),
                 entity.getNarration(),
-                initatedBy
+                user.userName()
         );
     }
     

@@ -19,9 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-
-
 
 @RestController
 @RequestMapping("/auth")
@@ -29,63 +28,56 @@ public class AuthController {
 
     private final UserService userService;
 
-    public AuthController(UserService userService){
-        this.userService=userService;
+    public AuthController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping("/addNew")
     public ResponseEntity<UserResponseDto> postMethodName(@RequestBody UserRequestDto entity) {
-       
-        
-        UserResponseDto userResponse = userService.addUser(entity);
-            return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
-    }
 
+        UserResponseDto userResponse = userService.addUser(entity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
+    }
 
     @GetMapping("/users")
-      public ResponseEntity<List<UserCredential>> getUsers() {
-       
-        
-        List<UserCredential> userResponse = userService.getAllUser();
-            return ResponseEntity.status(HttpStatus.OK).body(userResponse);
+    public ResponseEntity<List<UserResponseDto>> getUsers() {
+
+        List<UserResponseDto> userResponse = userService.getAllUser();
+        return ResponseEntity.status(HttpStatus.OK).body(userResponse);
     }
 
-  
+    @GetMapping("/user/{id}")
+    public ResponseEntity<UserResponseDto> getUser(@PathVariable long id) {
 
-  @PutMapping("/Status")
-  public ResponseEntity<UserResponseDto> status(@RequestParam long id) {
-   
-      UserResponseDto userResponse = userService.activateOrBlockUser(id);
+        UserResponseDto userResponse = userService.getUser(id);
         return ResponseEntity.status(HttpStatus.OK).body(userResponse);
-}
-    
+    }
+
+    @PutMapping("/Status")
+    public ResponseEntity<UserResponseDto> status(@RequestParam long id) {
+
+        UserResponseDto userResponse = userService.activateOrBlockUser(id);
+        return ResponseEntity.status(HttpStatus.OK).body(userResponse);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto entity) {
-      LoginResponseDto resp= userService.generateToken(entity);
-       
-       return ResponseEntity.status(HttpStatus.OK).body(resp);
-    }   
+        LoginResponseDto resp = userService.generateToken(entity);
+
+        return ResponseEntity.status(HttpStatus.OK).body(resp);
+    }
 
     @GetMapping("/validate")
     public ResponseEntity<UserResponseDto> validateToken(@RequestParam String token) {
         UserResponseDto user = userService.validateToken(token);
-       
-            return ResponseEntity.status(HttpStatus.OK).body(user);
-        
+
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+
     }
 
     @GetMapping("/logout")
-    public  ResponseEntity<String> logout() {
+    public ResponseEntity<String> logout() {
         return ResponseEntity.status(HttpStatus.OK).body(userService.deleteToken());
     }
-
-    
-    
-    
-
-    
-
-
-
 
 }
