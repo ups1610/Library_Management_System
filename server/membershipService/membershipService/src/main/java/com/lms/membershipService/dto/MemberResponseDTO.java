@@ -6,8 +6,8 @@ public record MemberResponseDTO(
         long memberId,
         String firstName,
         String familyName,
-        String mobile,
+        long mobile,
         String email,
-        Address currentAddress,
-        Address permanentAddress) {
+        AddressResponseDTO currentAddress,
+        AddressResponseDTO permanentAddress) {
 }

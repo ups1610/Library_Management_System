@@ -48,7 +48,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 
                     // Perform role-based authorization
                     UserResponseDto loginUser = authService.getCurrentUser(authToken);
-                    String role = "ROLE_ACCOUNTANT";
+                    String role = loginUser.role();
 
                     log.info(loginUser.email());
                     if (!isAuthorized(role, exchange.getRequest().getURI().getPath())) {
@@ -75,7 +75,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 
             return true;
 
-        } else if (role.equals("ROLE_LIBRARIAN")&& (requestPath.startsWith("/catalog") || requestPath.startsWith("/member"))) {
+        } else if (role.equals("ROLE_LIBRARIAN")&& (requestPath.startsWith("/catalog") || requestPath.startsWith("/membershipService"))) {
 
             return true;
 

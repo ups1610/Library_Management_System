@@ -23,9 +23,9 @@ public class Address {
 
     private String landmark;
 
-    private String currentAddress;
+    private String address1;
 
-    private String permanentAddress;
+    private String address2;
 
     private String city;
 
@@ -33,6 +33,6 @@ public class Address {
 
     private String state;
 
-    private String pincode;
+    private long pincode;
 
 }

@@ -1,8 +1,15 @@
 package com.lms.membershipService.services.impl;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.lms.membershipService.dto.MembershipRequestDTO;
@@ -10,6 +17,9 @@ import com.lms.membershipService.dto.MembershipResponseDTO;
 import com.lms.membershipService.entities.Member;
 import com.lms.membershipService.entities.Membership;
 import com.lms.membershipService.entities.MembershipPlan;
+import com.lms.membershipService.external.dto.TransactionRequestDTO;
+import com.lms.membershipService.external.dto.TransactionResponseDTO;
+import com.lms.membershipService.external.services.TransactionService;
 import com.lms.membershipService.repositories.MemberRepository;
 import com.lms.membershipService.repositories.MembershipPlanRepository;
 import com.lms.membershipService.repositories.MembershipRepository;
@@ -20,69 +30,63 @@ import lombok.AllArgsConstructor;
 
 @Service
 @Transactional
-@AllArgsConstructor
+
 public class MembershipServiceImpl implements MembershipService {
 
     private MembershipRepository membershipRepository;
 
     private MemberRepository memberRepository;
-
+        private TransactionService transactionService;
     private MembershipPlanRepository membershipPlanRepository;
+
+    @Autowired
+    public MembershipServiceImpl(MemberRepository memberRepository,TransactionService transactionService,MembershipPlanRepository membershipPlanRepository,MembershipRepository membershipRepository){
+        this.memberRepository=memberRepository;
+        this.transactionService=transactionService;
+        this.membershipRepository=membershipRepository;
+        this.membershipPlanRepository=membershipPlanRepository;
+    }
 
     @Override
     public MembershipResponseDTO newMembership(MembershipRequestDTO membershipRequest) {
         Member member = memberRepository.findById(membershipRequest.memberId())
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "Member not found with id: " + membershipRequest.memberId()));
+            .orElseThrow(() -> new IllegalArgumentException(
+                    "Member not found with id: " + membershipRequest.memberId()));
 
-        MembershipPlan membershipPlan = membershipPlanRepository.findById(membershipRequest.membershipPlanId())
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "Membership Plan not found with id: " + membershipRequest.membershipPlanId()));
+    MembershipPlan membershipPlan = membershipPlanRepository.findById(membershipRequest.membershipPlanId())
+            .orElseThrow(() -> new IllegalArgumentException(
+                    "Membership Plan not found with id: " + membershipRequest.membershipPlanId()));
 
-        Membership membership = new Membership();
-        membership.setMember(member);
-        membership.setStartDate(membershipRequest.startDate());
-        membership.setEndDate(membershipRequest.endDate());
-        membership.setStatus(membershipRequest.status());
-        membership.setMembershipPlan(membershipPlan);
-        membership.setTransactionId(membershipRequest.transactionId());
+    Date startDate = membershipRequest.startDate();
+     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = sdf.format(startDate);
+   
+    LocalDate localEndDate = LocalDate.parse(dateString);
+    localEndDate=localEndDate.plusMonths(membershipPlan.getDurationMonth());
 
-        membership = membershipRepository.save(membership);
-        return mapToMembershipResponseDTO(membership);
+
+    Date endDate = java.sql.Date.valueOf(localEndDate);
+
+    Membership membership = new Membership();
+
+    membership.setMember(member);
+    membership.setStartDate(startDate);
+    membership.setEndDate(endDate);
+    membership.setStatus("active");
+    membership.setMembershipPlan(membershipPlan);
+
+    TransactionResponseDTO transactionResponse = transactionService.transaction(
+            new TransactionRequestDTO(member.getMemberId(), membershipPlan.getPrice(), "Membership", membershipRequest.modeOfPayment(), 1));
+
+    membership.setTransactionId(transactionResponse.transactionId());
+
+    membership = membershipRepository.save(membership);
+    return mapToMembershipResponseDTO(membership);
     }
 
-    @Override
-    public MembershipResponseDTO updateMembership(long id, MembershipRequestDTO membershipRequest) {
-        Membership membership = membershipRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Membership not found with id: " + id));
 
-        Member member = memberRepository.findById(membershipRequest.memberId())
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "Member not found with id: " + membershipRequest.memberId()));
 
-        MembershipPlan membershipPlan = membershipPlanRepository.findById(membershipRequest.membershipPlanId())
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "Membership Plan not found with id: " + membershipRequest.membershipPlanId()));
-
-        membership.setMember(member);
-        membership.setStartDate(membershipRequest.startDate());
-        membership.setEndDate(membershipRequest.endDate());
-        membership.setStatus(membershipRequest.status());
-        membership.setMembershipPlan(membershipPlan);
-        membership.setTransactionId(membershipRequest.transactionId());
-
-        membership = membershipRepository.save(membership);
-        return mapToMembershipResponseDTO(membership);
-    }
-
-    @Override
-    public MembershipResponseDTO deleteMembership(long id) {
-        Membership membership = membershipRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Membership not found with id: " + id));
-
-        membershipRepository.deleteById(id);
-        return mapToMembershipResponseDTO(membership);
-    }
+   
 
     @Override
     public MembershipResponseDTO getMembership(long id) {
@@ -100,14 +104,30 @@ public class MembershipServiceImpl implements MembershipService {
     }
 
     private MembershipResponseDTO mapToMembershipResponseDTO(Membership membership) {
+        TransactionResponseDTO transaction= transactionService.getTransaction(membership.getTransactionId());
         return new MembershipResponseDTO(
                 membership.getMemberShipId(),
                 membership.getMember().getMemberId(),
+                membership.getMember().getFirstName()+" "+ membership.getMember().getFamilyName(),
                 membership.getStartDate(),
                 membership.getEndDate(),
                 membership.getStatus(),
-                membership.getMembershipPlan().getPlanId(),
-                membership.getTransactionId());
+                membership.getMembershipPlan().getPlanName(),
+                transaction
+                );
     }
+
+@Override
+public MembershipResponseDTO toggleStatus(long id) {
+        Membership membership = membershipRepository.findById(id)
+        .orElseThrow(() -> new IllegalArgumentException("Membership not found with id: " + id));
+        if("active".equals(membership.getStatus()))
+                membership.setStatus("block");
+        else
+                membership.setStatus("active");
+        
+        membership= membershipRepository.save(membership);
+        return mapToMembershipResponseDTO(membership);
+}
 
 }

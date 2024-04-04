@@ -5,9 +5,12 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.lms.membershipService.dto.AddressResponseDTO;
 import com.lms.membershipService.dto.MemberRequestDTO;
 import com.lms.membershipService.dto.MemberResponseDTO;
+import com.lms.membershipService.entities.Address;
 import com.lms.membershipService.entities.Member;
+import com.lms.membershipService.exceptions.DuplicateDataException;
 import com.lms.membershipService.repositories.MemberRepository;
 import com.lms.membershipService.services.MemberService;
 
@@ -21,13 +24,20 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberResponseDTO newMember(MemberRequestDTO memberRequest) {
+        if (memberRepository.findByMobile(memberRequest.mobile()).isPresent()) {
+            throw new DuplicateDataException("Mobile Number already in use");
+        }
+        if (memberRepository.findByEmail(memberRequest.email()).isPresent()) {
+            throw new DuplicateDataException("Email already in use");
+        }
+
         Member member = new Member();
         member.setFirstName(memberRequest.firstName());
         member.setFamilyName(memberRequest.familyName());
         member.setMobile(memberRequest.mobile());
         member.setEmail(memberRequest.email());
-        member.setCurrentAddress(memberRequest.currentAddress());
-        member.setPermanentAddress(memberRequest.permanentAddress());
+        member.setCurrentAddress(new Address(0, memberRequest.currentAddress().landmark(), memberRequest.currentAddress().address1(), memberRequest.currentAddress().address2(), memberRequest.currentAddress().city(), memberRequest.currentAddress().district(), memberRequest.currentAddress().state(), memberRequest.currentAddress().pincode()));
+        member.setPermanentAddress(new Address(0, memberRequest.permanentAddress().landmark(), memberRequest.permanentAddress().address1(), memberRequest.permanentAddress().address2(), memberRequest.permanentAddress().city(), memberRequest.permanentAddress().district(), memberRequest.permanentAddress().state(), memberRequest.permanentAddress().pincode()));
         member = memberRepository.save(member);
         return mapToMemberResponseDTO(member);
     }
@@ -40,8 +50,9 @@ public class MemberServiceImpl implements MemberService {
         member.setFamilyName(memberRequest.familyName());
         member.setMobile(memberRequest.mobile());
         member.setEmail(memberRequest.email());
-        member.setCurrentAddress(memberRequest.currentAddress());
-        member.setPermanentAddress(memberRequest.permanentAddress());
+        member.setCurrentAddress(new Address(0, memberRequest.currentAddress().landmark(), memberRequest.currentAddress().address1(), memberRequest.currentAddress().address2(), memberRequest.currentAddress().city(), memberRequest.currentAddress().district(), memberRequest.currentAddress().state(), memberRequest.currentAddress().pincode()));
+        member.setPermanentAddress(new Address(0, memberRequest.permanentAddress().landmark(), memberRequest.permanentAddress().address1(), memberRequest.permanentAddress().address2(), memberRequest.permanentAddress().city(), memberRequest.permanentAddress().district(), memberRequest.permanentAddress().state(), memberRequest.permanentAddress().pincode()));
+        
         member = memberRepository.save(member);
         return mapToMemberResponseDTO(member);
     }
@@ -69,13 +80,28 @@ public class MemberServiceImpl implements MemberService {
     }
 
     private MemberResponseDTO mapToMemberResponseDTO(Member member) {
+        AddressResponseDTO currentAddressDTO = mapToAddressResponseDTO(member.getCurrentAddress());
+        AddressResponseDTO permanentAddressDTO = mapToAddressResponseDTO(member.getPermanentAddress());
+    
         return new MemberResponseDTO(
                 member.getMemberId(),
                 member.getFirstName(),
                 member.getFamilyName(),
                 member.getMobile(),
                 member.getEmail(),
-                member.getCurrentAddress(),
-                member.getPermanentAddress());
+                currentAddressDTO,
+                permanentAddressDTO
+        );
     }
+    private AddressResponseDTO mapToAddressResponseDTO(Address address) {
+    return new AddressResponseDTO(
+            address.getLandmark(),
+            address.getAddress1(),
+            address.getAddress2(),
+            address.getCity(),
+            address.getDistrict(),
+            address.getState(),
+            address.getPincode()
+    );
+}
 }

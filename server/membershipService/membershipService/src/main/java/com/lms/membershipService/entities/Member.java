@@ -28,7 +28,7 @@ public class Member {
 
     private String familyName;
 
-    private String mobile;
+    private long mobile;
 
     private String email;
 

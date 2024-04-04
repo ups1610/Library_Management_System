@@ -1,12 +1,13 @@
 package com.lms.membershipService.dto;
 
-import com.lms.membershipService.entities.Address;
 
 public record MemberRequestDTO(
         String firstName,
         String familyName,
-        String mobile,
+        long mobile,
         String email,
-        Address currentAddress,
-        Address permanentAddress) {
+        AddressRequestDTO currentAddress,
+        AddressRequestDTO permanentAddress) {
+
+   
 }

@@ -2,11 +2,11 @@ package com.lms.membershipService.dto;
 
 public record AddressRequestDTO(
         String landmark,
-        String currentAddress,
-        String permanentAddress,
+        String address1,
+        String address2,
         String city,
         String district,
         String state,
-        String pincode) {
+        long pincode) {
 
 }

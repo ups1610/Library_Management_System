@@ -6,6 +6,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,18 +25,19 @@ public class Membership {
     @GeneratedValue
     private long memberShipId;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Member member;
 
     private Date startDate;
 
     private Date endDate;
 
-    private String status;
+    private String status="active";
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name="planId")
     private MembershipPlan membershipPlan;
 
-    private int transactionId;
+    private long transactionId;
 
 }

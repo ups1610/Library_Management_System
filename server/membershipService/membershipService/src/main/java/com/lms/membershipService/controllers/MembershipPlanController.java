@@ -18,7 +18,7 @@ import com.lms.membershipService.dto.MembershipPlanResponseDTO;
 import com.lms.membershipService.services.MembershipPlanService;
 
 @RestController
-@RequestMapping("/api/membership-plans")
+@RequestMapping("/membershipService/membership-plans")
 public class MembershipPlanController {
 
     private final MembershipPlanService membershipPlanService;
@@ -27,7 +27,7 @@ public class MembershipPlanController {
         this.membershipPlanService = membershipPlanService;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/addNew")
     public ResponseEntity<MembershipPlanResponseDTO> addNewMembershipPlan(
             @RequestBody MembershipPlanRequestDTO planRequest) {
         MembershipPlanResponseDTO response = membershipPlanService.newMembershipPlan(planRequest);

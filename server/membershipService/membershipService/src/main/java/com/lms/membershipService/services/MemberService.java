@@ -16,5 +16,7 @@ public interface MemberService {
     MemberResponseDTO getMember(long id);
 
     List<MemberResponseDTO> getAllMembers();
+
+    
 }
 

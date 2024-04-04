@@ -20,13 +20,13 @@ import com.lms.membershipService.services.MembershipService;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/api/memberships")
+@RequestMapping("/membershipService/membership")
 @AllArgsConstructor
 public class MembershipController {
 
     private MembershipService membershipService;
 
-    @PostMapping("/create")
+    @PostMapping("/newMemebership")
     public ResponseEntity<MembershipResponseDTO> addNewMembership(@RequestBody MembershipRequestDTO membershipRequest) {
         MembershipResponseDTO response = membershipService.newMembership(membershipRequest);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -44,16 +44,5 @@ public class MembershipController {
         return new ResponseEntity<>(membership, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/update")
-    public ResponseEntity<MembershipResponseDTO> updateMembership(@PathVariable("id") long id,
-            @RequestBody MembershipRequestDTO membershipRequest) {
-        MembershipResponseDTO updatedMembership = membershipService.updateMembership(id, membershipRequest);
-        return new ResponseEntity<>(updatedMembership, HttpStatus.OK);
-    }
-
-    @DeleteMapping("/{id}/delete")
-    public ResponseEntity<MembershipResponseDTO> deleteMembership(@PathVariable("id") long id) {
-        MembershipResponseDTO deletedMembership = membershipService.deleteMembership(id);
-        return new ResponseEntity<>(deletedMembership, HttpStatus.OK);
-    }
+   
 }

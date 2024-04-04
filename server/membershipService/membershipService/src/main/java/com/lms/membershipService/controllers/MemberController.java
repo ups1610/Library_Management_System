@@ -20,13 +20,13 @@ import com.lms.membershipService.services.MemberService;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/api/members")
+@RequestMapping("membershipService/member")
 @AllArgsConstructor
 public class MemberController {
 
     private MemberService memberService;
 
-    @PostMapping("/create")
+    @PostMapping("/newMember")
     public ResponseEntity<MemberResponseDTO> addNewMember(@RequestBody MemberRequestDTO memberRequest) {
         MemberResponseDTO response = memberService.newMember(memberRequest);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
