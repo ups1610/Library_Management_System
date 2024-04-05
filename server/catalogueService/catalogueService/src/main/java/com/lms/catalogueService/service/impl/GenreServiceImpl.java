@@ -88,6 +88,7 @@ public class GenreServiceImpl implements GenreService {
                 book.getBookId(),
                 book.getBookTitle(),
                 book.getAuthor().getAuthorId(),
+                book.getAuthor().getFirstName()+" "+  book.getAuthor().getFamilyName(),
                 genres,
                 book.getISBN());
     }

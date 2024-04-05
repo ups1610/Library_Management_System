@@ -1,4 +1,4 @@
-package com.lms.libraryService.dto;
+package com.lms.membershipService.external.dto;
 
 import java.util.Date;
 public record BookIssueResponseDTO(

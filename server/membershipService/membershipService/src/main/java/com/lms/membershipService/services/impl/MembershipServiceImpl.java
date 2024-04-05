@@ -38,6 +38,7 @@ public class MembershipServiceImpl implements MembershipService {
     private MemberRepository memberRepository;
         private TransactionService transactionService;
     private MembershipPlanRepository membershipPlanRepository;
+  
 
     @Autowired
     public MembershipServiceImpl(MemberRepository memberRepository,TransactionService transactionService,MembershipPlanRepository membershipPlanRepository,MembershipRepository membershipRepository){
@@ -128,6 +129,15 @@ public MembershipResponseDTO toggleStatus(long id) {
         
         membership= membershipRepository.save(membership);
         return mapToMembershipResponseDTO(membership);
+}
+
+@Override
+public MembershipResponseDTO getMembershipByMemberID(long id) {
+        // TODO Auto-generated method stub
+        Member member=memberRepository.findById(id).orElseThrow(()->new IllegalArgumentException("Invalid Member id: "+id));
+
+       Membership membership =membershipRepository.findByMember(member).orElseThrow(()->new IllegalArgumentException("Member have'nt taken membership "));;
+       return mapToMembershipResponseDTO(membership);
 }
 
 }

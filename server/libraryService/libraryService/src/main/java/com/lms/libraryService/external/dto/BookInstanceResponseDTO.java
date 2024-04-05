@@ -1,4 +1,4 @@
-package com.lms.catalogueService.dto;
+package com.lms.libraryService.external.dto;
 
 public record BookInstanceResponseDTO(
 

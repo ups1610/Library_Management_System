@@ -1,6 +1,7 @@
 package com.lms.libraryService.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,37 +28,39 @@ public class BookIssueController {
 
     private BookIssueService bookIssueService;
     @PostMapping
-    public ResponseEntity<BookIssueResponseDTO> issueNewBook(@RequestBody BookIssueRequestDTO bookIssueRequest)
-    {
+    public ResponseEntity<BookIssueResponseDTO> newBookIssue(@RequestBody BookIssueRequestDTO bookIssueRequest) {
         BookIssueResponseDTO response = bookIssueService.newBookIssue(bookIssueRequest);
-        return new ResponseEntity<>(response,HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BookIssueResponseDTO> getIssuedBooks(@PathVariable("id") long id)
-    {
+    public ResponseEntity<BookIssueResponseDTO> getBookIssue(@PathVariable("id") long id) {
         BookIssueResponseDTO response = bookIssueService.getBookIssue(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<BookIssueResponseDTO>> getAllIssuedBooks(){
+    public ResponseEntity<List<BookIssueResponseDTO>> getAllBookIssues() {
         List<BookIssueResponseDTO> response = bookIssueService.getAllBookIssue();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/update")
-    public ResponseEntity<BookIssueResponseDTO> updateIssuedBook(@PathVariable long id, @RequestBody BookIssueRequestDTO bookIssueRequest)
-    {
-        BookIssueResponseDTO response = bookIssueService.updateBookIssue(id,bookIssueRequest);
-        return new ResponseEntity<>(response,HttpStatus.CREATED);
+    @GetMapping("/member/{memberId}")
+    public ResponseEntity<List<BookIssueResponseDTO>> getAllBookIssuesByMember(@PathVariable("memberId") long memberId) {
+        List<BookIssueResponseDTO> response = bookIssueService.getAllBooKIssueByMember(memberId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}/delete")
-    public ResponseEntity<BookIssueResponseDTO> deleteIssuedBook(@PathVariable("id") long id)
-    {
-        BookIssueResponseDTO response = bookIssueService.deleteBookIssue(id);
-        return new ResponseEntity<>(response,HttpStatus.CREATED);
+    @GetMapping("/instance/{bookInstanceId}")
+    public ResponseEntity<BookIssueResponseDTO> getIssueBookByBookInstance(@PathVariable("bookInstanceId") long bookInstanceId) {
+        BookIssueResponseDTO response = bookIssueService.getIssueBookByBookInstance(bookInstanceId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Map<String, Integer>> countIssueBooks() {
+        Map<String, Integer> response = bookIssueService.countIssueBooks();
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

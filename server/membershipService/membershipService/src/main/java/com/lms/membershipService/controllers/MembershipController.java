@@ -18,6 +18,8 @@ import com.lms.membershipService.dto.MembershipResponseDTO;
 import com.lms.membershipService.services.MembershipService;
 
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/membershipService/membership")
@@ -43,6 +45,13 @@ public class MembershipController {
         MembershipResponseDTO membership = membershipService.getMembership(id);
         return new ResponseEntity<>(membership, HttpStatus.OK);
     }
+
+    @GetMapping("/member/{id}")
+    public  ResponseEntity<MembershipResponseDTO>getBymember(@PathVariable Long id) {
+        MembershipResponseDTO membership = membershipService.getMembershipByMemberID(id);
+        return new ResponseEntity<>(membership, HttpStatus.OK);
+    }
+    
 
    
 }

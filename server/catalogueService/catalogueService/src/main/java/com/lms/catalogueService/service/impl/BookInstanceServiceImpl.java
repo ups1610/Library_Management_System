@@ -14,6 +14,7 @@ import com.lms.catalogueService.dto.BookShelfResponseDTO;
 import com.lms.catalogueService.entities.BookInstance;
 import com.lms.catalogueService.entities.Books;
 import com.lms.catalogueService.entities.Bookshelf;
+import com.lms.catalogueService.entities.Genre;
 import com.lms.catalogueService.repository.BookInstanceRepository;
 import com.lms.catalogueService.repository.BooksRepository;
 import com.lms.catalogueService.repository.BookshelfRepository;
@@ -143,12 +144,30 @@ public class BookInstanceServiceImpl implements BookInstanceService {
                     instance.getBookshelf().getDescription());
         }
 
+        BookResponseDTO book= mapToBooksResponseDTO(instance.getBook());
+
         return new BookInstanceResponseDTO(
                 instance.getInstanceId(),
-                instance.getBook().getBookTitle(),
+                book,
                 instance.getImprint(),
                 instance.getStatus(),
                 bookShelfResponseDTO);
     }
+
+
+      private BookResponseDTO mapToBooksResponseDTO(Books book) {
+
+        List<String> genres = book.getGenre().stream()
+                .map(Genre::getGenreName)
+                .collect(Collectors.toList());
+        return new BookResponseDTO(
+                book.getBookId(),
+                book.getBookTitle(),
+                book.getAuthor().getAuthorId(),
+                book.getAuthor().getFirstName()+" "+book.getAuthor().getFamilyName(),
+                genres,
+                book.getISBN());
+    }
+
 
 }

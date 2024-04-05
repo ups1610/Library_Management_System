@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.lms.membershipService.dto.MemberRequestDTO;
 import com.lms.membershipService.dto.MemberResponseDTO;
+import com.lms.membershipService.external.dto.BookIssueResponseDTO;
 import com.lms.membershipService.external.dto.TransactionResponseDTO;
 
 public interface MemberService {
@@ -17,6 +18,7 @@ public interface MemberService {
     MemberResponseDTO getMember(long id);
     List<TransactionResponseDTO> getMemberTransactions(long id);
     List<MemberResponseDTO> getAllMembers();
+   
 
     
 }

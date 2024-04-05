@@ -12,6 +12,7 @@ public interface MembershipService {
     
 
     public MembershipResponseDTO getMembership(long id);
+    public MembershipResponseDTO getMembershipByMemberID(long id);
     
     public MembershipResponseDTO toggleStatus(long id);
 

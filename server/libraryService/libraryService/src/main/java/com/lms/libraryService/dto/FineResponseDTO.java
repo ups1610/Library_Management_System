@@ -4,7 +4,7 @@ import com.lms.libraryService.entities.BookReturn;
 
 public record FineResponseDTO(
         long fineId,
-        BookReturn bookReturn,
+        int amount,
         String isWaveOff,
         long transaction) {
 

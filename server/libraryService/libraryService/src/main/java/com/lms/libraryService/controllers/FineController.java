@@ -27,14 +27,10 @@ public class FineController {
 
     private final FineService fineService;
 
-    @PostMapping
-    public ResponseEntity<FineResponseDTO> createFine(@RequestBody FineRequestDTO fineRequest) {
-        FineResponseDTO response = fineService.newFine(fineRequest);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
-    }
+   
 
     @GetMapping("/{id}")
-    public ResponseEntity<FineResponseDTO> getFineById(@PathVariable("id") long id) {
+    public ResponseEntity<FineResponseDTO> getFine(@PathVariable("id") long id) {
         FineResponseDTO response = fineService.getFine(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -42,18 +38,6 @@ public class FineController {
     @GetMapping("/all")
     public ResponseEntity<List<FineResponseDTO>> getAllFines() {
         List<FineResponseDTO> response = fineService.getAllFine();
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @PutMapping("/{id}/update")
-    public ResponseEntity<FineResponseDTO> updateFine(@PathVariable("id") long id, @RequestBody FineRequestDTO fineRequest) {
-        FineResponseDTO response = fineService.updateFine(id, fineRequest);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @DeleteMapping("/{id}/delete")
-    public ResponseEntity<FineResponseDTO> deleteFine(@PathVariable("id") long id) {
-        FineResponseDTO response = fineService.deleteFine(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

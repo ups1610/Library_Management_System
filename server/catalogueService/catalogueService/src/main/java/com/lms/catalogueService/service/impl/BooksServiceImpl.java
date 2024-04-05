@@ -148,6 +148,7 @@ public BooksServiceImpl(BooksRepository booksRepository,AuthorRepository authorR
                 book.getBookId(),
                 book.getBookTitle(),
                 book.getAuthor().getAuthorId(),
+                book.getAuthor().getFirstName()+" "+book.getAuthor().getFamilyName(),
                 genres,
                 book.getISBN());
     }
@@ -169,7 +170,7 @@ public BooksServiceImpl(BooksRepository booksRepository,AuthorRepository authorR
 
         return new BookInstanceResponseDTO(
                 instance.getInstanceId(),
-                instance.getBook().getBookTitle(),
+                null,
                 instance.getImprint(),
                 instance.getStatus(),
                 bookShelfResponseDTO

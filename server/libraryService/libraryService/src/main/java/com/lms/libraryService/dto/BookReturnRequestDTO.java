@@ -4,9 +4,12 @@ import com.lms.libraryService.entities.BookIssue;
 import java.util.Date;
 
 public record BookReturnRequestDTO(
-        BookIssue bookIssue,
-        long member,
+        long bookIssue,
+    
         Date date,
+        int fine,
+        boolean waveOffFine,
+        String mode,
         long collectBy
 
 ) {

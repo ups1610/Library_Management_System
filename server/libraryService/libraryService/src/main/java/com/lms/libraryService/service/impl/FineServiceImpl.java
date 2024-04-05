@@ -4,66 +4,86 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
+import com.lms.libraryService.dto.BookReturnResponseDTO;
 import com.lms.libraryService.dto.FineRequestDTO;
 import com.lms.libraryService.dto.FineResponseDTO;
-import com.lms.libraryService.entities.Fine;
+import com.lms.libraryService.entities.BookReturn;
+import com.lms.libraryService.entities.BookReturnFine;
+import com.lms.libraryService.external.dto.TransactionRequestDTO;
+import com.lms.libraryService.external.dto.TransactionResponseDTO;
+import com.lms.libraryService.external.dto.UserResponseDto;
+import com.lms.libraryService.external.service.TransactionService;
+import com.lms.libraryService.external.service.UserService;
+import com.lms.libraryService.repository.BookReturnRepository;
 import com.lms.libraryService.repository.FineRepository;
 import com.lms.libraryService.service.FineService;
 
 import lombok.AllArgsConstructor;
 
 @Service
-@AllArgsConstructor
+
 public class FineServiceImpl implements FineService {
 
     private final FineRepository fineRepository;
+    private final TransactionService transactionService;
+    private final UserService userService;
+    public FineServiceImpl(FineRepository fineRepository,TransactionService transactionService,UserService userService){
+        this.fineRepository=fineRepository;
+        this.transactionService=transactionService;
+        this.userService=userService;
+    }
+  
+
 
     @Override
-    public FineResponseDTO newFine(FineRequestDTO fineRequest) {
-        Fine fine = new Fine();
-        fine.setBookReturn(fineRequest.bookReturn());
-        fine.setIsWaveOff(fineRequest.isWaveOff());
-        fine.setTransaction(fineRequest.transaction());
+    public BookReturnFine newFine(FineRequestDTO fineRequest) {
+       // currently static fine  for per day is 10 rs.
+       int finePerDay= 10 ;
+
+       int totalFine= finePerDay*(int)fineRequest.noOFDays();
+       BookReturnFine fine = new BookReturnFine();
+       
+        String waveOFf= fineRequest.isWaveOff()==true?"Yes":"No";
+        fine.setIsWavedOff(waveOFf);
+        long transactionId=0;
+        if(!fineRequest.isWaveOff()){
+                TransactionResponseDTO transactionResponseDTO= transactionService.transaction(new TransactionRequestDTO(fineRequest.member(),totalFine,"Fine-",fineRequest.mode(),fineRequest.collector()));
+                transactionId=transactionResponseDTO.transactionId();
+        }
+        fine.setAmount(totalFine);
+        fine.setTransaction_id(transactionId);
         fine = fineRepository.save(fine);
-        return mapToFineResponseDTO(fine);
+        return fine;
     }
 
-    @Override
-    public FineResponseDTO updateFine(long id, FineRequestDTO fineRequest) {
-        Fine fine = fineRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Fine with ID " + id + " not found"));
-        fine = fineRepository.save(fine);
-        return mapToFineResponseDTO(fine);
-    }
+  
 
-    @Override
-    public FineResponseDTO deleteFine(long id) {
-        Fine fine = fineRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Fine with ID " + id + " not found"));
-        fineRepository.deleteById(id);
-        return mapToFineResponseDTO(fine);
-    }
-
+  
     @Override
     public FineResponseDTO getFine(long id) {
-        Fine fine = fineRepository.findById(id)
+        BookReturnFine fine = fineRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Fine with ID " + id + " not found"));
         return mapToFineResponseDTO(fine);
     }
 
     @Override
     public List<FineResponseDTO> getAllFine() {
-        List<Fine> fines = fineRepository.findAll();
+        List<BookReturnFine> fines = fineRepository.findAll();
         return fines.stream().map(this::mapToFineResponseDTO).collect(Collectors.toList());
     }
 
-    private FineResponseDTO mapToFineResponseDTO(Fine fine) {
+    private FineResponseDTO mapToFineResponseDTO(BookReturnFine fine) {
         return new FineResponseDTO(
             fine.getFineId(),
-            fine.getBookReturn(),
-            fine.getIsWaveOff(),
-            fine.getTransaction()
+          fine.getAmount() ,
+            fine.getIsWavedOff(),
+            fine.getTransaction_id()
         );
     }
+
+
+   
+       
 }

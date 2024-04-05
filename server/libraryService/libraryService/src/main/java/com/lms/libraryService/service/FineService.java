@@ -4,15 +4,15 @@ import java.util.List;
 
 import com.lms.libraryService.dto.FineRequestDTO;
 import com.lms.libraryService.dto.FineResponseDTO;
+import com.lms.libraryService.entities.BookReturnFine;
+
 
 
 public interface FineService {
 
-    public FineResponseDTO newFine(FineRequestDTO fine);
+    public BookReturnFine newFine(FineRequestDTO fine);
 
-    public FineResponseDTO updateFine(long id, FineRequestDTO fine);
-
-    public FineResponseDTO deleteFine(long id);
+  
 
     public FineResponseDTO getFine(long id);
 

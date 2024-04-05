@@ -81,6 +81,7 @@ public class AuthorServiceImpl implements AuthorService {
                             book.getBookId(),
                             book.getBookTitle(),
                             id,
+                            null,
                             genres,
                             book.getISBN());
                 })

@@ -1,12 +1,9 @@
 package com.lms.libraryService.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,18 +14,19 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Fine {
+public class BookReturnFine {
 
     @Id
     @GeneratedValue
     private long fineId;
 
-    @OneToOne
-    @JoinColumn(name = "bookReturnId")
-    private BookReturn bookReturn;
+    @Column(nullable = false)
+    private int amount;
 
-    private String isWaveOff;  // fineSet or fineNotSet
+    @Column(nullable = false)
+    private String isWavedOff;
 
-    private long transaction;
+    @Column(nullable = false)
+    private long transaction_id;
 
 }

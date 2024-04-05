@@ -35,7 +35,7 @@ public class BookInstanceController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-    @PatchMapping("/{id}/status")
+    @PutMapping("/{id}/status")
     public ResponseEntity<BookInstanceResponseDTO> updateStatus(@PathVariable long id, @RequestParam String status) {
         BookInstanceResponseDTO responseDTO = bookInstanceService.updateStatus(id, status);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);

@@ -9,7 +9,9 @@ import com.lms.catalogueService.dto.BookInstanceResponseDTO;
 import com.lms.catalogueService.dto.BookResponseDTO;
 import com.lms.catalogueService.dto.BookShelfResponseDTO;
 import com.lms.catalogueService.dto.BookshelfRequestDTO;
+import com.lms.catalogueService.entities.Books;
 import com.lms.catalogueService.entities.Bookshelf;
+import com.lms.catalogueService.entities.Genre;
 import com.lms.catalogueService.repository.BookshelfRepository;
 import com.lms.catalogueService.service.BookshelfService;
 
@@ -76,7 +78,7 @@ public class BookshelfServiceImpl implements BookshelfService {
         return bookshelf.getBooks().stream()
                 .map(book -> new BookInstanceResponseDTO(
                         book.getInstanceId(),
-                        book.getBook().getBookTitle(),
+                        mapToBooksResponseDTO(book.getBook()),
                         book.getImprint(),
                         book.getStatus() ,
                         null))
@@ -90,5 +92,20 @@ public class BookshelfServiceImpl implements BookshelfService {
                 bookshelf.getLocation(),
                 bookshelf.getCapacity(),
                 bookshelf.getDescription());
+    }
+
+
+     private BookResponseDTO mapToBooksResponseDTO(Books book) {
+
+        List<String> genres = book.getGenre().stream()
+                .map(Genre::getGenreName)
+                .collect(Collectors.toList());
+        return new BookResponseDTO(
+                book.getBookId(),
+                book.getBookTitle(),
+                book.getAuthor().getAuthorId(),
+                book.getAuthor().getFirstName()+" "+book.getAuthor().getFamilyName(),
+                genres,
+                book.getISBN());
     }
 }

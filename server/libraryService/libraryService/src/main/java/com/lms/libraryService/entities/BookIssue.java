@@ -21,7 +21,7 @@ public class BookIssue {
     @GeneratedValue
     private long bookIssueId;
 
-    private long book; // book object
+
 
     private long bookInstance; // bookInstance object
 
@@ -30,7 +30,7 @@ public class BookIssue {
     private Date dateOfIssue;
 
     private Date dateOfReturn;
-
+    private String returned="No";
     private long issueBy;
 
 }
