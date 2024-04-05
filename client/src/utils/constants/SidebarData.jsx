@@ -1,5 +1,5 @@
 import {HiOutlineViewGrid,HiOutlineDocumentText,HiOutlineCog,HiOutlineQuestionMarkCircle} from 'react-icons/hi'
-import { MdLocalLibrary, MdRememberMe } from "react-icons/md";
+import { MdLocalLibrary, MdRememberMe, MdOutlineManageSearch } from "react-icons/md";
 import { SiBookstack } from "react-icons/si";
 import { FaRegAddressBook } from "react-icons/fa6";
 
@@ -60,9 +60,9 @@ export const DASHBOARD_SIDEBAR_BOTTOM_LINKS = [
 export const SUB_MENU_ITEMS = [
     {
       key: "books",
-      label: "Books",
-      path: "/dashboard/books",
-      icon: <MdLocalLibrary />,
+      label: "Manage Books",
+      path: "/dashboard/catalog",
+      icon: <MdOutlineManageSearch />,
     },
     {
       key: "books_instance",

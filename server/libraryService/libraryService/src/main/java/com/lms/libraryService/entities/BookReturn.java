@@ -5,7 +5,10 @@ import java.util.Date;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,14 +26,13 @@ public class BookReturn {
     private long bookReturnId;
 
     @OneToOne
+    @JoinColumn(name = "bookIssueId")
     private BookIssue bookIssue;
 
-  
     private long member;
 
     private Date date;
 
- 
     private long collectBy;
 
 }
