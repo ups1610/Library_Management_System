@@ -3,7 +3,8 @@ import logo from '../assets/logo.png';
 import { BiMenuAltRight } from 'react-icons/bi';
 import '../styles/Header.css';
 import {Link} from "react-scroll"
-import Modal from './Modal';
+
+import LoginModel from './LoginModel';
 
 function Header() {
   const [menuOpened, setMenuOpened] = useState(false);
@@ -40,7 +41,7 @@ function Header() {
             <button className='button' onClick={()=> setShowModal(true)}>
               Get Started
             </button>
-            {showModal && <Modal onClose={()=> setShowModal(false)}/>}
+            {showModal && <LoginModel onClose={()=> setShowModal(false)}/>}
           </div>
         <div className='h-menu-icon' onClick={toggleMenu}>
           <BiMenuAltRight size={30} />
