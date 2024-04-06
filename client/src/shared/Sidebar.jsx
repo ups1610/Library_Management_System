@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import classNames from "classnames";
 import { Link, useLocation } from "react-router-dom";
+import { IoListOutline } from "react-icons/io5";
 import logo from "../assets/logo.png";
-import {
-  HiOutlineChevronDown,
-  HiOutlineChevronRight,
-  HiOutlineLogout,
-} from "react-icons/hi";
+import {HiOutlineChevronDown,HiOutlineChevronRight} from "react-icons/hi";
 import {
   DASHBOARD_SIDEBAR_LINKS,
   DASHBOARD_SIDEBAR_BOTTOM_LINKS,
@@ -17,15 +14,24 @@ const linkClass =
   "flex items-center gap-2 font-light px-3 py-2 hover:bg-neutral-700 hover:no-underline active:bg-neutral-600 rounded-sm text-base";
 
 export default function Sidebar({ activePath }) {
+  const [expanded, setExpanded] = useState("hidden")
   const [isCatalogSubMenuOpen, setIsCatalogSubMenuOpen] = useState(false);
 
   const handleCatalogSubMenuToggle = () => {
     setIsCatalogSubMenuOpen(!isCatalogSubMenuOpen);
   };
 
+  const handleVisible = () =>{
+    if(expanded === "hidden")
+      setExpanded("block")
+    else
+      setExpanded("hidden")
+  }
+
   return (
-    <div className="bg-neutral-900 w-60 p-3 flex flex-col">
-      <div className="flex items-center gap-2 px-1 py-3">
+    <div className="bg-neutral-900 max-w-60  p-3 flex flex-col">
+      <button onClick={handleVisible}><IoListOutline className="hidden max-sm:block text-white" /></button>
+      <div className={`flex items-center gap-2 px-1 py-3 max-sm:${expanded}`}>
         <img className="p-1 max-sm:w-11" src={logo} alt="" width={50} />
         <a
           className="text-2xl font-medium p-1 text-white max-md:text-xl max-sm:px-0"
@@ -34,7 +40,7 @@ export default function Sidebar({ activePath }) {
           LibSphere
         </a>
       </div>
-      <div className="py-8 flex flex-1 flex-col gap-0.5">
+      <div className={`py-8 flex flex-1 flex-col gap-0.5 max-sm:${expanded}`}>
         {DASHBOARD_SIDEBAR_LINKS.map((link) => (
           <React.Fragment key={link.key}>
             {link.key === "catalog" ? (
@@ -80,16 +86,10 @@ export default function Sidebar({ activePath }) {
           </React.Fragment>
         ))}
       </div>
-      <div className="flex flex-col gap-0.5 pt-2 border-t border-neutral-700">
+      <div className={`flex flex-col gap-0.5 pt-2 border-t border-neutral-700 max-sm:${expanded}`}>
         {DASHBOARD_SIDEBAR_BOTTOM_LINKS.map((link) => (
           <SidebarLink key={link.key} link={link} activePath={activePath} />
         ))}
-        <div className={classNames(linkClass, "cursor-pointer text-red-500")}>
-          <span className="text-xl">
-            <HiOutlineLogout />
-          </span>
-          Logout
-        </div>
       </div>
     </div>
   );

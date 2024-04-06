@@ -27,10 +27,22 @@ function Dashboard() {
 
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
             <div className="w-full mt-5 rounded-lg border border-gray-100 bg-white p-4 shadow-sm">
-              <TableView title="New Members" name="Name" planName="Plan" booksIssued="Total Books" endDate="End Date"  />
+              <TableView
+                title="New Members"
+                name="Name"
+                planName="Plan"
+                booksIssued="Total Books"
+                endDate="End Date"
+              />
             </div>
             <div className="w-full mt-5 rounded-lg border border-gray-100 bg-white p-4 shadow-sm">
-            <TableView title="New Books" name="Name" planName="ISBN" booksIssued="Issue" endDate="Return"  />
+              <TableView
+                title="New Books"
+                name="Name"
+                planName="ISBN"
+                booksIssued="Issue"
+                endDate="Return"
+              />
             </div>
           </div>
         </div>
@@ -206,4 +218,4 @@ const TableView = (props) => {
     </>
   );
 };
-export {TableView}
+export { TableView };

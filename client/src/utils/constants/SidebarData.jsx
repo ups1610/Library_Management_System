@@ -1,5 +1,7 @@
 import {HiOutlineViewGrid,HiOutlineDocumentText,HiOutlineCog,HiOutlineQuestionMarkCircle} from 'react-icons/hi'
-import { MdLocalLibrary, MdRememberMe, MdOutlineManageSearch } from "react-icons/md";
+import { MdLocalLibrary, MdRememberMe, MdOutlineManageSearch, MdOutlinePersonOutline } from "react-icons/md";
+import { BsBookshelf } from "react-icons/bs";
+import { LiaBookSolid } from "react-icons/lia";
 import { SiBookstack } from "react-icons/si";
 import { FaRegAddressBook } from "react-icons/fa6";
 
@@ -60,32 +62,26 @@ export const DASHBOARD_SIDEBAR_BOTTOM_LINKS = [
 export const SUB_MENU_ITEMS = [
     {
       key: "books",
-      label: "Manage Books",
-      path: "/dashboard/catalog",
+      label: "Books",
+      path: "/dashboard/catalog/books",
       icon: <MdOutlineManageSearch />,
-    },
-    {
-      key: "books_instance",
-      label: "Books Instance",
-      path: "/catalog/books_instance",
-      icon: <MdLocalLibrary />,
     },
     {
       key: "author",
       label: "Author",
-      path: "/catalog/author",
-      icon: <MdLocalLibrary />,
+      path: "/dashboard/catalog/author",
+      icon: <MdOutlinePersonOutline />,
     },
     {
       key: "genre",
       label: "Genre",
-      path: "/catalog/genre",
-      icon: <MdLocalLibrary />,
+      path: "/dashboard/catalog/genre",
+      icon: <LiaBookSolid />,
     },
     {
       key: "shelf",
-      label: "Shelf",
-      path: "/catalog/shelf",
-      icon: <MdLocalLibrary />,
+      label: "BookShelf",
+      path: "/dashboard/catalog/bookshelf",
+      icon: <BsBookshelf />,
     },
   ];
