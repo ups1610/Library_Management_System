@@ -3,9 +3,11 @@ import logo from '../assets/logo.png';
 import { BiMenuAltRight } from 'react-icons/bi';
 import '../styles/Header.css';
 import {Link} from "react-scroll"
+import Modal from './Modal';
 
 function Header() {
   const [menuOpened, setMenuOpened] = useState(false);
+  const[showModal,setShowModal] = useState(false)
 
   const toggleMenu = () => {
     setMenuOpened(prevState => !prevState);
@@ -35,9 +37,10 @@ function Header() {
             <Link to='about' href='/' className='transition-all hover:transition-transform hover:scale-105 hover:duration-500'>
               About
             </Link>
-            <button className='button'>
-              <a href='/'>Get Started</a>
+            <button className='button' onClick={()=> setShowModal(true)}>
+              Get Started
             </button>
+            {showModal && <Modal onClose={()=> setShowModal(false)}/>}
           </div>
         <div className='h-menu-icon' onClick={toggleMenu}>
           <BiMenuAltRight size={30} />
