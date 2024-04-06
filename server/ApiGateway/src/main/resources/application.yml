@@ -6,12 +6,19 @@ eureka:
     register-with-eureka: true
     service-url:
       defaultZone: http://localhost:8761/eureka
-
-# spring:
-#   cloud:
-#     gateway:
-#       routes:
-#       - id: book_instance_route
-#         uri: lb://CATALOGUE_SERVICE
-#         predicates:
-#         - Path=/api/book-instances/**
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:3000"
+            allowedMethods:
+            - GET
+            - PUT
+            - POST
+            - DELETE
+            - PATCH
+            allowedHeaders: "*"
+            allowCredentials: true
+            maxAge: 3600

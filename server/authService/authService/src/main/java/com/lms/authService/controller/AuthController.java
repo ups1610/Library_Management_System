@@ -7,13 +7,11 @@ import com.lms.authService.dto.LoginRequestDto;
 import com.lms.authService.dto.LoginResponseDto;
 import com.lms.authService.dto.UserRequestDto;
 import com.lms.authService.dto.UserResponseDto;
-import com.lms.authService.entities.UserCredential;
 import com.lms.authService.service.UserService;
 
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
+
 @RequestMapping("/auth")
 public class AuthController {
 

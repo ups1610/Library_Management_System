@@ -1,6 +1,7 @@
 import React from 'react'
+import { login } from '../action/AuthAction'
 
-function Modal({onClose}) {
+function LoginModel({onClose}) {
   return (
     <div className='fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm z-50'>
         <div className="flex justify-center items-center h-screen">
@@ -98,8 +99,9 @@ function Modal({onClose}) {
                 </div>
 
                 <button
-                  type="submit"
+               
                   className="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white"
+                  onClick={()=>{ console.log("login") ;login("itssagar11","0135")}}
                 >
                   Sign in
                 </button>
@@ -114,4 +116,4 @@ function Modal({onClose}) {
   )
 }
 
-export default Modal
+export default LoginModel
