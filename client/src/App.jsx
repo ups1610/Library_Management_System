@@ -5,11 +5,11 @@ import Layout from "./shared";
 import Landing, { Dashboard, Books, Author, Bookshelf, Genre } from "./pages";
 import { InfoView } from "./components";
 
-import AutheticationProvider from "./context/Authetication";
+import AuthenticationProvider from "./context";
 import ProtectedRoute from "./auth/ProtectedRoute";
 function App() {
   return (
-      <AutheticationProvider>
+    <AuthenticationProvider>
 
     <Router>
       <Routes>
@@ -27,7 +27,7 @@ function App() {
       </Routes>
     </Router>
    
-    </AutheticationProvider>
+    </AuthenticationProvider>
   );
 }
 

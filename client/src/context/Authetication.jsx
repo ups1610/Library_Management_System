@@ -1,69 +1,58 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useState,} from 'react';
 import { login, logout } from '../action/AuthAction';
 import toast from "react-hot-toast";
-import {Navigate} from "react-router-dom"
 
-
-
-const AuthenticationContext= createContext(null);
+const AuthenticationContext = createContext(null);
 
 export const useAuth = () => {
     const auth = useContext(AuthenticationContext);
     return auth;
-  };
+};
 
+const AuthenticationProvider = ({ children }) => {
+    const [user, setUser] = useState("");
+    const [token, setToken] = useState(() => {
+      // Initialize token from local storage if available
+      return localStorage.getItem('token') || null;
+  });
 
-const AutheticationProvider = ({children}) => {
-    let [user,setUser]=useState("");
-    let [token,setToken]=useState(null)
-
-    const signUp= async(userName,password)=>{
-        const response= await login(userName,password);
-        console.log(response)
-       if(response.success===true){
-       
-      
-        await  setToken(response.data.token);
-
-        const userData = { ...response.data }; 
-        delete userData.token;
-       await setUser(userData);
-        console.log("---")
-     
-      
-        toast.success("Login Success. Redirectiong...")
-
-        setTimeout(()=>{
-          console.log(user);
-          console.log(token);
-          window.location.href="/dashboard"
-        },1300)
-       
-       }else{
-            toast.error(response.data.error)
-       }
-    }
-    const signOut= async()=>{
-        const response= await logout();
-
-        if(response.success===true){
-            setUser(null)
-            setToken(null)
-         
-            window.location.href="/"
-            // <Navigate to="/" replace={true}/>
+    const signUp = async (userName, password) => {
+        const response = await login(userName, password);
+        if (response.success === true) {
+            const authToken = response.data;
+            localStorage.setItem('token', authToken);
+            setToken(response.data.token);
+            const userData = { ...response.data };
+            delete userData.token;
+            setUser(userData);
+            toast.success("Login Success. Redirecting...");
+            setTimeout(()=>{
+              window.location.href = "/dashboard";
+            },2000)
+        } else {
+            toast.error(response.data.error);
         }
-      
-        
+    };
+
+    const signOut= async()=>{
+      const response= await logout();
+
+      if(response.success===true){
+          localStorage.removeItem('token')
+          setUser(null)
+          setToken(null)
+          window.location.href="/"
       }
     
+      
+    }
 
-  return (
-    <AuthenticationContext.Provider value={{ token, user, setUser, setToken,signUp,signOut }}>
-    {children}
-  </AuthenticationContext.Provider>
-  
-  )
-}
 
-export default AutheticationProvider;
+    return (
+        <AuthenticationContext.Provider value={{ signUp, token, user, signOut }}>
+            {children}
+        </AuthenticationContext.Provider>
+    );
+};
+
+export default AuthenticationProvider;

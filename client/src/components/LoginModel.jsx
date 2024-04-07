@@ -5,16 +5,13 @@ import { useAuth } from '../context/Authetication';
 function LoginModel({onClose}) {
 
   const auth=useAuth();
-
+  console.log(auth)
   const [userName,setUser]=useState("");
   const [password,setPassword]=useState("");
 
 
   const handleSubmit =(e)=>{
     e.preventDefault();
-    console.log(userName);
-    console.log(password);
-
     auth.signUp(userName,password);
   }
 
@@ -56,7 +53,7 @@ function LoginModel({onClose}) {
                   <div className="relative">
                     <input
                       type="text"
-                      className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
+                      className="text-black w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                       placeholder="Enter Username"
                       value={userName}
                       onChange={(e)=>setUser(e.target.value)}
@@ -87,7 +84,7 @@ function LoginModel({onClose}) {
                   <div className="relative">
                     <input
                       type="password"
-                      className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
+                      className="text-black w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                       placeholder="Enter Password"
                         value={password}
                       onChange={(e)=>setPassword(e.target.value)}

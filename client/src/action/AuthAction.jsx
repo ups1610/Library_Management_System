@@ -3,6 +3,8 @@ import axios from 'axios';
 
 const url = 'http://localhost:8088';
 
+const token = localStorage.getItem('token')
+
 export const login = (userName, password) => {
 
     return axios.post(url + '/auth/login', {
@@ -14,7 +16,6 @@ export const login = (userName, password) => {
         }
     })
     .then((resp) => {
-        console.log(resp)
         if (resp.status === 200) {
             return {
                 success: true,
@@ -48,6 +49,7 @@ export const logout=()=>{
     console.debug('Login Request');
     return axios.post(url + '/auth/logout', {
         headers: {
+            'token': token.token,
             'Content-Type': 'application/json',
         }
     })

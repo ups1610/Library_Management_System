@@ -5,13 +5,12 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Toaster } from 'react-hot-toast';
 
-ReactDOM.render(
-  <React.StrictMode>
-    
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode> 
     <App />
-  
-  </React.StrictMode>,
-  document.getElementById('root')
+    <Toaster/>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

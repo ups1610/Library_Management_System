@@ -3,9 +3,15 @@ import { Menu, Popover, Transition } from '@headlessui/react'
 import { HiOutlineBell, HiOutlineChatAlt } from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
+import { useAuth } from '../context/Authetication'
 
 export default function Header() {
 	const navigate = useNavigate()
+	const auth=useAuth();
+
+	function logout(){
+		auth.signOut()
+	}
 
 	return (
 		<div className="bg-white h-16 px-4 flex items-center border-b border-gray-200 justify-between">
@@ -124,6 +130,7 @@ export default function Header() {
 							<Menu.Item>
 								{({ active }) => (
 									<div
+										onClick={logout}
 										className={classNames(
 											active && 'bg-gray-100',
 											'active:bg-gray-200 rounded-sm px-4 py-2 text-gray-700 cursor-pointer focus:bg-gray-200'
