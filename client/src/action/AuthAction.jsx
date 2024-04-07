@@ -1,24 +1,74 @@
-import axios from 'axios'
+import axios from 'axios';
 
-const url = "http://localhost:8088";
+
+const url = 'http://localhost:8088';
 
 export const login = (userName, password) => {
-    console.debug("Login Request")
-    return axios.post(url + "/auth/login", {
+
+    return axios.post(url + '/auth/login', {
         userName,
         password
     }, {
         headers: {
             'Content-Type': 'application/json',
-           
         }
     })
     .then((resp) => {
-        console.log(resp);
-        return resp.data; 
+        console.log(resp)
+        if (resp.status === 200) {
+            return {
+                success: true,
+                data: resp.data
+            };  
+        } else {
+            return {
+                success: false,
+                data: 'Bad credentials. Please check your username and password.'
+            };
+        }
+    })
+    .catch((error) => {
+        if (error.response && error.response.status === 401) {
+          
+            return {
+                success: false,
+                data: 'Bad credentials. Please check your username and password.'
+            };
+        } else {
+            console.error('Something went wrong: ', error);
+            return {
+                success: false,
+                data: 'Something went wrong. Please try again later.'
+            };
+        }
+    });
+};
+
+export const logout=()=>{
+    console.debug('Login Request');
+    return axios.post(url + '/auth/logout', {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then((resp) => {
+        if (resp.status === 200) {
+            return {
+                success: true,
+                data: resp.data
+            };
+        } else {
+            return {
+                success: false,
+                data: 'Invalid Request.'
+            };
+        }
     })
     .catch((err) => {
-        console.log("Something went wrong" + err.message);
-        throw err; 
-    })
+        console.error('Something went wrong: ', err);
+        return {
+            success: false,
+            data: 'Something went wrong. Please try again later.'
+        };
+    });
 }

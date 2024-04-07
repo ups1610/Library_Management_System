@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { DashChart } from "../components/charts/Charts";
+import { useAuth } from "../context/Authetication";
 
 function Dashboard() {
+
+  const auth= useAuth();
+
+  useEffect(()=>{
+  console.log(auth.token);
+  console.log(auth.user);
+
+  },[])
   return (
     <>
       <div className="text-[#8c8b8b]">

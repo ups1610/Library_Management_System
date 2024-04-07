@@ -1,7 +1,23 @@
-import React from 'react'
-import { login } from '../action/AuthAction'
+import React, { useState } from 'react'
+import { useAuth } from '../context/Authetication';
+
 
 function LoginModel({onClose}) {
+
+  const auth=useAuth();
+
+  const [userName,setUser]=useState("");
+  const [password,setPassword]=useState("");
+
+
+  const handleSubmit =(e)=>{
+    e.preventDefault();
+    console.log(userName);
+    console.log(password);
+
+    auth.signUp(userName,password);
+  }
+
   return (
     <div className='fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm z-50'>
         <div className="flex justify-center items-center h-screen">
@@ -35,13 +51,15 @@ function LoginModel({onClose}) {
                 <p className="text-center text-white text-lg font-medium">Sign in to your account</p>
 
                 <div>
-                  <label htmlFor="email" className="sr-only">Email</label>
+                  <label htmlFor="Username" className="sr-only">UserName</label>
 
                   <div className="relative">
                     <input
-                      type="email"
+                      type="text"
                       className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                       placeholder="Enter Username"
+                      value={userName}
+                      onChange={(e)=>setUser(e.target.value)}
                     />
 
                     <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
@@ -71,6 +89,8 @@ function LoginModel({onClose}) {
                       type="password"
                       className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                       placeholder="Enter Password"
+                        value={password}
+                      onChange={(e)=>setPassword(e.target.value)}
                     />
 
                     <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
@@ -101,7 +121,7 @@ function LoginModel({onClose}) {
                 <button
                
                   className="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white"
-                  onClick={()=>{ console.log("login") ;login("itssagar11","0135")}}
+                  onClick={(e)=>{ console.log("login") ;handleSubmit(e)}}
                 >
                   Sign in
                 </button>
