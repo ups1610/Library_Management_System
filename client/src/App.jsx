@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./shared";
 import Landing, { Dashboard, Books, Author, Bookshelf, Genre } from "./pages";
-import AddBookForm from "./components/modals/PopupForm";
+import { InfoView } from "./components";
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
           <Route path="catalog/author" element={<Author/>}/>
           <Route path="catalog/bookshelf" element={<Bookshelf/>}/>
           <Route path="catalog/genre" element={<Genre/>}/>
-          <Route path="form" element={<AddBookForm/>}/>
+          <Route path="view" element={<InfoView/>}/>
         </Route>
       </Routes>
     </Router>

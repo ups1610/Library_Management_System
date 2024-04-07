@@ -4,6 +4,7 @@ import Values from "./Values";
 import Contact from "./Contact";
 import Footer from "./Footer";
 import LoginModel from "./LoginModel";
+import InfoView from "./InfoView";
 
 export {
     Header,
@@ -11,5 +12,6 @@ export {
     Values,
     Contact,
     Footer,
-    LoginModel
+    LoginModel,
+    InfoView
 }

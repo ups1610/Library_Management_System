@@ -8,12 +8,12 @@ function LoginModel({onClose}) {
             <div className="relative max-w-xl rounded-lg bg-gray-100 p-6 shadow-lg">
               <button onClick={onClose}
                 type="button"
-                className="absolute -end-1 -top-1 rounded-full border border-gray-200 bg-white p-1 text-gray-400"
+                className="absolute -end-0 -top-0 font-bold p-4 text-gray-400 "
               >
                 <span className="sr-only">Close</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-3 w-3"
+                  className="h-5 w-5"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >

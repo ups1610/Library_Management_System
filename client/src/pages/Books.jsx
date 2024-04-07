@@ -32,6 +32,7 @@ const Books = () => {
         col2="Name"
         col3="Author"
         col4="Genre"
+        path="/dashboard/view"
       />
     </>
   );
