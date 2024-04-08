@@ -9,15 +9,14 @@ import AuthenticationProvider from "./context";
 import ProtectedRoute from "./auth/ProtectedRoute";
 function App() {
   return (
-    <AuthenticationProvider>
-
     <Router>
+      <AuthenticationProvider>
       <Routes>
         <Route index path="/" element={<Landing />} />
         <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<Layout />}>
           <Route index element={<Dashboard/>}/>
-          <Route path="catalog/books" element={<Books/>}/>
+          <Route path="catalog/books"  element={<Books/>}/>
           <Route path="catalog/author" element={<Author/>}/>
           <Route path="catalog/bookshelf" element={<Bookshelf/>}/>
           <Route path="catalog/genre" element={<Genre/>}/>
@@ -25,9 +24,10 @@ function App() {
         </Route>
         </Route>
       </Routes>
+      </AuthenticationProvider>
     </Router>
    
-    </AuthenticationProvider>
+
   );
 }
 

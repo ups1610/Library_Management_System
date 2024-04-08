@@ -3,9 +3,10 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from '../context/Authetication';
 
 const ProtectedRoute = () => {
-    const auth = useAuth();
-    const token = auth.token 
-    console.log(auth)
+    const {user,token,isAuthenticated, setAuthenticated} = useAuth();
+    console.log(user,token,isAuthenticated, setAuthenticated,"auth token passed")
+    // const token = auth.token 
+    
     if (!token) {
         return "Page not found";
     }

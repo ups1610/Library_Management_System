@@ -1,9 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ActionTable from "../components/tabels";
 import PopupForm from "../components/modals";
+import { fetchBooks } from "../action/CatalogAction";
 
 const Books = () => {
   const [showFormBook, setShowFormBook] = useState(false);
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const booksData = await fetchBooks();
+      setBooks(booksData);
+    };
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -33,6 +43,11 @@ const Books = () => {
         col3="Author"
         col4="Genre"
         path="/dashboard/view"
+        mapData ={books}
+        data1={"id"}
+        data2={"title"}
+        data3={"authorName"}
+        data4={"genre"}
       />
     </>
   );
