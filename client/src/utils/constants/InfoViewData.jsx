@@ -14,3 +14,9 @@ export const settings = [
   { icon: <MdOutlineContactSupport />, label: "Support" },
   { icon: <MdMoreHoriz />, label: "More Details" },
 ];
+
+export const personDetail = [
+    {label: "Name :", info: "Upendra"},
+    {label: "DOB :", info:"16-7-2222"},
+    {label: "About :", info:"ndjnwk kndkwndk dnwdkn kdnqwknd dkqwnlqw ndwndw dnqlwndl bdb bhb didln dqwnkqbd bdehbc kek"}
+]

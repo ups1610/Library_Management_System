@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { options, settings } from "../utils/constants/InfoViewData";
+import { options, settings} from "../utils/constants/InfoViewData";
 import PopupForm from "./modals";
 
 function InfoView(props) {
@@ -10,7 +10,7 @@ function InfoView(props) {
   </div>
 
   <div className="mt-5 flex flex-col sm:flex-row w-full h-full">
-    <div className="sm:w-1/4 flex flex-col gap-4">
+    <div className="sm:w-1/4 flex flex-col gap-5">
       <div className="w-full p-2 bg-white border rounded-md shadow-md">
         <Options />
       </div>
@@ -25,13 +25,16 @@ function InfoView(props) {
         <div className="w-full p-2 bg-white border rounded-md mt-4 sm:mt-0">
           <InfoDetails />
         </div>
-
-        {/* <div className="w-full p-2 bg-white border rounded-md mt-4 sm:mt-0">
+        <div className="w-full p-2 bg-white border rounded-md shadow-md">
+        <PersonDetail />
+      </div>
+      <div className="w-full p-2 bg-white border rounded-md mt-4 sm:mt-0 mb-5">
           <InfoInstance />
-        </div> */}
+        </div>
       </div>
     </div>
   </div>
+  
 </>
   );
 }
@@ -104,6 +107,45 @@ export const Settings = (props) => {
         ))}
       </tbody>
     </table>
+    </>
+  )
+};
+
+export const PersonDetail = (props) => {
+  return(
+    <>
+      <div className="flex-grow">
+            <table className="w-full table-auto">
+            <caption className="text-lg flex flex-row gap-2 m-2 font-medium items-center group">
+        About Author
+      </caption>
+              <tbody className="text-sm">
+                <tr className="border-b border-gray-100">
+                  <td className="w-1/4 p-2">Name :</td>
+                  <td>Upendra Pratap Singh</td>
+                </tr>
+                <tr className="border-b border-gray-100">
+                  <td className="w-1/4 p-2">DOB :</td>
+                  <td className="font-medium">
+                    12-10-2000
+                  </td>
+                </tr>
+                <tr className="border-b border-gray-100">
+                  <td className="w-1/4 p-2">Total Books Written :</td>
+                  <td>5</td>
+                </tr>
+                <tr className="border-b border-gray-100">
+                  <td className="w-1/4 p-2">Description :</td>
+                  <td>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Dolore ducimus aspernatur ipsam, placeat dolorem odit
+                    architecto quas eius mollitia. Cupiditate minus molestiae
+                    magnam praesentium! Voluptatibus sequi autem illo optio rem!
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
     </>
   )
 };
@@ -186,4 +228,47 @@ export const InfoDetails = (props) => {
   );
 };
 
-// export const InfoInstance = (props) => {};
+export const InfoInstance = (props) => {
+  return(
+    <>
+      <div className="flex-grow">
+            <table className="w-full table-auto">
+            <caption className="text-lg flex flex-row gap-2 m-2 font-medium items-center group">
+        Instance Detail
+      </caption>
+              <tbody className="text-sm">
+                <tr className="border-b border-gray-100">
+                  <td className="w-1/4 p-2">Imprint :</td>
+                  <td>10</td>
+                </tr>
+                <tr className="border-b border-gray-100">
+                  <td className="w-1/4 p-2">Shelf :</td>
+                  <td>Programming shelf</td>
+                </tr>
+                <tr className="border-b border-gray-100">
+                  <td className="w-1/4 p-2">Location :</td>
+                  <td>NA</td>
+                </tr>
+                <tr className="border-b border-gray-100">
+                  <td className="w-1/4 p-2">Status :</td>
+                  <td>
+                    <span className="bg-green-700 px-2 rounded-sm text-white">
+                      Available
+                    </span>
+                  </td>
+                </tr>
+                <tr className="border-b border-gray-100">
+                  <td className="w-1/4 p-2">Description :</td>
+                  <td>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Dolore ducimus aspernatur ipsam, placeat dolorem odit
+                    architecto quas eius mollitia. Cupiditate minus molestiae
+                    magnam praesentium! Voluptatibus sequi autem illo optio rem!
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+    </>
+  )
+};
