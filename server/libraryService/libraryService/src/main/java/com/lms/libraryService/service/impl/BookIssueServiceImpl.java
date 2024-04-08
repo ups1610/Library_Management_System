@@ -1,5 +1,7 @@
 package com.lms.libraryService.service.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,6 +128,17 @@ public class BookIssueServiceImpl implements BookIssueService {
         countMap.put("Issued", bookIssueRepository.countByReturned("No"));
 
         return countMap;
+    }
+
+    @Override
+    public List<BookIssueResponseDTO> getAllDueReturnBooks() {
+        List<BookIssue> dueBookIssues = bookIssueRepository.findByDateOfReturnBeforeAndReturnedEquals(new Date(), "No").orElseThrow(()-> new RuntimeException("Something went Wrong"));
+
+        return dueBookIssues.stream()
+        .map(this::mapToBookIssueResponseDTO)
+        .collect(Collectors.toList());
+
+       
     }
 
 

@@ -1,5 +1,6 @@
 package com.lms.libraryService.repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,5 +17,7 @@ public interface BookIssueRepository extends JpaRepository<BookIssue, Long> {
     Optional<BookIssue> findByReturned(String string);
  
     Integer countByReturned(String string);
+
+    Optional<List<BookIssue>> findByDateOfReturnBeforeAndReturnedEquals(Date date, String returned);
     
 }

@@ -15,6 +15,8 @@ public interface TransactionRepositry extends JpaRepository<Transaction,Long> {
 
     List<Transaction> findByInitiatedBy(long initiator);
 
+    List<Transaction> findByTransactionTimeStampBetween(Date today, Date endOfDay);
+
     
 
 }

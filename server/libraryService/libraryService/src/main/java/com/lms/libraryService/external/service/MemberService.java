@@ -9,7 +9,7 @@ import com.lms.libraryService.external.dto.MembershipResponseDTO;
 
 
 
-@FeignClient(name="MembershipService", url="http://192.168.155.39:8084")
+@FeignClient(name="MembershipService", url="http://localhost:8084")
 public interface MemberService {
 
     @GetMapping("membershipService/member/{id}")

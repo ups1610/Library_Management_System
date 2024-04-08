@@ -63,4 +63,10 @@ public class BookIssueController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/due-return")
+    public ResponseEntity<List<BookIssueResponseDTO>> getAllDueBooks() {
+        List<BookIssueResponseDTO> response = bookIssueService.getAllBookIssue();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 }

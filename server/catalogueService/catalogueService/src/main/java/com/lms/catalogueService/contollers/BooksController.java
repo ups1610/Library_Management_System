@@ -1,6 +1,7 @@
 package com.lms.catalogueService.contollers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,6 +71,12 @@ public class BooksController {
     public ResponseEntity<List<BookInstanceResponseDTO>> getBookInstances(@PathVariable("id") long id) {
         List<BookInstanceResponseDTO> instances = booksService.getBookIntances(id);
         return new ResponseEntity<>(instances, HttpStatus.OK);
+    }
+
+    @GetMapping("/total-books")
+    public ResponseEntity<Map<String, Long>> getTotalBooks() {
+        Map<String, Long> totalBooks = booksService.getTotalBooks();
+        return ResponseEntity.ok().body(totalBooks);
     }
 
 }

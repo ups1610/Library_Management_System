@@ -10,9 +10,14 @@ const data = [
   ];
 
 
-  export const DashChart = () => {
+   const MembersChart = () => {
     return (
-      <ResponsiveContainer width="100%" height={250}>
+      <div className="rounded-lg border border-gray-100 bg-white p-4 mt-4 shadow-sm">
+            <div className="flex justify-between p-2 mb-2">
+              <h2 className="text-lg text-[#8c8b8b]">Report</h2>
+
+            </div>
+            <ResponsiveContainer width="100%" height={250}>
         <AreaChart data={data}>
         <defs>
           <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
@@ -27,6 +32,8 @@ const data = [
           <Area dataKey="value" stroke="#2451B7" fill="url(#color)" />
         </AreaChart>
       </ResponsiveContainer>
+          </div>
     );
   };
   
+  export default MembersChart;

@@ -15,5 +15,6 @@ public interface TransactionService {
     public String delete(long id);
     public List<TransactionResponseDTO> getByMember(long member);
     public List<TransactionResponseDTO>getByInitiator(long initiator);
-    
+   
+    public List<TransactionResponseDTO>getCollectionToday();
 }

@@ -18,4 +18,7 @@ public interface BookIssueService {
     public List<BookIssueResponseDTO> getAllBooKIssueByMember(long member);
     public Map<String,Integer> countIssueBooks();
     public BookIssueResponseDTO getIssueBookByBookInstance(long bookInstance);
+
+    public List<BookIssueResponseDTO> getAllDueReturnBooks();
+    
 }
