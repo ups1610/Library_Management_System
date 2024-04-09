@@ -27,12 +27,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberResponseDTO newMember(MemberRequestDTO memberRequest) {
-        if (memberRepository.findByMobile(memberRequest.mobile()).isPresent()) {
-            throw new DuplicateDataException("Mobile Number already in use");
-        }
-        if (memberRepository.findByEmail(memberRequest.email()).isPresent()) {
-            throw new DuplicateDataException("Email already in use");
-        }
+        // if (memberRepository.findByMobile(memberRequest.mobile()).isPresent()) {
+        //     throw new DuplicateDataException("Mobile Number already in use");
+        // }
+        // if (memberRepository.findByEmail(memberRequest.email()).isPresent()) {
+        //     throw new DuplicateDataException("Email already in use");
+        // }
 
         Member member = new Member();
         member.setFirstName(memberRequest.firstName());

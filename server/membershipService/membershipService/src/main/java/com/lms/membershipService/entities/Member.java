@@ -32,8 +32,6 @@ public class Member {
 
     private String email;
 
-   
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "current_address_id", referencedColumnName = "addressId")
     private Address currentAddress;
@@ -41,6 +39,4 @@ public class Member {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "permanent_address_id", referencedColumnName = "addressId")
     private Address permanentAddress;
-
-   
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.lms.libraryService.external.dto.BookInstanceResponseDTO;
 
-@FeignClient(name="CatalougeService", url="http://192.168.155.39:8082")
+@FeignClient(name="CatalougeService", url="http://localhost:8082")
 public interface BookService {
 
     @GetMapping("catalog/book-instances/{id}")

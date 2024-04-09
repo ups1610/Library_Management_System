@@ -14,7 +14,7 @@ import com.lms.membershipService.external.dto.TransactionResponseDTO;
 
 
 
-@FeignClient(name="TransactionService", url="http://192.168.155.39:8085")
+@FeignClient(name="TransactionService", url="http://localhost:8085")
 public interface TransactionService {
 
       @GetMapping("transaction/{id}")

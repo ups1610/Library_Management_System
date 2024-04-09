@@ -56,7 +56,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                     }
                 } catch (Exception err) {
                     log.error(err.getMessage());
-                    throw new RuntimeException("Invalid token or unauthorized access");
+                    throw new RuntimeException("Invalid token or unauthorized access"+err.getMessage());
                 }
             }
 

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.lms.transactionService.external.dto.UserResponseDto;
 
-@FeignClient(name="AuthService", url="http://192.168.155.39:8081")
+@FeignClient(name="AuthService", url="http://localhost:8081")
 public interface UserService {
 
     @GetMapping("auth/user/{id}")
