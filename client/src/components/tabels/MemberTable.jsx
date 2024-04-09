@@ -11,6 +11,9 @@ function MemberTable() {
    const [selectedMember, setSelectedMember] = useState(null);
 
    useEffect(() => {
+    fetchData();
+    }, []);
+
     const fetchData = async () => {
         setLoading(true);
         try{
@@ -21,8 +24,7 @@ function MemberTable() {
         }
         setLoading(false)
     }
-    fetchData()
-   }, [])
+
 
    const deleteMember=(e, id)=>{
     e.preventDefault();
@@ -38,6 +40,9 @@ function MemberTable() {
     const selected = members.find((member) => member.memberId === id);
     setSelectedMember(selected);
     setShowModall(true);
+  };
+  const updateMemberList = async () => {
+    await fetchData();
   };
   const updateMember = (updatedMember) => {
     MemberAction.updateMember(updatedMember, updatedMember.memberId)
@@ -58,7 +63,7 @@ function MemberTable() {
     <div className="container my-6 mx-auto">
         <div className="h-12">
            <button onClick={()=> setShowModal(true)} className="rounded bg-slate-800 text-white px-6 py-2 font-semibold">Add Member</button> 
-           {showModal && <AddMember onClose={()=> setShowModal(false)}/>}
+           {showModal && <AddMember onClose={()=> setShowModal(false)} updateMemberList={updateMemberList}/>}
         </div>
         <div className="flex shadow border-b">
             <table className="min-w-full">

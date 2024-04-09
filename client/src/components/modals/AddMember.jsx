@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import MemberAction from "../../action/MemberAction";
 import { X } from 'lucide-react'
 
-const AddMember = ({onClose}) => {
+const AddMember = ({onClose, updateMemberList}) => {
   const [member, setMember] = useState({
     firstName: "",
     familyName: "",
@@ -47,18 +47,53 @@ const AddMember = ({onClose}) => {
     }));
   };
 
-  const saveMember = (e) => {
+//   const saveMember = (e) => {
+//     e.preventDefault();
+//     MemberAction.addNewMember(member)
+//       .then((response) => {
+//         console.log(response);
+//         console.log("Member Added Successfully....")
+//         setMember((prevMembers) => [...prevMembers, response.data]);
+//       })
+//       .catch((error) => {
+//         console.log(error);
+//       });
+//       onClose();
+//   };
+const saveMember = async (e) => {
     e.preventDefault();
-    MemberAction.addNewMember(member)
-      .then((response) => {
-        console.log(response);
-        console.log("Member Added Successfully....")
-        setMember((prevMembers) => [...prevMembers, response.data]);
-      })
-      .catch((error) => {
-        console.log(error);
+    try {
+      await MemberAction.addNewMember(member);
+      // Clear form fields after successful addition
+      setMember({
+        firstName: "",
+        familyName: "",
+        mobile: "",
+        email: "",
+        currentAddress: {
+          landmark: "",
+          address1: "",
+          address2: "",
+          city: "",
+          district: "",
+          state: "",
+          pincode: ""
+        },
+        permanentAddress: {
+          landmark: "",
+          address1: "",
+          address2: "",
+          city: "",
+          district: "",
+          state: "",
+          pincode: ""
+        }
       });
       onClose();
+      updateMemberList(); // Fetch the updated list of members
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const reset = (e) => {
