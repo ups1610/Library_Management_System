@@ -45,7 +45,7 @@ export const DASHBOARD_SIDEBAR_LINKS = [
 	{
 		key: 'users',
 		label: 'Users',
-		path: '/users',
+		path: 'users/manage',
 		role:"ROLE_ADMIN",
 		icon: <MdLocalLibrary />
 	}

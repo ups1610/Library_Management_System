@@ -32,6 +32,18 @@ public class CustomExceptionHandler {
     }  
 
 
+    
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(DuplicateUserException.class)
+    public Map<String,String> DuplicateUser(DuplicateUserException ex){
+        Map<String,String> error= new HashMap<>();
+        error.put("error", ex.getMessage());
+
+        return error;
+    }  
+
+
+
     @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
     @ExceptionHandler(Exception.class)
     public Map<String,String> exphandle(Exception ex){

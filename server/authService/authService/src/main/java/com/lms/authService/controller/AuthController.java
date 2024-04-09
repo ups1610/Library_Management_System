@@ -79,4 +79,17 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.deleteToken());
     }
 
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponseDto> updateUser(@PathVariable("id") long id, @RequestBody UserRequestDto userRequest) {
+        UserResponseDto updatedUser = userService.updateUser(id, userRequest);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    @PutMapping("/{id}/password")
+    public ResponseEntity<String> changePassword(@PathVariable("id") long id, @RequestBody String password) {
+        String message = userService.changePassword(id, password);
+        return ResponseEntity.status(HttpStatus.OK).body(message);
+    }
+
 }

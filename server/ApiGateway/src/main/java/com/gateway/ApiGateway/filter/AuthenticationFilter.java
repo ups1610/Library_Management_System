@@ -35,6 +35,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
             if (routeValidator.isSecured().test(exchange.getRequest())) {
                 // Check for Authorization header
                 String authHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
+                
                 if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                     throw new AuthenticationException("No Authorization Header present or invalid format");
                 }

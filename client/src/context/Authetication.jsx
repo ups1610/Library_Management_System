@@ -12,7 +12,7 @@ export const useAuth = () => {
 };
 
 const AuthenticationProvider = ({ children }) => {
-  const [user, setUser] = useState("abc");
+  const [user, setUser] = useState({role:"ROLE_ADMIN"});
   const [token, setToken] = useState(null);
   const [isAuthenticated, setAuthenticated] = useState(false);
   const navigate = useNavigate();
