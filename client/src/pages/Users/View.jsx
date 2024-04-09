@@ -9,11 +9,12 @@ import toast from "react-hot-toast";
 export default function View() {
   const [changePassword, setChangePassword] = useState(false);
   const [updateUser, setUpdateUser] = useState(false);
-  const [userData, setUserData] = useState(null); // State to hold user data
+  const [userData, setUserData] = useState(null); 
   const { id } = useParams();
   const { token } = useAuth();
-  useEffect(() => {
-    // Fetch user data when component mounts
+
+
+  const fetchUserData = () => {
     particularUser(id, token)
       .then((response) => {
         if (response.success) {
@@ -25,7 +26,10 @@ export default function View() {
       .catch((error) => {
         console.error("Error fetching user data:", error);
       });
-  });
+  };
+  useEffect(() => {
+    fetchUserData();
+  }, [id, token,updateUser]);
 
   const handleChangeStatus = () => {
     const newStatus = userData.status === "active" ? "blocked" : "active";
@@ -112,7 +116,7 @@ export default function View() {
         >
           Update Detail
         </button>
-        {updateUser && <UpdateUser  userData={userData} onClose={() => setUpdateUser(false)} />}
+        {updateUser && <UpdateUser  userData={userData} onClose={() =>{ setUpdateUser(false); fetchUserData();}} />}
         <button
           className="inline-block rounded border border-orange-600 bg-orange-600 px-2 py-1 text-sm font-medium text-white hover:bg-transparent  hover:text-orange-600  focus:outline-none focus:ring"
           onClick={() => setChangePassword(true)}

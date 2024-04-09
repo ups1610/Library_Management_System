@@ -17,19 +17,21 @@ function Users() {
   const [userData, setUserData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await users(token);
-        if (response.success) {
-          setUserData(response.data);
-        } else {
-          console.error("Failed to fetch user data:", response.data);
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
+  const fetchData = async () => {
+    try {
+      const response = await users(token);
+      if (response.success) {
+        setUserData(response.data);
+      } else {
+        console.error("Failed to fetch user data:", response.data);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  useEffect(() => {
+   
 
     fetchData();
   }, [token]);
@@ -96,7 +98,7 @@ function Users() {
             <IoMdPersonAdd />  Add User
           </button>
           {showAddUserModel && (
-            <AddUser onClose={() => setAddUserModal(false)} />
+            <AddUser onClose={() =>{ setAddUserModal(false); fetchData()}} />
           )}
         </div>
       </div>

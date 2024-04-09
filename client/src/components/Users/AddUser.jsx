@@ -6,7 +6,7 @@ import { useAuth } from "../../context/Authetication";
 
 function AddUser({ onClose }) {
   const [formData, setFormData] = useState({
-    username: "",
+    userName: "",
     firstName: "",
     lastName: "",
     email: "",
