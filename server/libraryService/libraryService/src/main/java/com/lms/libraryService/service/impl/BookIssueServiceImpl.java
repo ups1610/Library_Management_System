@@ -86,16 +86,22 @@ public class BookIssueServiceImpl implements BookIssueService {
     private BookIssueResponseDTO mapToBookIssueResponseDTO(BookIssue bookIssue){
         MemberResponseDTO member= null;
         UserResponseDto user=null;
+        BookInstanceResponseDTO bookInstanceResponseDTO=null;
 
     try {
         member = memberService.getMember(bookIssue.getMember());
         user= userService.getUser(bookIssue.getIssueBy());
+       bookInstanceResponseDTO = bookService.getBookInstance(bookIssue.getBookInstance());
+     
     } catch (HttpClientErrorException ex) {
         throw new IllegalArgumentException(ex.getMessage());
     }
+
+    String bookName= bookInstanceResponseDTO.book().title();
         return new BookIssueResponseDTO(
                 bookIssue.getBookIssueId(),
                 bookIssue.getBookInstance(),
+                bookName,
                 member.memberId(),
                 member.firstName()+" "+member.familyName(),
                 bookIssue.getDateOfIssue(),

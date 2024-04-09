@@ -39,7 +39,7 @@ const handleSubmit = (e) => {
       })
       .catch((error) => {
         toast.error("Failed! Please try again later");
-        console.error("Error adding user:", error.message); // Corrected error message
+        console.error("Error adding user:", error.message);
       });
   };
   return (

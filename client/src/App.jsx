@@ -9,6 +9,10 @@ import AuthenticationProvider from "./context";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import View from "./pages/Users/View";
 
+import {View as BookView} from "./pages/Operations/View";
+import  BookIssueLogs  from "./pages/Operations/BookIssueLogs";
+import { IssueBook } from "./pages/Operations/IssueBook";
+
 function App() {
   return (
     <Router>
@@ -24,6 +28,10 @@ function App() {
           <Route path="catalog/genre" element={<Genre/>}/>
           <Route path="users/manage" element={<Users/>}/>
           <Route path="users/manage/:id/view" element={<View />} />
+
+          <Route path="operation/BookLog" element={<BookIssueLogs/>} />
+          <Route path="operation/BookLog/Issue" element={<IssueBook/>} />
+          <Route path="operation/BookLog/view" element={<BookView/>} />
           <Route path="view" element={<InfoView/>}/>
         </Route>
         </Route>

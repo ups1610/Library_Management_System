@@ -31,7 +31,7 @@ export const DASHBOARD_SIDEBAR_LINKS = [
 	{
 		key: 'operation',
 		label: 'Operation',
-		path: '/operation',
+		path: '/dashboard/operation/bookLog',
 		role:"ROLE_LIBRARIAN",
 		icon: <FaRegAddressBook />
 	},
