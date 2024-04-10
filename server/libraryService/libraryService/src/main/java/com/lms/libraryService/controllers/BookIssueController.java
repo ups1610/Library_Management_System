@@ -52,8 +52,8 @@ public class BookIssueController {
     }
 
     @GetMapping("/instance/{bookInstanceId}")
-    public ResponseEntity<BookIssueResponseDTO> getIssueBookByBookInstance(@PathVariable("bookInstanceId") long bookInstanceId) {
-        BookIssueResponseDTO response = bookIssueService.getIssueBookByBookInstance(bookInstanceId);
+    public ResponseEntity<List<BookIssueResponseDTO>> getIssueBookByBookInstance(@PathVariable("bookInstanceId") long bookInstanceId) {
+        List<BookIssueResponseDTO> response = bookIssueService.getIssueBookByBookInstance(bookInstanceId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

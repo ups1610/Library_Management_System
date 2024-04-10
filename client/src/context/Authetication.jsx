@@ -46,7 +46,9 @@ const AuthenticationProvider = ({ children }) => {
         }
       })
       .catch((error) => {
+        toast.error(error.message);
         if (error.resp && error.status === 401) {
+          
           return {
             success: false,
             data: "Bad credentials. Please check your username and password.",

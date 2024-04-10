@@ -79,7 +79,7 @@ public class BookIssueServiceImpl implements BookIssueService {
 
     @Override
     public List<BookIssueResponseDTO> getAllBookIssue() {
-        return bookIssueRepository.findByReturned("No").stream().map(this:: mapToBookIssueResponseDTO).collect(Collectors.toList());
+        return bookIssueRepository.findAll().stream().map(this:: mapToBookIssueResponseDTO).collect(Collectors.toList());
     }
 
 
@@ -97,15 +97,15 @@ public class BookIssueServiceImpl implements BookIssueService {
         throw new IllegalArgumentException(ex.getMessage());
     }
 
-    String bookName= bookInstanceResponseDTO.book().title();
+   
         return new BookIssueResponseDTO(
                 bookIssue.getBookIssueId(),
-                bookIssue.getBookInstance(),
-                bookName,
+                bookInstanceResponseDTO,
                 member.memberId(),
                 member.firstName()+" "+member.familyName(),
                 bookIssue.getDateOfIssue(),
                 bookIssue.getDateOfReturn(),
+                bookIssue.getReturned(),
                 user.userName()
                 );
     }
@@ -119,11 +119,13 @@ public class BookIssueServiceImpl implements BookIssueService {
     }
     
     @Override
-    public BookIssueResponseDTO getIssueBookByBookInstance(long bookInstanceId) {
-        BookIssue bookIssue = bookIssueRepository.findByBookInstance(bookInstanceId)
-                .orElseThrow(() -> new IllegalArgumentException("No book issue found for book instance ID: " + bookInstanceId));
+    public List<BookIssueResponseDTO> getIssueBookByBookInstance(long bookInstanceId) {
+        List<BookIssue> bookIssues = bookIssueRepository.findByBookInstance(bookInstanceId);
+               
         
-        return mapToBookIssueResponseDTO(bookIssue);
+                return bookIssues.stream()
+                .map(this::mapToBookIssueResponseDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -146,6 +148,8 @@ public class BookIssueServiceImpl implements BookIssueService {
 
        
     }
+
+    
 
 
 }

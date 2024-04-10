@@ -30,7 +30,7 @@ public class BookReturnController {
 
     private final BookReturnService bookReturnService;
 
-    @PostMapping("/return")
+    @PostMapping()
     public ResponseEntity<BookReturnResponseDTO> returnBook(@RequestBody BookReturnRequestDTO bookReturnRequest) {
         BookReturnResponseDTO response = bookReturnService.returnBook(bookReturnRequest);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -56,9 +56,8 @@ public class BookReturnController {
 
     @GetMapping("/calculate-fine/{id}")
     public ResponseEntity<Integer> calculateFine(
-            @PathVariable("id") long id,
-            @RequestParam String returnDate) {
-        int fineAmount = bookReturnService.getFine(id, returnDate);
+            @PathVariable("id") long id) {
+        int fineAmount = bookReturnService.getFine(id);
         return new ResponseEntity<>(fineAmount, HttpStatus.OK);
     }
 

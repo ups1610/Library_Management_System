@@ -12,7 +12,7 @@ public interface BookIssueRepository extends JpaRepository<BookIssue, Long> {
 
     List<BookIssue> findByMember(long memberId);
 
-    Optional<BookIssue> findByBookInstance(long bookInstanceId);
+    List<BookIssue> findByBookInstance(long bookInstanceId);
 
     Optional<BookIssue> findByReturned(String string);
  

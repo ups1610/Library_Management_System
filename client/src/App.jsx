@@ -31,7 +31,7 @@ function App() {
 
           <Route path="operation/BookLog" element={<BookIssueLogs/>} />
           <Route path="operation/BookLog/Issue" element={<IssueBook/>} />
-          <Route path="operation/BookLog/view" element={<BookView/>} />
+          <Route path="operation/BookLog/:id/view" element={<BookView/>} />
           <Route path="view" element={<InfoView/>}/>
         </Route>
         </Route>

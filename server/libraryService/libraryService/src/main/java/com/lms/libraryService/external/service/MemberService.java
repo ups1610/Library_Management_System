@@ -1,5 +1,7 @@
 package com.lms.libraryService.external.service;
 
+import java.util.List;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +21,8 @@ public interface MemberService {
    MembershipResponseDTO getMemberShipByID(@PathVariable long id);
 
    
+   @GetMapping("membershipService/membership/all")
+  List<MembershipResponseDTO> getAllMembershipHolderMember();
       
 
 }

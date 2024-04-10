@@ -1,14 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../../context/Authetication";
+import { calculateFine, returnBook } from "../../action/OperationsAction";
 
-function ReturnBook({ onClose }) {
+function ReturnBook({ onClose, issueId, bookTitle }) {
   const [isFineWaived, setIsFineWaived] = useState(false);
+  const [fine, setFine] = useState(0);
+  const { token, user } = useAuth();
 
-  const handleFormSubmit = (event) => {
+  useEffect(() => {
+    console.log("-----", issueId);
+    calculateFine(issueId, token)
+      .then((response) => {
+        console.log(response, issueId);
+        if (response.success) {
+          setFine(response.data);
+        } else {
+          console.error("Failed to calculate fine:", response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error calculating fine:", error);
+      });
+  }, [issueId, token]);
+
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
-    // Handle form submission here
+    const returnData = {
+      bookIssue: issueId,
+      date: new Date().toISOString(),
+      fine: isFineWaived ? 0 : fine,
+      waveOffFine: isFineWaived,
+      mode: "cash", 
+      collectBy: user.userId, 
+    };
+
+    try {
+      const response = await returnBook(returnData, token);
+      if (response.success) {
+        console.log("Book returned successfully:", response.data);
+        onClose(); 
+      } else {
+        console.error("Failed to return book:", response.data);
+      }
+    } catch (error) {
+      console.error("Error returning book:", error);
+    }
   };
 
-  const todayDate = new Date().toISOString().split("T")[0]; // Get today's date in "YYYY-MM-DD" format
+  const todayDate = new Date().toISOString().split("T")[0];
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm z-50">
@@ -43,72 +82,76 @@ function ReturnBook({ onClose }) {
                 Book:
               </label>
               <input
-                list="books"
+                type="text"
+                value={bookTitle}
                 id="book"
                 name="book"
+                disabled
                 autoComplete="off"
-                className="w-full p-1 border-2 border-gray-500 rounded-md text-gray-600 font-normal text-sm"
-              />
-              <datalist id="books">
-                <option value="Book 1" />
-                <option value="Book 2" />
-                {/* Add more book options as needed */}
-              </datalist>
-            </div>
-
-            {/* Return Date */}
-            <div>
-              <label
-                htmlFor="returnDate"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Return Date:
-              </label>
-              <input
-                type="date"
-                id="returnDate"
-                name="returnDate"
-                defaultValue={todayDate}
                 className="w-full p-1 border-2 border-gray-500 rounded-md text-gray-600 font-normal text-sm"
               />
             </div>
 
             {/* Fine */}
-            <div>
-              <label
-                htmlFor="fine"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Fine:
-              </label>
-              <select
-                id="fine"
-                name="fine"
-                className="w-full p-1 border-2 border-gray-500 rounded-md text-gray-600 font-normal text-sm"
-              >
-                <option value="cash">Cash</option>
-                <option value="credit">Credit</option>
-                {/* Add more fine options as needed */}
-              </select>
-            </div>
+            {fine !== 0 && (
+              <div>
+                <label
+                  htmlFor="fine"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Fine:
+                </label>
+                <input
+                  type="number"
+                  id="fine"
+                  name="fine"
+                  value={fine}
+                  disabled
+                  className="w-full p-1 border-2 border-gray-500 rounded-md text-gray-600 font-normal text-sm"
+                />
+              </div>
+            )}
+
+            {/* Fine Mode */}
+            {fine !== 0 && (
+              <div>
+                <label
+                  htmlFor="fineMode"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Fine Mode:
+                </label>
+                <select
+                  id="fineMode"
+                  name="fineMode"
+                  className="w-full p-1 border-2 border-gray-500 rounded-md text-gray-600 font-normal text-sm"
+                >
+                  <option value="cash">Cash</option>
+                  <option value="credit">Credit</option>
+                  {/* Add more fine options as needed */}
+                </select>
+              </div>
+            )}
 
             {/* Fine Waive-off */}
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="fineWaiver"
-                name="fineWaiver"
-                checked={isFineWaived}
-                onChange={(e) => setIsFineWaived(e.target.checked)}
-                className="h-4 w-4 text-gray-700 rounded focus:ring-indigo-500 border-gray-300"
-              />
-              <label
-                htmlFor="fineWaiver"
-                className="ml-2 block text-sm text-gray-900"
-              >
-                Waive off fine
-              </label>
-            </div>
+            {fine !== 0 && (
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="fineWaiver"
+                  name="fineWaiver"
+                  checked={isFineWaived}
+                  onChange={(e) => setIsFineWaived(e.target.checked)}
+                  className="h-4 w-4 text-gray-700 rounded focus:ring-indigo-500 border-gray-300"
+                />
+                <label
+                  htmlFor="fineWaiver"
+                  className="ml-2 block text-sm text-gray-900"
+                >
+                  Waive off fine
+                </label>
+              </div>
+            )}
 
             {/* Submit Button */}
             <div>

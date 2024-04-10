@@ -171,7 +171,7 @@ export const addNewUser=(user,token)=>{
         console.error('Something went wrong: ', err);
         return {
             success: false,
-            data: 'Something went wrong. Please try again later.'
+            data: err.message
         };
     });
 }

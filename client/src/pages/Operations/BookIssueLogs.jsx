@@ -1,62 +1,78 @@
 import React, { useEffect, useState } from "react";
-import { BsFileEarmarkPdf } from "react-icons/bs";
-import { IoMdPersonAdd } from "react-icons/io";
 import { MdOutlineLibraryAdd } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { users } from "../../action/UserAction";
 import { useAuth } from "../../context/Authetication";
 import { AiOutlineFilePdf } from "react-icons/ai";
 import { PiKeyReturnLight } from "react-icons/pi";
-
 import { FaRegEye } from "react-icons/fa";
 import ReturnBook from "../../components/bookLog/ReturnBook";
+import { getAllIssueBook } from "../../action/OperationsAction";
+
 function BookIssueLogs() {
-  const auth = useAuth();
-  const token = auth.token;
-  const [showReturnModel, setshowReturnModel] = useState(false);
-  const [userData, setUserData] = useState([]);
+  const [issueBooks, setIssueBooks] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const { token } = useAuth();
+  const [showReturnModelMap, setShowReturnModelMap] = useState({});
+
+  useEffect(() => {
+    fetchData();
+  }, [showReturnModelMap]);
 
   const fetchData = async () => {
     try {
-      const response = await users(token);
+      const response = await getAllIssueBook(token);
       if (response.success) {
-        setUserData(response.data);
+        setIssueBooks(response.data);
       } else {
         console.error("Failed to fetch data:", response.data);
       }
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      console.error("Error fetching issue book data:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  useEffect(() => {
-   
+  const handleReturnButtonClick = (issueId) => {
+    setShowReturnModelMap((prevMap) => ({
+      ...prevMap,
+      [issueId]: true,
+    }));
+  };
 
-    fetchData();
-  }, [token]);
+  const handleReturnModelClose = (issueId) => {
+    setShowReturnModelMap((prevMap) => ({
+      ...prevMap,
+      [issueId]: false,
+    }));
+  };
 
-  const filteredUsers = userData.filter((user) =>
-    Object.values(user).some(
+  const filteredIssueBooks = issueBooks.filter((issueBook) =>
+    Object.values(issueBook).some(
       (value) =>
         value &&
         value.toString().toLowerCase().includes(searchQuery.toLowerCase())
     )
   );
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="w-full mt-5 rounded-lg border border-gray-100 bg-white p-4 shadow-sm">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center mb-5">
         <div className="flex flex-col sm:flex-row gap-2">
-        <select className="border-2 px-4 py-2 rounded-lg border-gray-300 text-gray-700 sm:text-sm">
-              <option value="">All</option>
-              <option value="option1">Book Issue</option>
-              <option value="option2">Return Book</option>
-              <option value="option2">Due Return</option>
-            </select>
+          <select className="border-2 px-4 py-2 rounded-lg border-gray-300 text-gray-700 sm:text-sm">
+            <option value="all">All</option>
+            <option value="issue">Book Issue</option>
+            <option value="return">Return Book</option>
+            <option value="dueReturn">Due Return</option>
+          </select>
           <div className="relative w-full">
             <label htmlFor="search" className="sr-only">
-             Book
+              Book
             </label>
             <input
               type="text"
@@ -91,140 +107,137 @@ function BookIssueLogs() {
           </div>
         </div>
         <div className="flex flex-col sm:flex-row justify-end">
-        <button className="border-2 text-sm px-2 py-1.5 mr-2 rounded-lg flex items-center">
-        <AiOutlineFilePdf /> Downlaod Pdf
-      </button>
-          <Link to="Issue"
+          <button className="border-2 text-sm px-2 py-1.5 mr-2 rounded-lg flex items-center">
+            <AiOutlineFilePdf /> Downlaod Pdf
+          </button>
+          <Link
+            to="Issue"
             className="border-2 text-sm px-2 py-1.5 rounded-lg flex items-center"
-         
           >
-           <MdOutlineLibraryAdd /> Issue Book
+            <MdOutlineLibraryAdd /> Issue Book
           </Link>
-          
         </div>
       </div>
 
-      <div className="rounded-lg border border-gray-200">
-  <div className="overflow-x-auto rounded-t-lg">
-    <table className="w-full divide-y-2 divide-gray-200 bg-white text-sm">
-      <thead className="  divide-y-2 divide-gray-200 ">
-        <tr>
-          <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">#</th>
-          <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Memeber Id</th>
-          <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Member Name</th>
-          <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Book Title</th>
-          <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Book Instance</th>
-          <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Status</th>
-          <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Action</th>
-        </tr>
-      </thead>
+      <div className="overflow-x-auto rounded-t-lg">
+        <table className="w-full divide-y-2 divide-gray-200 bg-white text-sm">
+          <thead className="divide-y-2 divide-gray-200">
+            <tr>
+              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">#</th>
+              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                Memeber Id
+              </th>
+              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                Member Name
+              </th>
+              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                Book Title
+              </th>
+              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                Book Instance
+              </th>
+              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                Issue Date
+              </th>
+              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                Status
+              </th>
+              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                Action
+              </th>
+            </tr>
+          </thead>
 
-      <tbody className="  divide-y-2 divide-gray-200 text-center">
-        <tr>
-          <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">1</td>
-          <td className="whitespace-nowrap px-4 py-2 text-gray-700">1232</td>
-          <td className="whitespace-nowrap px-4 py-2 text-gray-700">Sagar Bisht</td>
-          <td className="whitespace-nowrap px-4 py-2 text-gray-700">Ghost Village of UK</td>
-          <td className="whitespace-nowrap px-4 py-2 text-gray-700">32</td>
-          <td className="whitespace-nowrap px-4 py-2 text-gray-700">Issue</td>
-          <td className="whitespace-nowrap px-4 py-2 text-gray-700 flex">
-            <Link to="view" className="text-gray-400 bg-gray-200 p-1 rounded-sm"> <FaRegEye /></Link>
-            <button className="text-white bg-red-500 p-1 rounded-sm ml-1"  onClick={()=> setshowReturnModel(true)}>  <PiKeyReturnLight /></button>
+          <tbody className="divide-y-2 divide-gray-200 text-center">
+            {filteredIssueBooks.map((issueBook, index) => {
+              const currentDate = new Date();
+              const issueDateObj = new Date(issueBook.dateOfIssue);
+              const issueDate =
+                issueDateObj.getDate() +
+                "/" +
+                (issueDateObj.getMonth() + 1) +
+                "/" +
+                issueDateObj.getFullYear();
+              const returnDate = new Date(issueBook.dateOfReturn);
+              const isDue =
+                issueBook.isReturn === "No" && currentDate >= returnDate;
+              const isReturned = issueBook.isReturn === "Yes";
 
-            {showReturnModel && (
-            <ReturnBook onClose={() =>{ setshowReturnModel(false)}} />
-          )}
-          </td>
-        </tr>
+              return (
+                <tr key={index}>
+                  <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                    {index + 1}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    {issueBook.member_Id}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    {issueBook.memberName}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    {issueBook.bookInstance.book.title}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    {issueBook.bookInstance.id}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    {issueDate}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    {isDue ? (
+                      <span className="bg-red-300 rounded-md text-red-900 p-1">
+                        Due Return
+                      </span>
+                    ) : isReturned ? (
+                      <span className="bg-orange-300 rounded-md text-orange-900 p-1">
+                        Returned
+                      </span>
+                    ) : (
+                      <span className="bg-green-300 rounded-md text-green-900 p-1">
+                        Issued
+                      </span>
+                    )}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-700 flex">
+                    <Link
+                      to={`${issueBook.bookIssueId}/view`}
+                      className="text-gray-400 bg-gray-200 p-1 rounded-sm"
+                    >
+                      <FaRegEye />
+                    </Link>
+                    {!isReturned && (
+                      <button
+                        className="text-white bg-red-500 p-1 rounded-sm ml-1"
+                        onClick={() =>
+                          handleReturnButtonClick(issueBook.bookIssueId)
+                        }
+                      >
+                        <PiKeyReturnLight />
+                      </button>
+                    )}
+                    {showReturnModelMap[issueBook.bookIssueId] && (
+                      <ReturnBook
+                        onClose={() =>{
+                          handleReturnModelClose(issueBook.bookIssueId); fetchData()}
+                        }
+                        issueId={issueBook.bookIssueId}
+                        bookTitle={issueBook.bookInstance.book.title}
+                      />
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
 
-      </tbody>
-    </table>
-  </div>
-
-  <div className="rounded-b-lg border-t border-gray-200 px-4 py-2">
-    <ol className="flex justify-end gap-1 text-xs font-medium">
-      <li>
-        <a
-          href="#"
-          className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
-        >
-          <span className="sr-only">Prev Page</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-3 w-3"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </a>
-      </li>
-
-      <li>
-        <a
-          href="#"
-          className="block size-8 rounded border border-gray-100 bg-white text-center leading-8 text-gray-900"
-        >
-          1
-        </a>
-      </li>
-
-      <li className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white">
-        2
-      </li>
-
-      <li>
-        <a
-          href="#"
-          className="block size-8 rounded border border-gray-100 bg-white text-center leading-8 text-gray-900"
-        >
-          3
-        </a>
-      </li>
-
-      <li>
-        <a
-          href="#"
-          className="block size-8 rounded border border-gray-100 bg-white text-center leading-8 text-gray-900"
-        >
-          4
-        </a>
-      </li>
-
-      <li>
-        <a
-          href="#"
-          className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
-        >
-          <span className="sr-only">Next Page</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-3 w-3"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </a>
-      </li>
-    </ol>
-  </div>
-</div>
-     
+      <div className="rounded-b-lg border-t border-gray-200 px-4 py-2">
+        <ol className="flex justify-end gap-1 text-xs font-medium">
+          {/* pagination  */}
+        </ol>
+      </div>
     </div>
-
-        
-
-
-
   );
 }
 

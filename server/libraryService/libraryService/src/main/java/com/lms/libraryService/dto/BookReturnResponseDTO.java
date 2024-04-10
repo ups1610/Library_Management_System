@@ -8,6 +8,9 @@ public record BookReturnResponseDTO(
         BookIssue bookIssue,
  
         Date date,
+
+        FineResponseDTO fine,
+        
         String collectBy) {
 
 }
