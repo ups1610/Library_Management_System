@@ -26,7 +26,6 @@ import com.lms.membershipService.repositories.MembershipRepository;
 import com.lms.membershipService.services.MembershipService;
 
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 
 @Service
 @Transactional
@@ -77,7 +76,7 @@ public class MembershipServiceImpl implements MembershipService {
     membership.setMembershipPlan(membershipPlan);
 
     TransactionResponseDTO transactionResponse = transactionService.transaction(
-            new TransactionRequestDTO(member.getMemberId(), membershipPlan.getPrice(), "Membership", membershipRequest.modeOfPayment(), 2));
+            new TransactionRequestDTO(member.getMemberId(), membershipPlan.getPrice(), "Membership", membershipRequest.modeOfPayment(), 1));
 
     membership.setTransactionId(transactionResponse.transactionId());
 

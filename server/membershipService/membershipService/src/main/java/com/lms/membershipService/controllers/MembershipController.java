@@ -18,7 +18,6 @@ import com.lms.membershipService.dto.MembershipResponseDTO;
 import com.lms.membershipService.services.MembershipService;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
