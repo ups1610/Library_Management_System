@@ -7,9 +7,9 @@ const ProtectedRoute = () => {
     console.log(user,token,isAuthenticated, setAuthenticated,"auth token passed")
 
     
-    // if (!token) {
-    //     return "Page not found";
-    // }
+    if (!token) {
+        return "Page not found";
+    }
     return <Outlet />;
 };
 

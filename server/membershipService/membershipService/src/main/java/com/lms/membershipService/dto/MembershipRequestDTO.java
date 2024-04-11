@@ -6,7 +6,8 @@ public record MembershipRequestDTO(
         long memberId,
         Date startDate,
          String modeOfPayment,
-        long membershipPlanId
+        long membershipPlanId,
+        long initiatedBy
        ) {
 
 }

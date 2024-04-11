@@ -47,7 +47,7 @@ function Users() {
   );
 
   return (
-    <div className="w-full mt-5 rounded-lg border border-gray-100 bg-white p-4 shadow-sm">
+    <div className="md:w-full w-screen mt-5 rounded-lg border border-gray-100 bg-white p-4 shadow-sm">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center mb-5">
         <div className="flex flex-col sm:flex-row gap-2">
           <div className="relative w-full">

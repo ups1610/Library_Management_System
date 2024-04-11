@@ -13,6 +13,9 @@ import View from "./pages/Users/View";
 import {View as BookView} from "./pages/Operations/View";
 import  BookIssueLogs  from "./pages/Operations/BookIssueLogs";
 import { IssueBook } from "./pages/Operations/IssueBook";
+import ViewMembershipPlan from "./components/modals/ViewMembershipPlan";
+
+import AddMember from "./components/modals/AddMember";
 import TransactionLogs from "./pages/Transaction/TransactionLogs";
 
 function App() {
@@ -34,7 +37,10 @@ function App() {
           <Route path="operation/BookLog" element={<BookIssueLogs/>} />
           <Route path="operation/BookLog/Issue" element={<IssueBook/>} />
           <Route path="operation/BookLog/:id/view" element={<BookView/>} />
-          <Route path="member" element={<MemberTable/>}/>
+          
+          <Route path="member/MemberTable" element={<MemberTable/>} />
+          <Route path="member/MemberTable/add" element={<AddMember/>} />
+          <Route path="member/membership" element={<ViewMembershipPlan/>} />
 
           <Route path="transactions" element={<TransactionLogs/>} />
           <Route path="view" element={<InfoView/>}/>

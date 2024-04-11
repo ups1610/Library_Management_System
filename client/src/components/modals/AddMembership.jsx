@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import MemberAction from '../../action/MemberAction';
+import { useAuth } from '../../context/Authetication';
 
-function AddMembership({ selectedMember, onClose }) {
+function AddMembership({ selectedMember, onClose, fetchMembershipStatus }) {
+    const { token } = useAuth();
     const [membershipData, setMembershipData] = useState({
         memberId: selectedMember.memberId,
         startDate: new Date().toISOString().substr(0, 10),
@@ -20,11 +22,12 @@ function AddMembership({ selectedMember, onClose }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await MemberAction.addMembership(selectedMember.memberId, membershipData)
+            await MemberAction.addMembership(selectedMember.memberId, membershipData, token)
                 .then((response) => {
                     console.log(response)
                     console.log("Membership Added Successfully....")
                 })
+            await fetchMembershipStatus();
             onClose();
         } catch (error) {
             console.error('Error adding membership:', error);

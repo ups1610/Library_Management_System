@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import MemberAction from '../../action/MemberAction';
+import { useAuth } from '../../context/Authetication';
 
-function MembershipPlan({ onClose }) {
+function MembershipPlan({ onClose, updatePlanList }) {
+    const { token } = useAuth();
     const [plan, setPlan] = useState({
         planName: '',
         description: '',
@@ -21,8 +23,9 @@ function MembershipPlan({ onClose }) {
     const savePlan = async (e) => {
         e.preventDefault();
         try {
-            await MemberAction.addNewPlan(plan);
+            await MemberAction.addNewPlan(plan,token);
             onClose();
+            updatePlanList();
         } catch (error) {
             console.error('Error adding new plan:', error);
         }
