@@ -20,10 +20,15 @@ export default function Sidebar({ activePath }) {
 
   const [expanded, setExpanded] = useState("hidden");
   const [isCatalogSubMenuOpen, setIsCatalogSubMenuOpen] = useState(false);
+  const [isMemberSubMenuOpen, setIsMemberSubMenuOpen] = useState(false);
 
   const handleCatalogSubMenuToggle = () => {
     setIsCatalogSubMenuOpen(!isCatalogSubMenuOpen);
   };
+  const handleMemberSubMenuToggle = () => {
+    setIsMemberSubMenuOpen(!isMemberSubMenuOpen);
+  };
+  
 
   const handleVisible = () => {
     setExpanded((prevExpanded) => (prevExpanded === "hidden" ? "block" : "hidden"));
@@ -86,15 +91,54 @@ export default function Sidebar({ activePath }) {
                         activePath={activePath}
                         isSubMenuItem={true}
                       />
+                    )) }
+                  </div>
+                </>
+              ) : link.key === "member" ? (
+                // Member section with submenu
+                <>
+                  <div
+                    className={classNames(linkClass, {
+                      "bg-neutral-700 text-white": activePath === link.path,
+                    })}
+                    onClick={handleMemberSubMenuToggle}
+                  >
+                    <span className="text-neutral-400">{link.icon}</span>
+                    <span className="text-neutral-400">{link.label}</span>
+                    <span className="text-xl text-neutral-400">
+                      {isMemberSubMenuOpen ? (
+                        <HiOutlineChevronDown />
+                      ) : (
+                        <HiOutlineChevronRight />
+                      )}
+                    </span>
+                  </div>
+                  <div
+                    className={classNames("ml-6", {
+                      "max-h-0 overflow-hidden": !isMemberSubMenuOpen,
+                      "max-h-full": isMemberSubMenuOpen,
+                    })}
+                    style={{
+                      transition: "max-height 0.3s ease-in-out",
+                    }}
+                  >
+                    {/* Submenu items for Member */}
+                    {SUB_MENU_ITEMS.filter((subMenuItem) => subMenuItem.key.startsWith("member")).map((filteredItem) => (
+                      <SidebarLink
+                        key={filteredItem.key}
+                        link={filteredItem}
+                        activePath={activePath}
+                        isSubMenuItem={true}
+                      />
                     ))}
                   </div>
                 </>
               ) : (
                 <SidebarLink key={link.key} link={link} activePath={activePath} />
-              )}
+              ) }
             </React.Fragment>
-          );
-        })}
+          ) ;
+        }) }
       </div>
       <div className={`flex flex-col gap-0.5 pt-2 border-t border-neutral-700 max-sm:${expanded}`}>
         {DASHBOARD_SIDEBAR_BOTTOM_LINKS.map((link) => (

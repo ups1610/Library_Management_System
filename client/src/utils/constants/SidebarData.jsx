@@ -4,6 +4,8 @@ import { BsBookshelf } from "react-icons/bs";
 import { LiaBookSolid } from "react-icons/lia";
 import { SiBookstack } from "react-icons/si";
 import { FaRegAddressBook } from "react-icons/fa6";
+import { PiAddressBookLight } from "react-icons/pi";
+import { IoAccessibilityOutline } from "react-icons/io5";
 
 export const DASHBOARD_SIDEBAR_LINKS = [
 	{
@@ -91,4 +93,18 @@ export const SUB_MENU_ITEMS = [
       path: "/dashboard/catalog/bookshelf",
       icon: <BsBookshelf />,
     },
+	{
+		key: 'member',
+		label: 'Membership',
+		path: '/dashboard/member/MemberTable',
+		role:"ROLE_LIBRARIAN",
+		icon: <PiAddressBookLight />
+	},
+	{
+		key: 'membership',
+		label: 'Membership Plans',
+		path: '/dashboard/member/membership',
+		role:"ROLE_LIBRARIAN",
+		icon: <IoAccessibilityOutline />
+	}
   ];

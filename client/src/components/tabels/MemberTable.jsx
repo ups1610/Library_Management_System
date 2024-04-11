@@ -1,35 +1,38 @@
 import React, { useEffect, useState } from 'react'
 import MemberAction from '../../action/MemberAction';
-import AddMember from '../modals/AddMember';
 import UpdateMember from '../modals/UpdateMember';
 import AddMembership from '../modals/AddMembership';
 import ViewMembership from '../modals/ViewMembership';
 import NoMembership from '../modals/NoMembership';
-import MembershipPlan from '../modals/MembershipPlan';
-import ViewMembershipPlan from '../modals/ViewMembershipPlan';
+import { Link } from 'react-router-dom';
+import { MdOutlineLibraryAdd } from 'react-icons/md';
+import { AiOutlineFilePdf } from 'react-icons/ai';
+import { useAuth } from '../../context/Authetication';
 
 function MemberTable() {
     const [loading, setLoading] = useState(true);
     const [members, setMembers] = useState(null);
-    const [showModal, setShowModal] = useState(false);
     const [showModalUpdate, setShowModalUpdate] = useState(false);
     const [showModalAdd, setShowModalAdd] = useState(false);
     const [showModalView, setShowModalView] = useState(false);
     const [showModalNo, setShowModalNo] = useState(false);
-    const [showModalPlan, setShowModalPlan] = useState(false);
-    const [showModalViewPlan, setShowModalViewPlan] = useState(false);
     const [selectedMember, setSelectedMember] = useState(null);
     const [membershipDetails, setMembershipDetails] = useState({});
+    const [membershipStatus, setMembershipStatus] = useState({});
+    const { token } = useAuth();
 
     useEffect(() => {
         fetchData();
+        const intervalId = setInterval(fetchMembershipStatus, 60000);
+        return () => clearInterval(intervalId);
     }, []);
 
     const fetchData = async () => {
         setLoading(true);
         try {
-            const response = await MemberAction.getAllMembers();
+            const response = await MemberAction.getAllMembers(token);
             setMembers(response.data)
+            updateMembershipStatus(response.data);
         } catch (error) {
             console.log(error)
         }
@@ -38,7 +41,7 @@ function MemberTable() {
 
     const deleteMember = (e, id) => {
         e.preventDefault();
-        MemberAction.deleteMember(id).then((res) => {
+        MemberAction.deleteMember(id, token).then((res) => {
             if (members) {
                 setMembers((prevElement) => {
                     return prevElement.filter((member) => member.memberId !== id)
@@ -55,7 +58,7 @@ function MemberTable() {
         await fetchData();
     };
     const updateMember = (updatedMember) => {
-        MemberAction.updateMember(updatedMember, updatedMember.memberId)
+        MemberAction.updateMember(updatedMember, updatedMember.memberId, token)
             .then((response) => {
                 console.log(response);
                 console.log("Member Updated Successfully....");
@@ -78,7 +81,7 @@ function MemberTable() {
         const selected = members.find((member) => member.memberId === id);
         setSelectedMember(selected);
         try {
-            const response = await MemberAction.getMemberMembership(id);
+            const response = await MemberAction.getMemberMembership(id, token);
             console.log(response.data)
 
             setMembershipDetails(response.data);
@@ -93,47 +96,122 @@ function MemberTable() {
             }
         }
     };
+    const updateMembershipStatus = async (members) => {
+        const statusMap = {};
+        for (const member of members) {
+            try {
+                const response = await MemberAction.getMemberMembership(member.memberId, token);
+                statusMap[member.memberId] = response.data ? "Active" : "Not Active";
+            } catch (error) {
+                statusMap[member.memberId] = "Not Active";
+            }
+        }
+        setMembershipStatus(statusMap);
+    };
+    const fetchMembershipStatus = async () => {
+        if (members) {
+            const updatedStatusMap = { ...membershipStatus };
+            for (const member of members) {
+                try {
+                    const response = await MemberAction.getMemberMembership(member.memberId);
+                    updatedStatusMap[member.memberId] = response.data ? "Active" : "Not Active";
+                } catch (error) {
+                    updatedStatusMap[member.memberId] = "Not Active";
+                }
+            }
+            setMembershipStatus(updatedStatusMap);
+        }
+    };
+
     return (
-        <div className="container my-6 mx-auto">
-            <div className="flex justify-between items-center h-12">
-                <div>
-                    <button onClick={() => setShowModal(true)} className="rounded bg-slate-800 text-white px-6 py-2 font-semibold">Add Member</button>
-                    {showModal && <AddMember onClose={() => setShowModal(false)} updateMemberList={updateMemberList} />}
+        <div>
+            <div className="w-full mt-5 rounded-lg border border-gray-100 bg-white p-4 shadow-sm">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center mb-5">
+                    <div className="flex flex-col sm:flex-row gap-2">
+                        <select className="border-2 px-4 py-2 rounded-lg border-gray-300 text-gray-700 sm:text-sm">
+                            <option value="">Filter</option>
+                            <option value="option1">Option 1</option>
+                            <option value="option2">Option 2</option>
+                        </select>
+                        <div className="relative w-full">
+                            <label htmlFor="search" className="sr-only">
+                                Search
+                            </label>
+                            <input
+                                type="text"
+                                id="search"
+                                placeholder="Search for..."
+                                className="border-2 px-2 w-full rounded-md border-gray-200 py-2.5 pe-10 shadow-sm sm:text-sm"
+                            />
+                            <span className="absolute inset-y-0 end-0 grid w-10 place-content-center">
+                                <button
+                                    type="button"
+                                    className="text-gray-600 hover:text-gray-700"
+                                >
+                                    <span className="sr-only">Search</span>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth="1.5"
+                                        stroke="currentColor"
+                                        className="h-4 w-4"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                                        />
+                                    </svg>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div className="flex flex-col sm:flex-row justify-end">
+                        <button className="border-2 text-sm px-2 py-1.5 mr-2 rounded-lg flex items-center">
+                            <AiOutlineFilePdf /> Download Pdf
+                        </button>
+                        <Link
+                            to="add"
+                            className="border-2 text-sm px-2 py-1.5 rounded-lg flex items-center"
+                        >
+                            <MdOutlineLibraryAdd />Add Member
+                        </Link>
+                    </div>
                 </div>
-                <span className="inline-flex -space-x-px overflow-hidden rounded-md border bg-white shadow-sm">
-                    <button onClick={() => setShowModalPlan(true)}
-                        className="inline-block px-4 py-2 bg-slate-800 text-sm font-medium text-white  focus:relative"
-                    >
-                        Add Membership plans
-                    </button>
-                    {showModalPlan && <MembershipPlan onClose={() => setShowModalPlan(false)} />}
-                    <button onClick={() => setShowModalViewPlan(true)}
-                        className="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative"
-                    >
-                        View
-                    </button>
-                    {showModalViewPlan && <ViewMembershipPlan onClose={() => setShowModalViewPlan(false)} />}
-                </span>
             </div>
-
-
-            <div className="flex shadow border-b">
-                <table className="min-w-full">
-                    <thead className="bg-gray-800">
+            <div className="overflow-x-auto rounded-t-lg">
+                <table className="w-full divide-y-2 divide-gray-200 bg-white text-sm">
+                    <thead className="divide-y-2 divide-gray-200 bg-slate-900">
                         <tr>
-                            <th className="text-left font-medium text-white uppercase tracking-wider py-3 px-6">ID</th>
-                            <th className="text-left font-medium text-white uppercase tracking-wider py-3 px-6">First Name</th>
-                            <th className="text-left font-medium text-white uppercase tracking-wider py-3 px-6">Last Name</th>
-                            <th className="text-left font-medium text-white uppercase tracking-wider py-3 px-6">Mobile</th>
-                            <th className="text-left font-medium text-white uppercase tracking-wider py-3 px-6">Email ID</th>
-                            <th className="text-center font-medium text-white uppercase tracking-wider py-3 px-6">Actions</th>
+                            <th className="whitespace-nowrap px-4 py-2 font-medium text-white">
+                                Member ID
+                            </th>
+                            <th className="whitespace-nowrap px-4 py-2 font-medium text-white">
+                                First Name
+                            </th>
+                            <th className="whitespace-nowrap px-4 py-2 font-medium text-white">
+                                Last Name
+                            </th>
+                            <th className="whitespace-nowrap px-4 py-2 font-medium text-white">
+                                Mobile
+                            </th>
+                            <th className="whitespace-nowrap px-4 py-2 font-medium text-white">
+                                Email ID
+                            </th>
+                            <th className="whitespace-nowrap px-4 py-2 font-medium text-white">
+                                Membership Status
+                            </th>
+                            <th className="whitespace-nowrap px-4 py-2 font-medium text-white">
+                                Actions
+                            </th>
                         </tr>
                     </thead>
                     {/* key={member.memberId} */}
                     {!loading && (
                         <tbody className="bg-white">
-                            {members.map((member) => (
-                                <tr>
+                            {members != null && members.map((member) => (
+                                <tr key={member.memberId}>
                                     <td className="text-left px-6 py-4 whitespace-nowrap">
                                         <div className="text-sm text-gray-500">{member.memberId}</div>
                                     </td>
@@ -148,6 +226,16 @@ function MemberTable() {
                                     </td>
                                     <td className="text-left px-6 py-4 whitespace-nowrap">
                                         <div className="text-sm text-gray-500">{member.email}</div>
+                                    </td>
+                                    <td className="text-left px-6 py-4 whitespace-nowrap">
+                                        <button
+                                            className={`rounded-full px-3 py-1 text-sm ${membershipStatus[member.memberId] === "Active"
+                                                    ? "bg-green-500 text-white"
+                                                    : "bg-red-500 text-white"
+                                                }`}
+                                        >
+                                            {membershipStatus[member.memberId] || "Loading..."}
+                                        </button>
                                     </td>
                                     <td className="text-right px-6 py-4 whitespace-nowrap">
                                         <div className="inline-flex rounded-lg border border-gray-100 bg-gray-100 p-1">
@@ -228,10 +316,11 @@ function MemberTable() {
                 </table>
             </div>
             {showModalUpdate && <UpdateMember onClose={() => setShowModalUpdate(false)} member={selectedMember} updateMember={updateMember} />}
-            {showModalAdd && <AddMembership selectedMember={selectedMember} onClose={() => setShowModalAdd(false)} />}
+            {showModalAdd && <AddMembership selectedMember={selectedMember} onClose={() => setShowModalAdd(false)} fetchMembershipStatus={fetchMembershipStatus} />}
             {showModalView && <ViewMembership membershipDetails={membershipDetails} onClose={() => setShowModalView(false)} />}
             {showModalNo && <NoMembership onClose={() => setShowModalNo(false)} />}
         </div>
+
     )
 }
 
