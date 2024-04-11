@@ -19,5 +19,5 @@ public interface BookReturnService {
    
     public BookReturnResponseDTO getReturnDetailsofIssueBook(long  bookIssue);
 
-    public int  getFine(long bookIssue,String returnDate);
+    public int  getFine(long bookIssue);
 }

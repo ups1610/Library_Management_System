@@ -1,6 +1,7 @@
 package com.lms.catalogueService.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.lms.catalogueService.dto.BookInstanceResponseDTO;
 import com.lms.catalogueService.dto.BookRequestDTO;
@@ -17,6 +18,7 @@ public interface BooksService {
     public String deleteParitcularBook(long id);
 
     public List<BookInstanceResponseDTO> getBookIntances(long id);
+    public Map<String,Long> getTotalBooks();
 
 
 }

@@ -30,5 +30,4 @@ const fetchAuthors = async () => {
     }
   };
 
-  export { fetchAuthors };
 

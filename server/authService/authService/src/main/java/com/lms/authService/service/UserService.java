@@ -21,6 +21,8 @@ public interface UserService {
     public UserResponseDto validateToken(String token);
     public UserResponseDto getUser(long id);
     public boolean test();
+    public UserResponseDto updateUser(long id, UserRequestDto userRequest);
+    public String changePassword(long id,String password);
 
     public String deleteToken();
 

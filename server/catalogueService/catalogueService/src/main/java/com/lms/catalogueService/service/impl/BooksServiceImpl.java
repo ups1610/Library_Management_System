@@ -1,7 +1,9 @@
 package com.lms.catalogueService.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -36,145 +38,151 @@ import lombok.NoArgsConstructor;
 @Service
 public class BooksServiceImpl implements BooksService {
 
-        private Logger log= LoggerFactory.getLogger(BooksServiceImpl.class);
-    private BooksRepository booksRepository;
+        private Logger log = LoggerFactory.getLogger(BooksServiceImpl.class);
+        private BooksRepository booksRepository;
 
-    private AuthorRepository authorRepository;
+        private AuthorRepository authorRepository;
 
-    private GenreRepository genreRepository;
-public BooksServiceImpl(BooksRepository booksRepository,AuthorRepository authorRepository,GenreRepository genreRepository){
-        this.booksRepository=booksRepository;
-        this.authorRepository=authorRepository;
-        this.genreRepository=genreRepository;
-}
+        private GenreRepository genreRepository;
 
-
-   
-
-    @Override
-    public BookResponseDTO addNewBook(BookRequestDTO bookRequest) {
-
-        Author author = authorRepository.findById(bookRequest.authorId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid Author Id: " + bookRequest.authorId()));
-
-        List<Genre> genres = new ArrayList<>();
-
-        for (Long genreId : bookRequest.genre()) {
-            Genre genre = genreRepository.findById(genreId)
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid Genre Id: " + genreId));
-            genres.add(genre);
+        public BooksServiceImpl(BooksRepository booksRepository, AuthorRepository authorRepository,
+                        GenreRepository genreRepository) {
+                this.booksRepository = booksRepository;
+                this.authorRepository = authorRepository;
+                this.genreRepository = genreRepository;
         }
 
-        Books book = new Books();
+        @Override
+        public BookResponseDTO addNewBook(BookRequestDTO bookRequest) {
 
-        book.setBookTitle(bookRequest.title());
-        book.setGenre(genres);
-        book.setAuthor(author);
-        book.setISBN(bookRequest.ISBN());
+                Author author = authorRepository.findById(bookRequest.authorId())
+                                .orElseThrow(() -> new IllegalArgumentException(
+                                                "Invalid Author Id: " + bookRequest.authorId()));
 
-        // Set author and genres
-        Books savedBook = booksRepository.save(book);
-        return mapToBooksResponseDTO(savedBook);
-    }
+                List<Genre> genres = new ArrayList<>();
 
-    @Override
-    public List<BookResponseDTO> getAllBook() {
-        log.debug("calling books Service");
-        return booksRepository.findAll()
-                .stream()
-                .map(this::mapToBooksResponseDTO)
-                .collect(Collectors.toList());
+                for (Long genreId : bookRequest.genre()) {
+                        Genre genre = genreRepository.findById(genreId)
+                                        .orElseThrow(() -> new IllegalArgumentException(
+                                                        "Invalid Genre Id: " + genreId));
+                        genres.add(genre);
+                }
 
-    }
+                Books book = new Books();
 
-    @Override
-    public BookResponseDTO getParitcularBook(long id) {
-        Books book = booksRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Book not found with id: " + id));
-        return mapToBooksResponseDTO(book);
-    }
+                book.setBookTitle(bookRequest.title());
+                book.setGenre(genres);
+                book.setAuthor(author);
+                book.setISBN(bookRequest.ISBN());
 
-    @Override
-    public BookResponseDTO updateParitcularBook(long id, BookRequestDTO bookRequest) {
-        Books book = booksRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Book not found with id: " + id));
-
-        Author author = authorRepository.findById(bookRequest.authorId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid Author Id: " + bookRequest.authorId()));
-
-        List<Genre> genres = new ArrayList<>();
-
-        for (Long genreId : bookRequest.genre()) {
-            Genre genre = genreRepository.findById(genreId)
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid Genre Id: " + genreId));
-            genres.add(genre);
-        }
-      
-        book.setBookTitle(bookRequest.title());
-        book.setGenre(genres);
-        book.setISBN(bookRequest.ISBN());
-        book.setAuthor(author);
-        
-
-        Books updatedBook = booksRepository.save(book);
-        return mapToBooksResponseDTO(updatedBook);
-    }
-
-    @Override
-    public String deleteParitcularBook(long id) {
-        Books book = booksRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Book not found with id: " + id));
-        booksRepository.deleteById(id);
-        return "Success";
-    }
-
-    @Override
-    public List<BookInstanceResponseDTO> getBookIntances(long id) {
-        Books book = booksRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Book not found with id: " + id));
-        return book.getInstances()   
-                    .stream()
-                    .map(this::mapToBookInstanceResponseDTO)
-                    .collect(Collectors.toList());
-        
-    }
-
-    private BookResponseDTO mapToBooksResponseDTO(Books book) {
-
-        List<String> genres = book.getGenre().stream()
-                .map(Genre::getGenreName)
-                .collect(Collectors.toList());
-        return new BookResponseDTO(
-                book.getBookId(),
-                book.getBookTitle(),
-                book.getAuthor().getAuthorId(),
-                book.getAuthor().getFirstName()+" "+book.getAuthor().getFamilyName(),
-                genres,
-                book.getISBN());
-    }
-
-
-    private BookInstanceResponseDTO mapToBookInstanceResponseDTO(BookInstance instance) {
-
-        
-           BookShelfResponseDTO bookShelfResponseDTO = null;
-        if (instance.getBookshelf() != null) {
-            bookShelfResponseDTO = new BookShelfResponseDTO(
-                    instance.getBookshelf().getShelfId(),
-                    instance.getBookshelf().getShelfName(),
-                    instance.getBookshelf().getLocation(),
-                    instance.getBookshelf().getCapacity(),
-                    instance.getBookshelf().getDescription()
-            );
+                // Set author and genres
+                Books savedBook = booksRepository.save(book);
+                return mapToBooksResponseDTO(savedBook);
         }
 
-        return new BookInstanceResponseDTO(
-                instance.getInstanceId(),
-                null,
-                instance.getImprint(),
-                instance.getStatus(),
-                bookShelfResponseDTO
-        );
-    }
+        @Override
+        public List<BookResponseDTO> getAllBook() {
+                log.debug("calling books Service");
+                return booksRepository.findAll()
+                                .stream()
+                                .map(this::mapToBooksResponseDTO)
+                                .collect(Collectors.toList());
+
+        }
+
+        @Override
+        public BookResponseDTO getParitcularBook(long id) {
+                Books book = booksRepository.findById(id)
+                                .orElseThrow(() -> new IllegalArgumentException("Book not found with id: " + id));
+                return mapToBooksResponseDTO(book);
+        }
+
+        @Override
+        public BookResponseDTO updateParitcularBook(long id, BookRequestDTO bookRequest) {
+                Books book = booksRepository.findById(id)
+                                .orElseThrow(() -> new IllegalArgumentException("Book not found with id: " + id));
+
+                Author author = authorRepository.findById(bookRequest.authorId())
+                                .orElseThrow(() -> new IllegalArgumentException(
+                                                "Invalid Author Id: " + bookRequest.authorId()));
+
+                List<Genre> genres = new ArrayList<>();
+
+                for (Long genreId : bookRequest.genre()) {
+                        Genre genre = genreRepository.findById(genreId)
+                                        .orElseThrow(() -> new IllegalArgumentException(
+                                                        "Invalid Genre Id: " + genreId));
+                        genres.add(genre);
+                }
+
+                book.setBookTitle(bookRequest.title());
+                book.setGenre(genres);
+                book.setISBN(bookRequest.ISBN());
+                book.setAuthor(author);
+
+                Books updatedBook = booksRepository.save(book);
+                return mapToBooksResponseDTO(updatedBook);
+        }
+
+        @Override
+        public String deleteParitcularBook(long id) {
+                Books book = booksRepository.findById(id)
+                                .orElseThrow(() -> new IllegalArgumentException("Book not found with id: " + id));
+                booksRepository.deleteById(id);
+                return "Success";
+        }
+
+        @Override
+        public List<BookInstanceResponseDTO> getBookIntances(long id) {
+                Books book = booksRepository.findById(id)
+                                .orElseThrow(() -> new IllegalArgumentException("Book not found with id: " + id));
+                return book.getInstances()
+                                .stream()
+                                .map(this::mapToBookInstanceResponseDTO)
+                                .collect(Collectors.toList());
+
+        }
+
+        private BookResponseDTO mapToBooksResponseDTO(Books book) {
+
+                List<String> genres = book.getGenre().stream()
+                                .map(Genre::getGenreName)
+                                .collect(Collectors.toList());
+                return new BookResponseDTO(
+                                book.getBookId(),
+                                book.getBookTitle(),
+                                book.getAuthor().getAuthorId(),
+                                book.getAuthor().getFirstName() + " " + book.getAuthor().getFamilyName(),
+                                genres,
+                                book.getISBN());
+        }
+
+        private BookInstanceResponseDTO mapToBookInstanceResponseDTO(BookInstance instance) {
+
+                BookShelfResponseDTO bookShelfResponseDTO = null;
+                if (instance.getBookshelf() != null) {
+                        bookShelfResponseDTO = new BookShelfResponseDTO(
+                                        instance.getBookshelf().getShelfId(),
+                                        instance.getBookshelf().getShelfName(),
+                                        instance.getBookshelf().getLocation(),
+                                        instance.getBookshelf().getCapacity(),
+                                        instance.getBookshelf().getDescription());
+                }
+
+                return new BookInstanceResponseDTO(
+                                instance.getInstanceId(),
+                                null,
+                                instance.getImprint(),
+                                instance.getStatus(),
+                                bookShelfResponseDTO);
+        }
+
+        @Override
+        public Map<String, Long> getTotalBooks() {
+                Map<String, Long> resp = new HashMap<>();
+                long total = booksRepository.count();
+                resp.put("TotalBooks", total);
+                return resp;
+        }
 
 }

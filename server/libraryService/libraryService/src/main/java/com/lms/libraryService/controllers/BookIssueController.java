@@ -52,14 +52,20 @@ public class BookIssueController {
     }
 
     @GetMapping("/instance/{bookInstanceId}")
-    public ResponseEntity<BookIssueResponseDTO> getIssueBookByBookInstance(@PathVariable("bookInstanceId") long bookInstanceId) {
-        BookIssueResponseDTO response = bookIssueService.getIssueBookByBookInstance(bookInstanceId);
+    public ResponseEntity<List<BookIssueResponseDTO>> getIssueBookByBookInstance(@PathVariable("bookInstanceId") long bookInstanceId) {
+        List<BookIssueResponseDTO> response = bookIssueService.getIssueBookByBookInstance(bookInstanceId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/count")
     public ResponseEntity<Map<String, Integer>> countIssueBooks() {
         Map<String, Integer> response = bookIssueService.countIssueBooks();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/due-return")
+    public ResponseEntity<List<BookIssueResponseDTO>> getAllDueBooks() {
+        List<BookIssueResponseDTO> response = bookIssueService.getAllBookIssue();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

@@ -112,6 +112,22 @@ public class TransactionServiceImpl implements TransactionService{
                 user.userName()
         );
     }
+    @Override
+    public List<TransactionResponseDTO> getCollectionToday() {
+        // TODO Auto-generated method stub
+        Date today = new Date();
+        List<Transaction> transactionsToday = transactionRepository.findByTransactionTimeStampBetween(today, endOfDay(today));
+
+          return transactionsToday.stream()
+        .map(transaction -> {
+           
+            return convertToTransactionResponseDTO(transaction);
+        })
+        .collect(Collectors.toList());
+    }
+    private Date endOfDay(Date date) {
+        return Date.from(date.toInstant().plusSeconds(86399)); // 86399 seconds is 23:59:59
+    }
     
 
 }

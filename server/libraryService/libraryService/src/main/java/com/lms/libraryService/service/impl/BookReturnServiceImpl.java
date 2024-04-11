@@ -13,6 +13,7 @@ import java.time.Duration;
 import com.lms.libraryService.dto.BookReturnRequestDTO;
 import com.lms.libraryService.dto.BookReturnResponseDTO;
 import com.lms.libraryService.dto.FineRequestDTO;
+import com.lms.libraryService.dto.FineResponseDTO;
 import com.lms.libraryService.entities.BookIssue;
 import com.lms.libraryService.entities.BookReturn;
 import com.lms.libraryService.entities.BookReturnFine;
@@ -94,12 +95,14 @@ public class BookReturnServiceImpl implements BookReturnService {
     public BookReturnResponseDTO getBookReturn(long id) {
         BookReturn bookReturn = bookReturnRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Return can't done " + id + " does not exist"));
+              
         return mapToBookReturnResponseDTO(bookReturn);
     }
 
     @Override
     public List<BookReturnResponseDTO> getAllBookReturn() {
         List<BookReturn> bookReturns = bookReturnRepository.findAll();
+    
         return bookReturns.stream().map(this::mapToBookReturnResponseDTO).collect(Collectors.toList());
     }
 
@@ -116,6 +119,7 @@ public class BookReturnServiceImpl implements BookReturnService {
                 bookReturn.getBookReturnId(),
                 bookReturn.getBookIssue(),
                 bookReturn.getReturnDate(),
+                mapToFineResponseDTO(bookReturn.getFine()),
                 user.userName());
     }
 
@@ -127,24 +131,34 @@ public class BookReturnServiceImpl implements BookReturnService {
         return mapToBookReturnResponseDTO(bookReturnForIssue);
     }
     @Override
-    public int getFine(long id, String returnDate) {
+   
+
+    public int getFine(long id) {
         BookIssue bookIssue = bookIssueRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid BookIssue id: " + id));
     
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-            
-                String dateString = dateFormat.format(bookIssue.getDateOfReturn());
-      
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = dateFormat.format(bookIssue.getDateOfReturn());
         LocalDate localDueDate = LocalDate.parse(dateString);
-       
-       
-        LocalDate localReturnDate =  LocalDate.parse(returnDate);
-           
+        LocalDate localReturnDate = LocalDate.now(); // Using today's date as return date
+    
         long daysOverdue = ChronoUnit.DAYS.between(localDueDate, localReturnDate);
     
-        // Assuming per day fine is 10
-        return 10 * (int) daysOverdue;
-    }
+        int tfine= 10 * (int) daysOverdue;
 
+        return tfine<=0?0:tfine;
+    }
+    
+
+
+    private FineResponseDTO mapToFineResponseDTO(BookReturnFine fine) {
+
+        if(fine==null) return null;
+        return new FineResponseDTO(
+            fine.getFineId(),
+          fine.getAmount() ,
+            fine.getIsWavedOff(),
+            fine.getTransaction_id()
+        );
+    }
 }

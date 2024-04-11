@@ -5,9 +5,9 @@ const url = 'http://localhost:8088';
 
 const token = localStorage.getItem('token')
 
-export const login = (userName, password) => {
+export const getTodayTransaction = () => {
 
-    return axios.post(url + '/auth/login', {
+    return axios.post(url + '/', {
         userName,
         password
     }, {
@@ -44,33 +44,3 @@ export const login = (userName, password) => {
         }
     });
 };
-
-export const logout=()=>{
-    console.debug('Login Request');
-    return axios.post(url + '/auth/logout', {
-        headers: {
-            'token': token.token,
-            'Content-Type': 'application/json',
-        }
-    })
-    .then((resp) => {
-        if (resp.status === 200) {
-            return {
-                success: true,
-                data: resp.data
-            };
-        } else {
-            return {
-                success: false,
-                data: 'Invalid Request.'
-            };
-        }
-    })
-    .catch((err) => {
-        console.error('Something went wrong: ', err);
-        return {
-            success: false,
-            data: 'Something went wrong. Please try again later.'
-        };
-    });
-}

@@ -48,11 +48,22 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserResponseDto addUser(UserRequestDto userRequest) {
+    //     Optional<UserCredential> optionalUser=null;
+    //    optionalUser = userRepository.findByEmail(userRequest.email());
+    //     if (optionalUser.isPresent()) {
+    //         throw new DuplicateUserException("Email already registered!");
+    //     }
 
-        // if(userRepository.findByByUserName(userRequest.userName()).get()){
-        // throw new DuplicateUserException("User with Email " + userRequest.email() + "
-        // already exists");
-        // }
+    //    optionalUser = userRepository.findByUsername(userRequest.userName());
+    //     if (optionalUser.isPresent()) {
+    //         throw new DuplicateUserException("Username not available!");
+    //     }
+
+    //     optionalUser = userRepository.findByMobile(userRequest.mobile());
+    //     if (optionalUser.isPresent()) {
+    //         throw new DuplicateUserException("Mobile No already registered!");
+    //     }
+
 
         UserCredential user = new UserCredential();
         user.setUsername(userRequest.userName());
@@ -135,6 +146,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto getUser(long id) {
+        
+        
 
         Optional<UserCredential> optionalUser = userRepository.findById(id);
 
@@ -195,6 +208,62 @@ public class UserServiceImpl implements UserService {
             updateUser.getRole(),
             updateUser.getStatus());
     
+    }
+
+    @Override
+    public UserResponseDto updateUser(long id, UserRequestDto userRequest) {
+       
+       
+       
+        UserCredential user=  userRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Invalid User Id"));
+       
+    //     Optional<UserCredential> optionalUser=null;
+    //    optionalUser = userRepository.findByEmail(userRequest.email());
+    //     if (optionalUser.isPresent() ) {
+    //         throw new DuplicateUserException("Email already registered!");
+    //     }
+
+    //    optionalUser = userRepository.findByUsername(userRequest.userName());
+    //     if (optionalUser.isPresent() && userRequest.mobile()!=user.getMobile()) {
+    //         throw new DuplicateUserException("Username not available!");
+    //     }
+
+    //     optionalUser = userRepository.findByMobile(userRequest.mobile());
+    //     if (optionalUser.isPresent()) {
+    //         throw new DuplicateUserException("Mobile No already registered!");
+    //     }
+
+       
+       
+        user.setUsername(userRequest.userName());
+        user.setFirstname(userRequest.firstName());
+        user.setLastname(userRequest.lastName());
+        user.setMobile(userRequest.mobile());
+        user.setEmail(userRequest.email());
+        user.setRole(userRequest.role());
+
+       UserCredential updatedUser= userRepository.save(user);
+
+       return new UserResponseDto(
+        updatedUser.getUserId(),
+        updatedUser.getUsername(),
+        updatedUser.getFirstname(),
+        updatedUser.getLastname(),
+        updatedUser.getMobile(),
+        updatedUser.getEmail(),
+        updatedUser.getRole(),
+        updatedUser.getStatus()
+        
+        );
+    }
+
+    @Override
+    public String changePassword(long id, String password) {
+        UserCredential user=  userRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Invalid User Id"));
+
+        user.setPassword(passwordEncoder.encode(password));
+
+        return "Password changed!";
     }
    
 

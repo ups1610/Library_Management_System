@@ -1,5 +1,7 @@
 package com.lms.libraryService.service.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,27 +79,33 @@ public class BookIssueServiceImpl implements BookIssueService {
 
     @Override
     public List<BookIssueResponseDTO> getAllBookIssue() {
-        return bookIssueRepository.findByReturned("No").stream().map(this:: mapToBookIssueResponseDTO).collect(Collectors.toList());
+        return bookIssueRepository.findAll().stream().map(this:: mapToBookIssueResponseDTO).collect(Collectors.toList());
     }
 
 
     private BookIssueResponseDTO mapToBookIssueResponseDTO(BookIssue bookIssue){
         MemberResponseDTO member= null;
         UserResponseDto user=null;
+        BookInstanceResponseDTO bookInstanceResponseDTO=null;
 
     try {
         member = memberService.getMember(bookIssue.getMember());
         user= userService.getUser(bookIssue.getIssueBy());
+       bookInstanceResponseDTO = bookService.getBookInstance(bookIssue.getBookInstance());
+     
     } catch (HttpClientErrorException ex) {
         throw new IllegalArgumentException(ex.getMessage());
     }
+
+   
         return new BookIssueResponseDTO(
                 bookIssue.getBookIssueId(),
-                bookIssue.getBookInstance(),
+                bookInstanceResponseDTO,
                 member.memberId(),
                 member.firstName()+" "+member.familyName(),
                 bookIssue.getDateOfIssue(),
                 bookIssue.getDateOfReturn(),
+                bookIssue.getReturned(),
                 user.userName()
                 );
     }
@@ -111,11 +119,13 @@ public class BookIssueServiceImpl implements BookIssueService {
     }
     
     @Override
-    public BookIssueResponseDTO getIssueBookByBookInstance(long bookInstanceId) {
-        BookIssue bookIssue = bookIssueRepository.findByBookInstance(bookInstanceId)
-                .orElseThrow(() -> new IllegalArgumentException("No book issue found for book instance ID: " + bookInstanceId));
+    public List<BookIssueResponseDTO> getIssueBookByBookInstance(long bookInstanceId) {
+        List<BookIssue> bookIssues = bookIssueRepository.findByBookInstance(bookInstanceId);
+               
         
-        return mapToBookIssueResponseDTO(bookIssue);
+                return bookIssues.stream()
+                .map(this::mapToBookIssueResponseDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -127,6 +137,19 @@ public class BookIssueServiceImpl implements BookIssueService {
 
         return countMap;
     }
+
+    @Override
+    public List<BookIssueResponseDTO> getAllDueReturnBooks() {
+        List<BookIssue> dueBookIssues = bookIssueRepository.findByDateOfReturnBeforeAndReturnedEquals(new Date(), "No").orElseThrow(()-> new RuntimeException("Something went Wrong"));
+
+        return dueBookIssues.stream()
+        .map(this::mapToBookIssueResponseDTO)
+        .collect(Collectors.toList());
+
+       
+    }
+
+    
 
 
 }

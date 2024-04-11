@@ -62,4 +62,10 @@ public class TransactionController {
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
 
+    @GetMapping("/today")
+    public ResponseEntity<List<TransactionResponseDTO>> getTodayTransaction() {
+        List<TransactionResponseDTO> transactions = transactionService.getCollectionToday();
+        return new ResponseEntity<>(transactions, HttpStatus.OK);
+    }
+
 }

@@ -10,36 +10,43 @@ export const DASHBOARD_SIDEBAR_LINKS = [
 		key: 'dashboard',
 		label: 'Dashboard',
 		path: '/dashboard',
+		role:"ROLE_ALL",
 		icon: <HiOutlineViewGrid />
+		
 	},
 	{
 		key: 'catalog',
 		label: 'Catalog',
 		path: '/dashboard/catalog',
+		role:"ROLE_CATALOGER",
 		icon: <SiBookstack />
 	},
 	{
 		key: 'member',
 		label: 'Member',
 		path: '/dashboard/member',
+		role:"ROLE_LIBRARIAN",
 		icon: <MdRememberMe />
 	},
 	{
 		key: 'operation',
 		label: 'Operation',
-		path: '/operation',
+		path: '/dashboard/operation/bookLog',
+		role:"ROLE_LIBRARIAN",
 		icon: <FaRegAddressBook />
 	},
 	{
 		key: 'transactions',
 		label: 'Transactions',
 		path: '/transactions',
+		role:"ROLE_ACCOUNTANT",
 		icon: <HiOutlineDocumentText />
 	},
 	{
 		key: 'users',
 		label: 'Users',
-		path: '/users',
+		path: 'users/manage',
+		role:"ROLE_ADMIN",
 		icon: <MdLocalLibrary />
 	}
 ]
