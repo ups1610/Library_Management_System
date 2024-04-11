@@ -13,6 +13,7 @@ import View from "./pages/Users/View";
 import {View as BookView} from "./pages/Operations/View";
 import  BookIssueLogs  from "./pages/Operations/BookIssueLogs";
 import { IssueBook } from "./pages/Operations/IssueBook";
+import TransactionLogs from "./pages/Transaction/TransactionLogs";
 
 function App() {
   return (
@@ -34,6 +35,8 @@ function App() {
           <Route path="operation/BookLog/Issue" element={<IssueBook/>} />
           <Route path="operation/BookLog/:id/view" element={<BookView/>} />
           <Route path="member" element={<MemberTable/>}/>
+
+          <Route path="transactions" element={<TransactionLogs/>} />
           <Route path="view" element={<InfoView/>}/>
         </Route>
         </Route>

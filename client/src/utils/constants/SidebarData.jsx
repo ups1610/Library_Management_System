@@ -31,14 +31,14 @@ export const DASHBOARD_SIDEBAR_LINKS = [
 	{
 		key: 'operation',
 		label: 'Operation',
-		path: '/dashboard/operation/bookLog',
+		path: 'operation/bookLog',
 		role:"ROLE_LIBRARIAN",
 		icon: <FaRegAddressBook />
 	},
 	{
 		key: 'transactions',
 		label: 'Transactions',
-		path: '/transactions',
+		path: 'transactions',
 		role:"ROLE_ACCOUNTANT",
 		icon: <HiOutlineDocumentText />
 	},
