@@ -1,0 +1,30 @@
+/* Set the width of the dropdown base to 100% */
+.e-dropdownbase {
+    width: 100%;
+    height: auto;
+}
+
+
+.e-control {
+    background: #ffffff; 
+    cursor: pointer;
+}
+
+/* Hide the hidden elements */
+.e-multi-hidden {
+    display: none;
+}
+
+/* Customize the appearance of the chips close button */
+.e-chips-close {
+    color: white; /* Set text color */
+    cursor: pointer;
+    padding: 5px;
+}
+
+.e-chips-collection{
+    background: rgb(188, 186, 186);
+    border-radius: 5px;
+    padding: 2px;
+    margin-bottom: 5px;
+}

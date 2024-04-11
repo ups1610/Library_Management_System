@@ -11,6 +11,24 @@ function ActionTable(props) {
     documentTitle: `${props.title} Details`
   });
 
+  const handleDeleteData = (id) => {
+    try {
+      props.onDelete(id);
+      console.log("id passed " + id);
+    } catch (error) {
+      console.error("Error in passing id " + id + error);
+    }
+  };
+
+  const handleEditData = (id) => {
+    try{
+      props.onEdit(id);
+    }
+    catch(error){
+      console.error("Error in passing " +id + error)
+    }
+  };
+
   return (
     <>
       <div className="w-full mt-5 rounded-lg border border-gray-100 bg-white p-4 shadow-sm">
@@ -107,12 +125,13 @@ function ActionTable(props) {
                       {item[props.data3]}
                     </td>
                     <td className="whitespace-nowrap px-3 py-2 text-gray-700 max-lg:hidden">
-                      {item[props.data4].length > 1 ? item[props.data4][0] : item[props.data4]}
+                    {Array.isArray(item[props.data4])? item[props.data4][0] : item[props.data4]}
                     </td>
                     <td className="whitespace-nowrap px-1 py-2 flex gap-2 ">
                       <div className="inline-flex rounded-lg">
                         <div className="hidden md:block">
-                        <button className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-500 hover:text-gray-700 focus:relative ">
+                        <button onClick={() => handleEditData(item.id)}
+                        className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-500 hover:text-gray-700 focus:relative ">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -132,7 +151,7 @@ function ActionTable(props) {
                         </div>
                         
                         <div>
-                        <Link to={props.path} className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-500 hover:text-gray-700 focus:relative ">
+                        <Link to={`${props.path}/${item.id}`} className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-500 hover:text-gray-700 focus:relative ">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -157,7 +176,8 @@ function ActionTable(props) {
                         </div>
                         
                         <div className="hidden lg:block">
-                          <button className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-500 hover:text-gray-700 focus:relative ">
+                          <button  onClick={()=>handleDeleteData(item.id)}
+                          className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-500 hover:text-gray-700 focus:relative ">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
