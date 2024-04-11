@@ -1,29 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import toast from "react-hot-toast";
 import Multiselect from "multiselect-react-dropdown";
 import "../../styles/Forms.css";
 
-function PopupForm(props) {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    dob: "",
-    biography: "",
-    shelfName: "",
-    location: "",
-    capacity: "",
-    description: "",
-    genreName: "",
-    title: "",
-    ISBN: "",
-    authorId: "",
-    genre: [],
-    imprint:"",
-    status:"",
-    book:"",
-    bookshelf:"",
-  });
+function EditForm(props) {
+    const [formData, setFormData] = useState({
+        firstName: "",
+        lastName: "",
+        dob: "",
+        biography: "",
+        shelfName: "",
+        location: "",
+        capacity: "",
+        description: "",
+        genreName: "",
+        title: "",
+        ISBN: "",
+        authorId: "",
+        genre: [],
+      });
+
+      useEffect(() => {
+        if (props.form) {
+            setFormData(props.form);}
+      }, [props.form]);      
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -89,7 +90,7 @@ function PopupForm(props) {
                     onChange={handleChange}
                     required
                     className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
-                    placeholder={`Enter ${props.name1.toLowerCase()}`}
+                    placeholder={props.form[props.passKeyNam1]}
                   />
                 </div>
               )}
@@ -106,7 +107,7 @@ function PopupForm(props) {
                     onChange={handleChange}
                     required
                     className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
-                    placeholder={`Enter ${props.name2.toLowerCase()}`}
+                    placeholder={props.form[props.passKeyNam2]}
                   />
                 </div>
               )}
@@ -125,7 +126,7 @@ function PopupForm(props) {
                   onChange={handleChange}
                   required
                   className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
-                  placeholder={`Enter ${props.date.toLowerCase()}`}
+                  placeholder={props.form[props.passKeyDate]}
                 />
               </div>
             )}
@@ -143,88 +144,7 @@ function PopupForm(props) {
                   onChange={handleChange}
                   required
                   className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
-                  placeholder={`Enter ${props.quantity.toLowerCase()}`}
-                />
-              </div>
-            )}
-            <div>
-              {props.selectName1 && (
-                <div>
-                  <label htmlFor={props.passKeySel1} className="sr-only">
-                    {props.selectName1}
-                  </label>
-                  <select
-                    id={props.passKeySel1}
-                    name={props.passKeySel1}
-                    value={formData[props.passKeySel1]}
-                    onChange={handleChange}
-                    required
-                    className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm text-gray-400"
-                  >
-                    <option value="">{`Select ${props.selectName1}`}</option>
-                    {props.mapData1.map((item) => (
-                      <option key={item.id} value={item.id}>
-                        {item[props.optionName1]}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
-              {props.selectName2 && (
-                <div>
-                  <label htmlFor={props.passKeySel2} className="sr-only">
-                    {props.selectName2}
-                  </label>
-                  <select
-                    id={props.passKeySel2}
-                    name={props.passKeySel2}
-                    value={formData[props.passKeySel2]}
-                    onChange={handleChange}
-                    required
-                    className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm text-gray-400"
-                  >
-                    <option value="">{`Select ${props.selectName2}`}</option>
-                    {props.mapData2.map((item) => (
-                      <option key={item.id} value={item.id}>
-                        {item[props.optionName3]}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
-              {props.selectName4 && (
-                <div>
-                  <label htmlFor={props.passKeySel4} className="sr-only">
-                    {props.selectName4}
-                  </label>
-                  <select
-                    id={props.passKeySel4}
-                    name={props.passKeySel4}
-                    value={formData[props.passKeySel4]}
-                    onChange={handleChange}
-                    required
-                    className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm text-gray-400"
-                  >
-                    <option value="">Select Status</option>
-                    <option value="available">Available</option>
-                    <option value="N/A">Not Available</option>
-                  </select>
-                </div>
-              )}
-            </div>
-            {props.selectName3 && (
-              <div className="control-styles z-40">
-                <label htmlFor={props.passKeySel3} className="sr-only">
-                  {props.selectName3}
-                </label>
-                <Multiselect
-                  options={props.mapData3}
-                  displayValue={props.optionName2}
-                  selectedValues={formData.genre.map((id) =>
-                    props.mapData3.find((item) => item.id === id)
-                  )}
-                  onSelect={handleGenreSelect}
-                  onRemove={handleGenreSelect}
+                  placeholder={props.form[props.passKeyQty]}
                 />
               </div>
             )}
@@ -241,7 +161,7 @@ function PopupForm(props) {
                   onChange={handleChange}
                   required
                   className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
-                  placeholder={`Enter ${props.input}`}
+                  placeholder={props.form[props.passKeyInput]}
                 />
               </div>
             )}
@@ -259,7 +179,7 @@ function PopupForm(props) {
                   required
                   rows="4"
                   className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
-                  placeholder={`Enter ${props.description.toLowerCase()}`}
+                  placeholder={props.form[props.passKeyDesc]}
                 />
               </div>
             )}
@@ -279,4 +199,4 @@ function PopupForm(props) {
   );
 }
 
-export default PopupForm;
+export default EditForm;
