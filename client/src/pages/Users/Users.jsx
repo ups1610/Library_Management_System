@@ -16,6 +16,7 @@ function Users() {
   const [showAddUserModel, setAddUserModal] = useState(false);
   const [userData, setUserData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isLoading,setIsLoading]=useState(true);
 
   const fetchData = async () => {
     try {
@@ -34,6 +35,7 @@ function Users() {
    
 
     fetchData();
+    setIsLoading(false);
   }, [token]);
 
   const filteredUsers = userData.filter((user) =>
@@ -108,7 +110,20 @@ function Users() {
         <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
           <thead></thead>
           <tbody className="divide-y divide-gray-200">
-            {filteredUsers.map((user) => (
+
+            {isLoading?(
+              <tr>
+              <td colSpan="8" className="py-4">
+                Loading...
+              </td>
+            </tr>
+            ): filteredUsers.length===0?(
+              <tr>
+              <td colSpan="8" className="py-4">
+                No records available.
+              </td>
+            </tr>
+            ):( filteredUsers.map((user) => (
               <tr key={user.id}>
                 <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                   <div className="flex items-center space-x-4">
@@ -149,7 +164,7 @@ function Users() {
                   </Link>
                 </td>
               </tr>
-            ))}
+            )))}
           </tbody>
         </table>
       </div>

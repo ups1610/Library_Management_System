@@ -181,9 +181,11 @@ const {token}=useAuth();
                 onChange={handleChange}
                 required
               >
-                <option value="">Select role</option>
-                <option value="ROLE_ADMIN">Admin</option>
+              
+                <option value="ROLE_CATALOGER">Cataloger</option>
                 <option value="ROLE_LIBRARIAN">Librarian</option>
+                <option value="ROLE_ACCOUNTANT">Accountant</option>
+                <option value="ROLE_ADMIN">Admin</option>
               </select>
               <label
                 htmlFor="role"

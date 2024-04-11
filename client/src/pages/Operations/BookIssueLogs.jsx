@@ -56,12 +56,10 @@ function BookIssueLogs() {
     )
   );
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  
 
   return (
-    <div className="w-full mt-5 rounded-lg border border-gray-100 bg-white p-4 shadow-sm">
+    <div className=" md:w-full w-screen   mt-5 rounded-lg border border-gray-100 bg-white p-4 m-[30px]shadow-sm">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center mb-5">
         <div className="flex flex-col sm:flex-row gap-2">
           <select className="border-2 px-4 py-2 rounded-lg border-gray-300 text-gray-700 sm:text-sm">
@@ -149,7 +147,17 @@ function BookIssueLogs() {
           </thead>
 
           <tbody className="divide-y-2 divide-gray-200 text-center">
-            {filteredIssueBooks.map((issueBook, index) => {
+            {isLoading?(  <tr>
+                <td colSpan="8" className="py-4">
+                  Loading...
+                </td>
+              </tr>):filteredIssueBooks.length===0?(
+                 <tr>
+                 <td colSpan="8" className="py-4">
+                   No records available.
+                 </td>
+               </tr>
+              ):( filteredIssueBooks.map((issueBook, index) => {
               const currentDate = new Date();
               const issueDateObj = new Date(issueBook.dateOfIssue);
               const issueDate =
@@ -227,7 +235,7 @@ function BookIssueLogs() {
                   </td>
                 </tr>
               );
-            })}
+            }))}
           </tbody>
         </table>
       </div>

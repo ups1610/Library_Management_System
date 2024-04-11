@@ -30,7 +30,7 @@ export default function Sidebar({ activePath }) {
   };
 
   return (
-    <div className="bg-neutral-900 max-w-60  p-3 flex flex-col">
+    <div className="bg-neutral-900 max-w-60 h-full  p-3 flex flex-col">
       <button onClick={handleVisible}>
         <IoListOutline className="hidden max-sm:block text-white" />
       </button>
