@@ -3,7 +3,7 @@ import MemberAction from '../../action/MemberAction';
 import { useAuth } from '../../context/Authetication';
 
 function AddMembership({ selectedMember, onClose, fetchMembershipStatus }) {
-    const { token,} = useAuth();
+    const { token } = useAuth();
     const [membershipData, setMembershipData] = useState({
         memberId: selectedMember.memberId,
         startDate: new Date().toISOString().substr(0, 10),
