@@ -110,4 +110,20 @@ class MemberAction {
 
 export default new MemberAction();
 
+const getAllMembership = async (token) => {
+  try {
+    const response = await axios.get('http://localhost:8088/membershipService/membership/all', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching books:', error);
+    return [];
+  }
+};
+
+export { getAllMembership };
+
 

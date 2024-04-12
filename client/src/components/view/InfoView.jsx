@@ -19,6 +19,7 @@ import {
 } from "../../action/CatalogAction";
 import { MdAdd } from "react-icons/md";
 import toast from "react-hot-toast";
+import { useAuth } from "../../context/Authetication";
 
 function BookView(props) {
   const [book, setBook] = useState([]);
@@ -30,17 +31,18 @@ function BookView(props) {
   const [shelf, setShelf] = useState([])
   const [shelfBook , setShelfBook] = useState([])
   const { name, id } = useParams();
+  const { token } = useAuth();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchBookData = await fetchBooksById(id);
-        const fetchInstanceData = await fetchInstanceById(id);
-        const fetchAuthor = await fetchAuthorsById(id);
-        const fetchAuthorBooks = await fetchAuthorsBookById(id);
-        const fetchGenreData = await fetchGenreById(id);
-        const fetchGenreBooks = await fetchGenreBookById(id);
-        const fetchShelfData = await fetchBookshelfById(id)
-        const fetchShelfBookData = await fetchBookshelfBookById(id)
+        const fetchBookData = await fetchBooksById(id, token);
+        const fetchInstanceData = await fetchInstanceById(id, token);
+        const fetchAuthor = await fetchAuthorsById(id, token);
+        const fetchAuthorBooks = await fetchAuthorsBookById(id, token);
+        const fetchGenreData = await fetchGenreById(id, token);
+        const fetchGenreBooks = await fetchGenreBookById(id, token);
+        const fetchShelfData = await fetchBookshelfById(id, token)
+        const fetchShelfBookData = await fetchBookshelfBookById(id, token)
         setBook(fetchBookData);
         setInstance(fetchInstanceData);
         setAuthor(fetchAuthor);
@@ -506,11 +508,12 @@ export const InfoInstance = (props) => {
   const [book, setBook] = useState([]);
   const [bookshelf, setBookshelf] = useState([]);
   const [instanceAll, setInstanceAll] = useState([]);
+  const { token } = useAuth();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const bookData = await fetchBooks();
-        const BookshelfData = await fetchBookshelf();
+        const bookData = await fetchBooks(token);
+        const BookshelfData = await fetchBookshelf(token);
         setBook(bookData);
         setBookshelf(BookshelfData);
       } catch (error) {
@@ -523,7 +526,7 @@ export const InfoInstance = (props) => {
   useEffect(() => {
     const fetchInstanceData = async () => {
       try {
-        const fetchInstanceAll = await fetchInstance();
+        const fetchInstanceAll = await fetchInstance(token);
         setInstanceAll(fetchInstanceAll);
       } catch (error) {
         console.log("Error occur: " + error);
@@ -534,8 +537,8 @@ export const InfoInstance = (props) => {
 
   const handleAddInstance = async (formData) => {
     console.log("=======================" + formData);
-    await createInstance(formData);
-    const fetchInstanceAll = await fetchInstance();
+    await createInstance(formData, token);
+    const fetchInstanceAll = await fetchInstance(token);
     setInstanceAll(fetchInstanceAll);
     setShowForm(false);
   };
@@ -546,9 +549,9 @@ export const InfoInstance = (props) => {
     );
     if (confirmDelete) {
       try {
-        await deleteInstance(id);
+        await deleteInstance(id, token);
         toast.success("Instance deleted successfully");
-        const fetchInstanceAll = await fetchInstance();
+        const fetchInstanceAll = await fetchInstance(token);
         setInstanceAll(fetchInstanceAll);
       } catch (error) {
         toast.error("Error deleting instance");

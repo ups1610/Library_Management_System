@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import PopupForm,{EditForm} from "../components/modals";
 import ActionTable from "../components/tabels";
 import { createAuthor, deleteAuthor, fetchAuthors, fetchAuthorsById, updateAuthor } from "../action/CatalogAction";
+import { useAuth } from "../context/Authetication";
 
 const Author = () => {
   const [loading, setLoading] = useState(true);
@@ -11,10 +12,11 @@ const Author = () => {
   const [showEditForm, setShowEditForm] = useState(false);
   const [editAuthor, setEditAuthor] = useState([])
   const [id,setId] =useState(null)
+  const { token } = useAuth();
 
   useEffect(()=>{
       const fetchData = async () => {
-        const authorData = await fetchAuthors();
+        const authorData = await fetchAuthors(token);
         setAuthor(authorData)
         setLoading(false);
       } 
@@ -25,7 +27,7 @@ const Author = () => {
     const fetchIdData = async () => {
       if (showEditForm && id) {
         try {
-          const authorDataById = await fetchAuthorsById(id);
+          const authorDataById = await fetchAuthorsById(id,token);
           setEditAuthor(authorDataById);
         } catch (error) {
           toast.error("Error fetching author data");
@@ -37,9 +39,9 @@ const Author = () => {
 
   const handleAddAuthor = async (formData) => {
     try {
-      await createAuthor(formData);
+      await createAuthor(formData,token);
       // Optionally, refetch the authors list after adding a new author
-      const updatedAuthors = await fetchAuthors();
+      const updatedAuthors = await fetchAuthors(token);
       setAuthor(updatedAuthors);
       setShowFormAuthor(false);
     } catch (error) {
@@ -50,9 +52,9 @@ const Author = () => {
 
   const handleAuthorData = async (formData) => {
     try {
-      const updateAuthorData = await updateAuthor(id, formData);
+      const updateAuthorData = await updateAuthor(id, formData,token);
       setEditAuthor(updateAuthorData)
-      const updatedAuthor = await fetchAuthors();
+      const updatedAuthor = await fetchAuthors(token);
       setAuthor(updatedAuthor);
       setShowEditForm(false)
     } catch (error) {
@@ -65,9 +67,9 @@ const Author = () => {
     const confirmDelete = window.confirm("Are you sure you want to delete this author?");
     if (confirmDelete) {
       try {
-        await deleteAuthor(authorId);
+        await deleteAuthor(authorId,token);
         toast.success("Author deleted successfully");
-        const updatedAuthor = await fetchAuthors();
+        const updatedAuthor = await fetchAuthors(token);
         setAuthor(updatedAuthor);
       } catch (error) {
         toast.error("Error deleting Author");

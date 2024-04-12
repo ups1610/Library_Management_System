@@ -3,6 +3,7 @@ import toast from "react-hot-toast"
 import ActionTable from "../components/tabels";
 import PopupForm, { EditForm } from "../components/modals";
 import { createBooks, deleteBook, fetchAuthors, fetchBooks, fetchBooksById, fetchGenre, updateBook } from "../action/CatalogAction";
+import { useAuth } from "../context/Authetication";
 
 const Books = () => {
   const [loading, setLoading] = useState(true);
@@ -13,12 +14,13 @@ const Books = () => {
   const [showEditForm, setShowEditForm] = useState(false);
   const [editBook, setEditBook] = useState([])
   const [id,setId] =useState(null)
+  const { token } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
-      const booksData = await fetchBooks();
-      const authorDetail = await fetchAuthors();
-      const genreDetail = await fetchGenre();
+      const booksData = await fetchBooks(token);
+      const authorDetail = await fetchAuthors(token);
+      const genreDetail = await fetchGenre(token);
       setAuthor(authorDetail);
       setGenre(genreDetail);
       setBooks(booksData);
@@ -31,7 +33,7 @@ const Books = () => {
     const fetchIdData = async () => {
       if (showEditForm && id) {
         try {
-          const bookDataById = await fetchBooksById(id);
+          const bookDataById = await fetchBooksById(id, token);
           setEditBook(bookDataById);
         } catch (error) {
           toast.error("Error fetching books data");
@@ -45,9 +47,9 @@ const Books = () => {
   const handleAddBook = async (formData) => {
     try {
       formData.genre = Array.isArray(formData.genre) ? formData.genre : [formData.genre];
-      await createBooks(formData);
+      await createBooks(formData,token);
       // Optionally, refetch the authors list after adding a new author
-      const updatedBook = await fetchBooks();
+      const updatedBook = await fetchBooks(token);
       setBooks(updatedBook);
       setShowFormBook(false);
       // setSelectedData(formData)
@@ -59,9 +61,9 @@ const Books = () => {
 
   const handleBookData = async (formData) => {
     try {
-      const updateBookData = await updateBook(id, formData);
+      const updateBookData = await updateBook(id, formData, token);
       setEditBook(updateBookData)
-      const updatedBook = await fetchBooks();
+      const updatedBook = await fetchBooks(token);
       setBooks(updatedBook);
       setShowEditForm(false)
     } catch (error) {
@@ -74,9 +76,9 @@ const Books = () => {
     const confirmDelete = window.confirm("Are you sure you want to delete this book?");
     if (confirmDelete) {
       try {
-        await deleteBook(bookId);
+        await deleteBook(bookId, token);
         toast.success("Book deleted successfully");
-        const updatedBook = await fetchBooks();
+        const updatedBook = await fetchBooks(token);
         setBooks(updatedBook);
       } catch (error) {
         toast.error("Error deleting book");

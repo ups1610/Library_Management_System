@@ -1,39 +1,67 @@
-import React from "react";
-import {ResponsiveContainer, AreaChart, XAxis, YAxis, Area, Tooltip, CartesianGrid} from "recharts"
+import React, { useEffect, useState } from "react";
+import { ResponsiveContainer, LineChart, XAxis, YAxis, Line, Tooltip, CartesianGrid } from "recharts";
+import { useAuth } from "../../context/Authetication";
+import { allReturnBooks, getAllIssueBook } from "../../action/OperationsAction";
 
-const data = [
-    { "month": "January", "value": 20 },
-    { "month": "February", "value": 25 },
-    { "month": "March", "value": 15 },
-    { "month": "April", "value": 35 },
-    { "month": "May", "value": 10 }
-  ];
+const BookIssueChart = () => {
+    const [bookReturns, setBookReturns] = useState([]);
+    const [bookIssues, setBookIssues] = useState([]);
+    const { token } = useAuth();
 
+    useEffect(() => {
+        const fetchLibraryData = async () => {
+            try {
+                const bookReturnsData = await allReturnBooks(token);
+                const bookIssuesData = await getAllIssueBook(token);
+                
+                const formattedBookReturns = bookReturnsData.data.map(bookReturn => ({
+                    ...bookReturn,
+                    dateOfReturn: bookReturn.dateOfReturn.substring(0, 10)
+                }));
 
-   const TransactionCharts = () => {
+                const formattedBookIssues = bookIssuesData.data.map(bookIssue => ({
+                    ...bookIssue,
+                    dateOfIssue: bookIssue.dateOfIssue.substring(0, 10)
+                }));
+
+                setBookReturns(formattedBookReturns);
+                setBookIssues(formattedBookIssues);
+            } catch (error) {
+                console.error("Error occurred while fetching library data:", error);
+            }
+        };
+
+        fetchLibraryData();
+    }, [token]);
+
     return (
-      <div className="rounded-lg border border-gray-100 bg-white mt-4 p-4 shadow-sm">
-            <div className="flex justify-between p-2 mb-2">
-              <h2 className="text-lg text-[#8c8b8b]">Report</h2>
-             
+        <div>
+            <div className="chart-container">
+                <h2>Book Return Trend</h2>
+                <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={bookReturns}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="dateOfReturn" />
+                        <YAxis />
+                        <Tooltip />
+                        <Line type="monotone" dataKey="bookReturnId" stroke="#8884d8" activeDot={{ r: 8 }} />
+                    </LineChart>
+                </ResponsiveContainer>
             </div>
-            <ResponsiveContainer width="100%" height={250}>
-        <AreaChart data={data}>
-        <defs>
-          <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#2451B7" stopOpacity={0.4} />
-            <stop offset="75%" stopColor="#2451B7" stopOpacity={0.05} />
-          </linearGradient>
-        </defs>
-          <CartesianGrid opacity={0.1} vertical={false} />
-          <XAxis dataKey="month" axisLine={true} tickLine={true} />
-          <YAxis dataKey="value" axisLine={true} tickLine={true} tickCount={8}  />
-          <Tooltip />
-          <Area dataKey="value" stroke="#2451B7" fill="url(#color)" />
-        </AreaChart>
-      </ResponsiveContainer>
-          </div>
+            <div className="chart-container">
+                <h2>Book Issue Trend</h2>
+                <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={bookIssues}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="dateOfIssue" />
+                        <YAxis />
+                        <Tooltip />
+                        <Line type="monotone" dataKey="bookIssueId" stroke="#82ca9d" activeDot={{ r: 8 }} />
+                    </LineChart>
+                </ResponsiveContainer>
+            </div>
+        </div>
     );
-  };
-  
-  export default TransactionCharts;
+};
+
+export default BookIssueChart;
