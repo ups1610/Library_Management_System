@@ -5,6 +5,7 @@ import ActionTable from "../components/tabels";
 import { createAuthor, deleteAuthor, fetchAuthors, fetchAuthorsById, updateAuthor } from "../action/CatalogAction";
 
 const Author = () => {
+  const [loading, setLoading] = useState(true);
   const [showFormAuthor, setShowFormAuthor] = useState(false);
   const [author, setAuthor] = useState([]);
   const [showEditForm, setShowEditForm] = useState(false);
@@ -15,6 +16,7 @@ const Author = () => {
       const fetchData = async () => {
         const authorData = await fetchAuthors();
         setAuthor(authorData)
+        setLoading(false);
       } 
       fetchData()
   },[])
@@ -151,6 +153,7 @@ const Author = () => {
         data4="dob"
         onDelete={handleDeleteAuthor}
         onEdit={handleEditAuthor}
+        load = {loading}
       />
     </>
   );
