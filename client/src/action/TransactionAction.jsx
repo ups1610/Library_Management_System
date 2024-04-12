@@ -37,3 +37,36 @@ export const getAllTransaction=(token)=>{
     });
 }
 
+
+
+export const getTodayTransaction=(token)=>{
+  
+    return axios.get(url + '/today',{
+        headers: {
+            'token':token,
+            'Content-Type': 'application/json',
+        }
+    })
+    .then((resp) => {
+        console.log(resp)
+        if (resp.status === 200) {
+            return {
+                success: true,
+                data: resp.data
+            };
+        } else {
+            return {
+                success: false,
+                data: 'Invalid Request.'
+            };
+        }
+    })
+    .catch((err) => {
+        console.error('Something went wrong: ', err);
+        return {
+            success: false,
+            data: err.message
+        };
+    });
+}
+

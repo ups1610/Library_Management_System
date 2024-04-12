@@ -1,6 +1,36 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { TbCalendarDue } from "react-icons/tb";
+import { useAuth } from '../../context/Authetication';
+import { getAllIssueBook } from '../../action/OperationsAction';
 export const DueReturnCard = () => {
+
+  const [dueReturn, setDueRetrun] = useState(0);
+  const { token } = useAuth();
+
+  useEffect(() => {
+    const fetchIssuedBooks = async () => {
+      try {
+        const response = await getAllIssueBook(token);
+        if (response.success) {
+          const today = new Date();
+          const returnBooks = response.data.filter(book => {
+
+            const returnDate = new Date(book.dateOfReturn);
+           return  book.isReturn === "No" && today>=returnDate
+
+          }).length;
+          setDueRetrun(returnBooks);
+        } else {
+          console.error('Failed to fetch issued books:', response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching issued books:', error);
+      }
+    };
+
+    fetchIssuedBooks();
+  }, [token]);
+
   return (
     <article
         
@@ -12,9 +42,9 @@ export const DueReturnCard = () => {
       </span>
       <div className="flex flex-col ml-2">
         {/* Title */}
-        <h2 className="text-lg font-bold">Pending Return</h2>
+        <h2 className="text-lg font-bold">Due Return</h2>
         {/* Value */}
-        <p className="text-gray-500">133</p>
+        <p className="text-gray-500">{dueReturn}</p>
       </div>
     </div>
   </article>

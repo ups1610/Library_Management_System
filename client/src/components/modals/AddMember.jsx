@@ -246,6 +246,7 @@ const AddMember = () => {
                                 Pincode
                             </label>
                             <input
+                                type="number"
                                 name="currentAddress.pincode"
                                 value={member.currentAddress.pincode}
                                 onChange={handleAddressChange}
