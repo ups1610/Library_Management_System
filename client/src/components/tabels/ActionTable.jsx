@@ -114,9 +114,9 @@ function ActionTable(props) {
 
               <tbody className="divide-y divide-gray-200">
               {props.load ? (
-                  <div>Loading...</div>
+                  <div className="text-center">Loading...</div>
                 ) : props.mapData.length === 0 ? (
-                  <div>No records found</div>)
+                  <div className="text-center">No records found</div>)
                   : (
                 props.mapData.map((item) => (
 
