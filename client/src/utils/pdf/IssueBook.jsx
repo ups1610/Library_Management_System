@@ -94,7 +94,9 @@ const IssueBookPDF = ({ issueBooks,username }) => (
           {issueBooks  && issueBooks.map((issueBook, index) => (
             <View style={styles.tableRow} key={index}>
                    <Text style={styles.CellCounter}>{index+1}</Text>
-              <Text style={styles.tableCell}>{issueBook.book.title}</Text>
+     
+              <Text style={styles.tableCell}>  {issueBook.bookInstance.book.title}</Text>
+              <Text style={styles.tableCell}>     {issueBook.bookInstance.id}</Text>
               <Text style={styles.tableCell}>{issueBook.memberName}</Text>
               <Text style={styles.tableCell}>{  new Date(issueBook.dateOfIssue).getDate()/ new Date(issueBook.dateOfIssue).getMonth()+1/ new Date(issueBook.dateOfIssue).getFullYear() }</Text>
               <Text style={styles.tableCell}>{  new Date(issueBook.dateOfReturn).getDate()/ new Date(issueBook.dateOfReturn).getMonth()+1/ new Date(issueBook.dateOfReturn).getFullYear() }</Text>

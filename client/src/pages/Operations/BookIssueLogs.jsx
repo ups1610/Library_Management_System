@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { MdOutlineLibraryAdd } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/Authetication";
-import { AiOutlineFilePdf } from "react-icons/ai";
+
 import { PiKeyReturnLight } from "react-icons/pi";
 import { FaRegEye } from "react-icons/fa";
 import ReturnBook from "../../components/bookLog/ReturnBook";
@@ -121,7 +121,7 @@ function BookIssueLogs() {
           </div>
         </div>
         <div className="flex flex-col sm:flex-row justify-end">
-        <PDFDownloadLink   className="border-2 text-sm px-2 py-1.5 rounded-lg flex items-center" document={<IssueBookPDF issueBooks={issueBooks} username={user.userName}/>}  fileName="bookIssueData.pdf">
+        <PDFDownloadLink   className="border-2 text-sm px-2 py-1.5 rounded-lg flex items-center" document={<IssueBookPDF issueBooks={filteredIssueBooks} username={user.userName}/>}  fileName="bookIssueData.pdf">
   {({ loading }) => (loading ? "Loading..." : <><BsFileEarmarkPdf /> Download PDF</>)}
 </PDFDownloadLink>
        

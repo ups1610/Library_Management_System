@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import MemberAction from '../../action/MemberAction';
 import { useAuth } from '../../context/Authetication';
-import UpdateMember from '../modals/UpdateMember';
-import AddMembership from '../modals/AddMembership';
+import UpdateMember from '../Membership/UpdateMember';
+import AddMembership from '../Membership/AddMembership';
 
 function MemberInfoPage() {
     const { id } = useParams();

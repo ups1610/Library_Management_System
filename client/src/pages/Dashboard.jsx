@@ -20,6 +20,9 @@ import {
   TransactionCharts,
 } from "../components/charts";
 import { NewMembers, RecentBookTable, RecentTransactionTable, UsersTable } from "../components/tabels";
+import { MemberTable } from "../components/tabels/MemberTable";
+import { DueReturnTable } from "../components/tabels/DueReturnTable";
+
 
 function Dashboard() {
   const auth = useAuth();
@@ -87,6 +90,7 @@ function Dashboard() {
 
               <LibrarianProtectedRoute>
                <RecentBookTable/>
+               <MemberTable/>
               </LibrarianProtectedRoute>
 
               <AccountantProtectedRoute>
@@ -95,13 +99,16 @@ function Dashboard() {
             </div>
             <div className="w-full mt-5 rounded-lg border border-gray-100  p-4 shadow-sm">
               <AdminProtectedRoute>
+              <MemberTable/>
+                <DueReturnTable/>
               <RecentTransactionTable/>
+              
               </AdminProtectedRoute>
 
               <CatalogerProtectedRoute></CatalogerProtectedRoute>
 
               <LibrarianProtectedRoute>
-                <NewMembers/>
+              <DueReturnTable/>
               </LibrarianProtectedRoute>
 
               <AccountantProtectedRoute>

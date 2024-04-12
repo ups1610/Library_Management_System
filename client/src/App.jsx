@@ -7,17 +7,18 @@ import InfoView  from "./components/view/InfoView";
 import Users from "./pages/Users/Users";
 import AuthenticationProvider from "./context";
 import ProtectedRoute from "./auth/ProtectedRoute";
-import MemberTable from "./components/tabels/MemberTable";
+
 import View from "./pages/Users/View";
 
 import {View as BookView} from "./pages/Operations/View";
 import  BookIssueLogs  from "./pages/Operations/BookIssueLogs";
 import { IssueBook } from "./pages/Operations/IssueBook";
-import ViewMembershipPlan from "./components/modals/ViewMembershipPlan";
+import ViewMembershipPlan from "./components/Membership/ViewMembershipPlan";
 
-import AddMember from "./components/modals/AddMember";
+import AddMember from "./components/Membership/AddMember";
 import TransactionLogs from "./pages/Transaction/TransactionLogs";
 import MemberInfoPage from "./components/view/MemberInfoPage";
+import Members from "./pages/Membership/Members";
 
 function App() {
   return (
@@ -39,7 +40,7 @@ function App() {
           <Route path="operation/BookLog/Issue" element={<IssueBook/>} />
           <Route path="operation/BookLog/:id/view" element={<BookView/>} />
           
-          <Route path="member/MemberTable" element={<MemberTable/>} />
+          <Route path="members" element={<Members/>} />
           <Route path="member/MemberTable/:id/info" element={<MemberInfoPage/>} />
           <Route path="member/MemberTable/add" element={<AddMember/>} />
           <Route path="member/membership" element={<ViewMembershipPlan/>} />
