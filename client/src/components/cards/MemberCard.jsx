@@ -1,6 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoIosPeople } from "react-icons/io";
+import MemberAction from '../../action/MemberAction';
+import { useAuth } from '../../context/Authetication';
 export const MemberCard = () => {
+const [members,setMember]=useState([]);
+
+      const {token}=useAuth();
+  useEffect(() => {
+    
+    const fetchData = async () => {
+
+       MemberAction.getAllMembers(token)
+       .then((resp)=>{
+              setMember(resp.data);
+       })
+       .catch((err)=>{
+        console.log("Failed"+err)
+       });
+    }
+
+    fetchData();
+  }, []);
+
   return (
     <article
         
@@ -14,7 +35,7 @@ export const MemberCard = () => {
         {/* Title */}
         <h2 className="text-lg font-bold">Total Members</h2>
         {/* Value */}
-        <p className="text-gray-500">133</p>
+        <p className="text-gray-500">{members.length }</p>
       </div>
     </div>
   </article>

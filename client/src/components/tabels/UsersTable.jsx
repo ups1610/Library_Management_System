@@ -29,7 +29,7 @@ export const UsersTable = () => {
     };
 
     fetchData();
-  }, );
+  },[] );
 
   
   return (

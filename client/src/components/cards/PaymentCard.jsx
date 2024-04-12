@@ -1,6 +1,37 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaMoneyBillWave } from "react-icons/fa";
+import { getTodayTransaction } from '../../action/TransactionAction';
+import { useAuth } from '../../context/Authetication';
+
 export const PaymentCard = () => {
+    const [totalCollection,setTotal]=useState(0);
+
+
+    const {token}=useAuth();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+     
+        const response = await getTodayTransaction(token);
+        if (response.success) {
+          
+            response.data.map((transaction)=>{
+              setTotal(totalCollection+transaction.amount);
+            })
+        } else {
+          console.error('Failed to fetch user data:', response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
+
   return (
     <article
         
@@ -14,7 +45,7 @@ export const PaymentCard = () => {
         {/* Title */}
         <h2 className="text-lg font-bold">Today Collection</h2>
         {/* Value */}
-        <p className="text-gray-500">133</p>
+        <p className="text-gray-500">{totalCollection}</p>
       </div>
     </div>
   </article>

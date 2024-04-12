@@ -12,7 +12,7 @@ export const useAuth = () => {
 };
 
 const AuthenticationProvider = ({ children }) => {
-  const [user, setUser] = useState({role:"ROLE_ADMIN"});
+  const [user, setUser] = useState({});
   const [token, setToken] = useState(null);
   const [isAuthenticated, setAuthenticated] = useState(false);
   const navigate = useNavigate();
@@ -48,7 +48,6 @@ const AuthenticationProvider = ({ children }) => {
       .catch((error) => {
         toast.error(error.message);
         if (error.resp && error.status === 401) {
-          
           return {
             success: false,
             data: "Bad credentials. Please check your username and password.",
@@ -64,17 +63,44 @@ const AuthenticationProvider = ({ children }) => {
   };
 
   const signOut = async () => {
-    // const resp= await logout();
-    // if(resp.success===true){
-    //     localStorage.removeItem('token')
-    //     setUser(null)
-    //     setToken(null)
-    //     window.location.href="/"
-    // }
+    axios
+      .get(url + "/auth/logout", {
+        headers: {
+          token: token,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((resp) => {
+        if (resp.status === 200) {
+          setUser({});
+          setToken(false);
+          setAuthenticated(false);
+
+          toast.success("Logout Successfully!")
+          navigate("/");
+        } else {
+          console.log(resp);
+        }
+      })
+      .catch((err) => {
+        console.error("Something went wrong: ", err);
+          toast.error("Failed to logout. Try later on");
+      });
   };
 
   return (
-    <AuthenticationContext.Provider value={{ signUp, token, setToken, setUser, user, signOut, isAuthenticated, setAuthenticated }}>
+    <AuthenticationContext.Provider
+      value={{
+        signUp,
+        token,
+        setToken,
+        setUser,
+        user,
+        signOut,
+        isAuthenticated,
+        setAuthenticated,
+      }}
+    >
       {children}
     </AuthenticationContext.Provider>
   );

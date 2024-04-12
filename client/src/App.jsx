@@ -24,7 +24,7 @@ function App() {
       <AuthenticationProvider>
       <Routes>
         <Route index path="/" element={<Landing />} />
-        {/* <Route element={<ProtectedRoute />}> */}
+        <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<Layout />}>
           <Route index element={<Dashboard/>}/>
           <Route path="catalog/books"  element={<Books/>}/>
@@ -45,7 +45,7 @@ function App() {
           <Route path="transactions" element={<TransactionLogs/>} />
           <Route path="catalog/:name/view/:id" element={<InfoView/>}/>
         </Route>
-        {/* </Route> */}
+        </Route>
       </Routes>
       </AuthenticationProvider>
     </Router>

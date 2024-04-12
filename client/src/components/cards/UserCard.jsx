@@ -1,6 +1,38 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { RiAdminFill } from "react-icons/ri";
+import { useAuth } from '../../context/Authetication';
+import { users } from '../../action/UserAction';
 export const UserCard = () => {
+  const [usersData, setUsersData] = useState([]);
+  const {token}=useAuth();
+
+
+  const activeUsers = usersData.filter(user => user.status === 'active');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+     
+        const response = await users(token);
+        if (response.success) {
+          setUsersData(response.data);
+        } else {
+          console.error('Failed to fetch user data:', response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
+ 
+
+
+
+
   return (
     <article
         
@@ -14,7 +46,7 @@ export const UserCard = () => {
         {/* Title */}
         <h2 className="text-lg font-bold"> Total Users</h2>
         {/* Value */}
-        <p className="text-gray-500">133</p>
+        <p className="text-gray-500">{activeUsers.length} </p>
       </div>
     </div>
   </article>

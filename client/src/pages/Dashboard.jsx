@@ -33,11 +33,16 @@ function Dashboard() {
         <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           <AdminProtectedRoute>
             <UserCard />
+            <BookCard />
+            <MemberCard />
+            <BookIssueCard />
+            <DueReturnCard />
+            <PaymentCard />
           </AdminProtectedRoute>
 
           <CatalogerProtectedRoute>
             <BookCard />
-            <BookIssueCard />
+           
           </CatalogerProtectedRoute>
 
           <LibrarianProtectedRoute>
@@ -51,7 +56,11 @@ function Dashboard() {
           </AccountantProtectedRoute>
         </div>
         <div className="mt-5 rounded-lg">
-          <AdminProtectedRoute></AdminProtectedRoute>
+          <AdminProtectedRoute>
+          <BookIssueChart />
+            <MembersChart />
+            <TransactionCharts />
+          </AdminProtectedRoute>
 
           <CatalogerProtectedRoute></CatalogerProtectedRoute>
 
@@ -68,6 +77,7 @@ function Dashboard() {
             <div className="w-full mt-5 rounded-lg border border-gray-100 p-4 shadow-sm">
               <AdminProtectedRoute>
                 <UsersTable/>
+                <RecentBookTable/>
               </AdminProtectedRoute>
 
               <CatalogerProtectedRoute>
@@ -83,7 +93,9 @@ function Dashboard() {
               </AccountantProtectedRoute>
             </div>
             <div className="w-full mt-5 rounded-lg border border-gray-100  p-4 shadow-sm">
-              <AdminProtectedRoute></AdminProtectedRoute>
+              <AdminProtectedRoute>
+              <RecentTransactionTable/>
+              </AdminProtectedRoute>
 
               <CatalogerProtectedRoute></CatalogerProtectedRoute>
 
