@@ -6,13 +6,13 @@ import userImg from "../../assets/user.png";
 import { Link } from "react-router-dom";
 import { users } from "../../action/UserAction";
 import { useAuth } from "../../context/Authetication";
-import UserPDF from "../../utils/pdf/PDF";
+import UserPDF from "../../utils/pdf/Users";
 
 import { PDFDownloadLink } from "@react-pdf/renderer";
 
 function Users() {
-  const auth = useAuth();
-  const token = auth.token;
+  const {user,token} = useAuth();
+
   const [showAddUserModel, setAddUserModal] = useState(false);
   const [userData, setUserData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -87,12 +87,11 @@ function Users() {
           </div>
         </div>
         <div className="flex flex-col sm:flex-row justify-end">
-        <button className="border-2 text-sm px-2 py-1.5 mr-2 rounded-lg flex items-center">
-        <PDFDownloadLink document={<UserPDF userData={userData} />} fileName="users.pdf">
-          {({ loading }) => (loading ? "Loading..." : <BsFileEarmarkPdf />)}
-        </PDFDownloadLink>
-        Download PDF
-      </button>
+     
+        <PDFDownloadLink   className="border-2 text-sm px-2 py-1.5 rounded-lg flex items-center" document={<UserPDF userData={filteredUsers} username={user.userName}/>}  fileName="users.pdf">
+  {({ loading }) => (loading ? "Loading..." : <><BsFileEarmarkPdf /> Download PDF</>)}
+</PDFDownloadLink>
+       
           <button
             className="border-2 text-sm px-2 py-1.5 rounded-lg flex items-center"
             onClick={() => setAddUserModal(true)}

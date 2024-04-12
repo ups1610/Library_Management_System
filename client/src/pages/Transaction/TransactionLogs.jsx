@@ -5,6 +5,9 @@ import { MdFilterAltOff } from "react-icons/md";
 
 import { useAuth } from "../../context/Authetication";
 import { getAllTransaction } from "../../action/TransactionAction";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import TransactionPDF from "../../utils/pdf/Transaction";
+import { BsFileEarmarkPdf } from "react-icons/bs";
 // import Filter from "../../components/transaction/Filter";
 
 function TransactionLogs() {
@@ -12,7 +15,7 @@ function TransactionLogs() {
   const [originalTransactions, setOriginalTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterModel, setFilterModel] = useState(false);
-  const { token } = useAuth();
+  const { token,user } = useAuth();
 
   useEffect(() => {
     fetchTransactions();
@@ -67,11 +70,24 @@ function TransactionLogs() {
 
   const handleSearch = (e) => {
     const searchValue = e.target.value.toLowerCase();
-    const filteredTransactions = originalTransactions.filter((transaction) =>
-      transaction.member.toLowerCase().includes(searchValue)
-    );
+  
+   
+    const filteredTransactions = originalTransactions.filter((transaction) => {
+    
+      const transactionValues = Object.values(transaction).map(value =>
+        typeof value === 'string' ? value.toLowerCase() : value
+      );
+  
+  
+      return transactionValues.some(value =>
+        typeof value === 'string' && value.includes(searchValue)
+      );
+    });
+  
+ 
     setTransactions(filteredTransactions);
   };
+  
 
   const resetFilters = () => {
     setTransactions(originalTransactions);
@@ -123,9 +139,9 @@ function TransactionLogs() {
           </div>
         </div>
         <div className="flex flex-col sm:flex-row justify-end">
-          <button className="border-2 text-sm px-2 py-1.5 mr-2 rounded-lg flex items-center">
-            <AiOutlineFilePdf /> Downlaod Pdf
-          </button>
+        <PDFDownloadLink   className="border-2 text-sm px-2 py-1.5 rounded-lg flex items-center" document={<TransactionPDF transactions={transactions} username={user.userName}/>}  fileName="transactions.pdf">
+  {({ loading }) => (loading ? "Loading..." : <><BsFileEarmarkPdf /> Download PDF</>)}
+</PDFDownloadLink>
         </div>
       </div>
 
@@ -160,8 +176,9 @@ function TransactionLogs() {
             ) : (
               transactions.map((transaction, index) => (
                 <tr key={transaction.transactionId}>
-                  <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">{transaction.transactionId}</td>
-                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">{new Date(transaction.date).getUTCDate()}</td>
+                    <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">{index+1}</td>
+                  <td className="whitespace-nowrap px-4 py-2  text-gray-900">{transaction.transactionId}</td>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">{transaction.date}</td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700">{transaction.member}</td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700">{transaction.mode}</td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700">{transaction.amount}</td>
