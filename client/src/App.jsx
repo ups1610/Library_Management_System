@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./shared";
@@ -17,6 +17,7 @@ import ViewMembershipPlan from "./components/modals/ViewMembershipPlan";
 
 import AddMember from "./components/modals/AddMember";
 import TransactionLogs from "./pages/Transaction/TransactionLogs";
+import MemberInfoPage from "./components/view/MemberInfoPage";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path="operation/BookLog/:id/view" element={<BookView/>} />
           
           <Route path="member/MemberTable" element={<MemberTable/>} />
+          <Route path="member/MemberTable/:id/info" element={<MemberInfoPage/>} />
           <Route path="member/MemberTable/add" element={<AddMember/>} />
           <Route path="member/membership" element={<ViewMembershipPlan/>} />
 

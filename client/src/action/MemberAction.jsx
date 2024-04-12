@@ -84,6 +84,14 @@ class MemberAction {
 
     return axios.get(`${MEMBERSHIP_API_BASE_URL}/${id}`, { headers });
   }
+  getMemberPlanById(id, token) {
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    };
+
+    return axios.get(`http://localhost:8088/membershipService/membership-plans/${id}`, { headers });
+  }
 
 
   updateMember(member, id, token) {

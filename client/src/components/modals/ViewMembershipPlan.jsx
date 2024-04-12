@@ -6,27 +6,39 @@ import { MdOutlineLibraryAdd } from "react-icons/md";
 import MembershipPlan from './MembershipPlan';
 import { useAuth } from '../../context/Authetication';
 
-function ViewMembershipPlan({ onClose }) {
+function ViewMembershipPlan() {
     const { token } = useAuth();
     const [loading, setLoading] = useState(true);
     const [plans, setPlans] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [showModall, setShowModall] = useState(false);
     const [selectedPlan, setSelectedPlan] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [searchQuery]);
 
     const fetchData = async () => {
         setLoading(true);
         try {
-            const response = await MemberAction.getAllMemberPlans(token);
-            setPlans(response.data)
+            if (searchQuery) {
+                const response = await MemberAction.getMemberPlanById(searchQuery, token);
+                console.log(response)
+                if (response.data) {
+                    setPlans([response.data]);
+                } else {
+                    setPlans([]); 
+                }
+            } else {
+                const response = await MemberAction.getAllMemberPlans(token);
+                setPlans(response.data);
+                
+            }
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-        setLoading(false)
-    }
+        setLoading(false);
+    };
     const deletePlan = (e, id) => {
         e.preventDefault();
         MemberAction.deletePlan(id, token).then((res) => {
@@ -60,6 +72,10 @@ function ViewMembershipPlan({ onClose }) {
                 console.log(error);
             });
     };
+    const handleSearchInputChange = (e) => {
+        setSearchQuery(e.target.value);
+        console.log(searchQuery)
+    };
 
     return (
 
@@ -68,19 +84,19 @@ function ViewMembershipPlan({ onClose }) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center mb-5">
                     <div className="flex flex-col sm:flex-row gap-2">
                         <select className="border-2 px-4 py-2 rounded-lg border-gray-300 text-gray-700 sm:text-sm">
-                            <option value="">Filter</option>
-                            <option value="option1">Option 1</option>
-                            <option value="option2">Option 2</option>
+                            <option value="">All</option>
                         </select>
                         <div className="relative w-full">
                             <label htmlFor="search" className="sr-only">
-                                Search
+                                Membership Plan
                             </label>
                             <input
                                 type="text"
                                 id="search"
-                                placeholder="Search for..."
+                                placeholder="Search for Membership Plan ID"
                                 className="border-2 px-2 w-full rounded-md border-gray-200 py-2.5 pe-10 shadow-sm sm:text-sm"
+                                value={searchQuery}
+                                onChange={handleSearchInputChange}
                             />
                             <span className="absolute inset-y-0 end-0 grid w-10 place-content-center">
                                 <button
@@ -126,6 +142,9 @@ function ViewMembershipPlan({ onClose }) {
                                 #
                             </th>
                             <th className="text-left whitespace-nowrap px-4 py-2 font-medium text-white">
+                                Membership Plan Id
+                            </th>
+                            <th className="text-left whitespace-nowrap px-4 py-2 font-medium text-white">
                                 Membership Plan Name
                             </th>
                             <th className="text-left whitespace-nowrap px-4 py-2 font-medium text-white">
@@ -154,8 +173,11 @@ function ViewMembershipPlan({ onClose }) {
                    No records available.
                  </td>
                </tr>
-              ):( plans.map((plan) => (
-                                <tr>
+              ):( plans.map((plan, index) => (
+                                <tr  key={index}>
+                                    
+                                    <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">{index+1}</td>
+                                    <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">{plan.id}</td>
                                     <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">{plan.planName}</td>
                                     <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">{plan.description}</td>
                                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">$ {plan.price}</td>
@@ -180,11 +202,6 @@ function ViewMembershipPlan({ onClose }) {
                 </table>
             </div>
             {showModal && <UpdatePlan onClose={() => setShowModal(false)} plan={selectedPlan} updatePlan={updatePlan} />}
-            <div className="rounded-b-lg border-t border-gray-200 px-4 py-2">
-                <ol className="flex justify-end gap-1 text-xs font-medium">
-                    {/* pagination  */}
-                </ol>
-            </div>
         </div>
 
     )

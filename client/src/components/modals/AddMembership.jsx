@@ -66,16 +66,20 @@ function AddMembership({ selectedMember, onClose, fetchMembershipStatus }) {
                     </div>
                     <div className="flex flex-col mb-4">
                         <label className="text-sm font-semibold text-gray-600 mb-1">
-                            Mode of Payment :
+                            Mode of Payment:
                         </label>
-                        <input
-                            type="text"
+                        <select
                             name="modeOfPayment"
                             value={membershipData.modeOfPayment}
                             onChange={handleChange}
                             className="border rounded px-3 py-2"
-                        />
+                        >
+                            <option value="">Select Mode of Payment</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Online">Online</option>
+                        </select>
                     </div>
+
                     <div className="flex flex-col mb-4">
                         <label className="text-sm font-semibold text-gray-600 mb-1">
                             Membership Plan Id :
