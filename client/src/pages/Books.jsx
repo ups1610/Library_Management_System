@@ -5,6 +5,7 @@ import PopupForm, { EditForm } from "../components/modals";
 import { createBooks, deleteBook, fetchAuthors, fetchBooks, fetchBooksById, fetchGenre, updateBook } from "../action/CatalogAction";
 
 const Books = () => {
+  const [loading, setLoading] = useState(true);
   const [showFormBook, setShowFormBook] = useState(false);
   const [books, setBooks] = useState([]);
   const [author, setAuthor] = useState([]);
@@ -21,6 +22,7 @@ const Books = () => {
       setAuthor(authorDetail);
       setGenre(genreDetail);
       setBooks(booksData);
+      setLoading(false);
     };
     fetchData();
   }, []);
@@ -97,6 +99,7 @@ const Books = () => {
       toast.error("Error in updating book")
     }
   }
+
   
   return (
     <>
@@ -161,6 +164,7 @@ const Books = () => {
         data4={"genre"}
         onDelete={handleDeleteBook}
         onEdit={handleEditBook}
+        load = {loading}
       />
     </>
   );

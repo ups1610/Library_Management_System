@@ -68,7 +68,7 @@ export const DASHBOARD_SIDEBAR_BOTTOM_LINKS = [
 	}
 ]
 
-export const SUB_MENU_ITEMS = [
+export const SUB_MENU_CATALOG_ITEMS = [
     {
       key: "books",
       label: "Books",
@@ -92,7 +92,10 @@ export const SUB_MENU_ITEMS = [
       label: "BookShelf",
       path: "/dashboard/catalog/bookshelf",
       icon: <BsBookshelf />,
-    },
+    }
+  ];
+
+  export const SUB_MENU_MEMBER_ITEMS = [
 	{
 		key: 'member',
 		label: 'Membership',
@@ -107,4 +110,6 @@ export const SUB_MENU_ITEMS = [
 		role:"ROLE_LIBRARIAN",
 		icon: <IoAccessibilityOutline />
 	}
-  ];
+  ];  
+
+  

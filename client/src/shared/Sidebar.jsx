@@ -7,7 +7,8 @@ import { HiOutlineChevronDown, HiOutlineChevronRight } from "react-icons/hi";
 import {
   DASHBOARD_SIDEBAR_LINKS,
   DASHBOARD_SIDEBAR_BOTTOM_LINKS,
-  SUB_MENU_ITEMS,
+  SUB_MENU_CATALOG_ITEMS,
+  SUB_MENU_MEMBER_ITEMS
 } from "../utils/constants/SidebarData";
 import { useAuth } from "../context/Authetication";
 
@@ -84,7 +85,7 @@ export default function Sidebar({ activePath }) {
                       transition: "max-height 0.3s ease-in-out",
                     }}
                   >
-                    {SUB_MENU_ITEMS.map((subMenuItem) => (
+                    {SUB_MENU_CATALOG_ITEMS.map((subMenuItem) => (
                       <SidebarLink
                         key={subMenuItem.key}
                         link={subMenuItem}
@@ -123,7 +124,7 @@ export default function Sidebar({ activePath }) {
                     }}
                   >
                     {/* Submenu items for Member */}
-                    {SUB_MENU_ITEMS.filter((subMenuItem) => subMenuItem.key.startsWith("member")).map((filteredItem) => (
+                    {SUB_MENU_MEMBER_ITEMS.filter((subMenuItem) => subMenuItem.key.startsWith("member")).map((filteredItem) => (
                       <SidebarLink
                         key={filteredItem.key}
                         link={filteredItem}

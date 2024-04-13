@@ -5,6 +5,7 @@ import ActionTable from "../components/tabels";
 import { createGenre, deleteGenre, fetchGenre, fetchGenreById, updateGenre } from "../action/CatalogAction";
 
 const Genre = () => {
+  const [loading, setLoading] = useState(true);
   const [showFormGenere, setShowFormGenere] = useState(false);
   const [genre, setGenre] = useState([]);
   const [showEditForm, setShowEditForm] = useState(false);
@@ -15,6 +16,7 @@ const Genre = () => {
     const fetchData = async () => {
       const booksData = await fetchGenre();
       setGenre(booksData);
+      setLoading(false);
     };
     fetchData();
   }, []);
@@ -132,6 +134,7 @@ const Genre = () => {
         onDelete={handleDeleteGenre}
         onEdit={handleEditGenre}
         path="/dashboard/catalog/genre/view"
+        load = {loading}
       />
     </>
   );

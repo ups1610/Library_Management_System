@@ -5,6 +5,7 @@ import PopupForm, { EditForm } from "../components/modals";
 import { createBookshelf, deleteBookshelf, fetchBookshelf, fetchBookshelfById, updateBookshelf } from "../action/CatalogAction";
 
 const Bookshelf = () => {
+  const [loading, setLoading] = useState(true);
   const [showFormBookshelf, setShowFormBookshelf] = useState(false);
   const [bookshelf, setBookshelf] = useState([]);
   const [showEditForm, setShowEditForm] = useState(false);
@@ -15,6 +16,7 @@ const Bookshelf = () => {
     const fetchData = async () => {
       const booksData = await fetchBookshelf();
       setBookshelf(booksData);
+      setLoading(false);
     };
     fetchData();
   }, []);
@@ -152,6 +154,7 @@ const Bookshelf = () => {
         data4="capacity"
         onDelete={handleDeleteBookshelf}
         onEdit={handleEditBookshelf}
+        load = {loading}
       />
     </>
   );
