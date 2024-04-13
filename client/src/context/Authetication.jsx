@@ -39,7 +39,10 @@ const AuthenticationProvider = ({ children }) => {
           setUser(resp.data);
           toast.success("Login Success. Redirecting...");
           if (resp.data.token) {
+          setTimeout(()=>{
             navigate("/dashboard");
+          },1000)  
+            
           }
         } else {
           toast.error(resp.data.error);
