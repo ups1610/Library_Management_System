@@ -23,7 +23,7 @@ const auth = useAuth();
             <Menu.Button className="ml-2  flex text-sm   rounded-full   ">
               <div className="flex items-center">
                 <img src={user} className="mr-2 w-[30px] h-[30px]" alt="user" />
-                <p className="text-left">Sagar</p>
+                <p className="text-left">{auth.user.userName}</p>
               </div>
             </Menu.Button>
           </div>
