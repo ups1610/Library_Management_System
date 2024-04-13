@@ -1,26 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/Authetication";
 import { calculateFine, returnBook } from "../../action/OperationsAction";
-
+import toast from "react-hot-toast"
 function ReturnBook({ onClose, issueId, bookTitle }) {
   const [isFineWaived, setIsFineWaived] = useState(false);
   const [fine, setFine] = useState(0);
   const { token, user } = useAuth();
 
+
+  const fetchData=async()=>{
+    const response=  await calculateFine(issueId, token)
+    console.log(response);
+       if (response.success) {
+         setFine(response.data);
+       } else {
+           toast.error(response.data);
+       }
+  }
+
   useEffect(() => {
-    console.log("-----", issueId);
-    calculateFine(issueId, token)
-      .then((response) => {
-        console.log(response, issueId);
-        if (response.success) {
-          setFine(response.data);
-        } else {
-          console.error("Failed to calculate fine:", response.data);
-        }
-      })
-      .catch((error) => {
-        console.error("Error calculating fine:", error);
-      });
+    fetchData();
+  
+   
+    
   }, [issueId, token]);
 
   const handleFormSubmit = async (event) => {
@@ -34,17 +36,15 @@ function ReturnBook({ onClose, issueId, bookTitle }) {
       collectBy: user.userId, 
     };
 
-    try {
-      const response = await returnBook(returnData, token);
+  
+      const response =returnBook(returnData, token);
       if (response.success) {
         console.log("Book returned successfully:", response.data);
         onClose(); 
       } else {
-        console.error("Failed to return book:", response.data);
+        toast.error(response.date);
       }
-    } catch (error) {
-      console.error("Error returning book:", error);
-    }
+   
   };
 
   const todayDate = new Date().toISOString().split("T")[0];

@@ -46,6 +46,7 @@ const BookIssueChart = () => {
 
                     setBookIssues(chartData);
                 } else {
+                    
                     console.error('Error fetching book issues:', response.data);
                 }
             } catch (error) {

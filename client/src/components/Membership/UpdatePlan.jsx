@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { X } from 'lucide-react'
-
+import toast from "react-hot-toast"
 function UpdatePlan({ onClose, plan, updatePlan }) {
     const [updatedPlan, setUpdatedPlan] = useState(plan);
     const handleChange = (e) => {
@@ -12,8 +12,15 @@ function UpdatePlan({ onClose, plan, updatePlan }) {
     };
     const handleSubmit = (e) => {
         e.preventDefault();
-        updatePlan(updatedPlan);
-        onClose();
+        updatePlan(updatedPlan)
+        .then((resp)=>{
+            if(resp.success){
+                onClose();
+            }else{
+                toast.error(resp.data);
+            }
+        })
+     
     };
     return (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">

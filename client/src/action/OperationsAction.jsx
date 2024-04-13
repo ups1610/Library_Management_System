@@ -1,453 +1,411 @@
-import axios from 'axios';
-import { useAuth } from '../context/Authetication';
+import axios from "axios";
+import { useAuth } from "../context/Authetication";
+import toast from "react-hot-toast";
+const url = "http://localhost:8088/library";
 
-
-const url = 'http://localhost:8088/library';
-
-
-
-export const issueBook=(book,token)=>{
-  
-    return axios.post(url + '/books/issue', book,{
-        headers: {
-            'token':token,
-            'Content-Type': 'application/json',
-        }
+export const issueBook = (book, token) => {
+  return axios
+    .post(url + "/books/issue", book, {
+      headers: {
+        token: token,
+        "Content-Type": "application/json",
+      },
     })
     .then((resp) => {
-        console.log(resp)
-        if (resp.status === 201) {
-            return {
-                success: true,
-                data: resp.data
-            };
-        } else {
-            return {
-                success: false,
-                data: 'Invalid Request.'
-            };
-        }
+      return {
+        success: true,
+        data: resp.data,
+      };
     })
     .catch((err) => {
-        console.error('Something went wrong: ', err);
+      if (err.response) {
         return {
-            success: false,
-            data: err.message
+          success: false,
+          data: err.response.data.error,
         };
+      } else {
+        return {
+          success: false,
+          data: "Something Went wrong. Try later!",
+        };
+      }
     });
-}
+};
 
-
-
-export const returnBook=(book,token)=>{
-  
-    return axios.post(url + '/books/return', book,{
-        headers: {
-            'token':token,
-            'Content-Type': 'application/json',
-        }
+export const returnBook = (book, token) => {
+  return axios
+    .post(url + "/books/return", book, {
+      headers: {
+        token: token,
+        "Content-Type": "application/json",
+      },
     })
     .then((resp) => {
-        if (resp.status === 201) {
-            return {
-                success: true,
-                data: resp.data
-            };
-        } else {
-            return {
-                success: false,
-                data: 'Invalid Request.'
-            };
-        }
+      return {
+        success: true,
+        data: resp.data,
+      };
     })
     .catch((err) => {
-        console.error('Something went wrong: ', err);
+      if (err.response) {
         return {
-            success: false,
-            data: err.message
+          success: false,
+          data: err.response.data.error,
         };
+      } else {
+        return {
+          success: false,
+          data: "Something Went wrong. Try later!",
+        };
+      }
     });
-}
+};
 
-
-
-export const getParticularReturnBook=(id,token)=>{
-  
-    return axios.get(url + `/books/return/${id}`,{
-        headers: {
-            'token':token,
-            'Content-Type': 'application/json',
-        }
+export const getParticularReturnBook = (id, token) => {
+  return axios
+    .get(url + `/books/return/${id}`, {
+      headers: {
+        token: token,
+        "Content-Type": "application/json",
+      },
     })
     .then((resp) => {
-        if (resp.status === 200) {
-            return {
-                success: true,
-                data: resp.data
-            };
-        } else {
-            return {
-                success: false,
-                data: 'Invalid Request.'
-            };
-        }
+      return {
+        success: true,
+        data: resp.data,
+      };
     })
     .catch((err) => {
-        console.error('Something went wrong: ', err);
+      if (err.response) {
         return {
-            success: false,
-            data: err.message
+          success: false,
+          data: err.response.data.error,
         };
+      } else {
+        return {
+          success: false,
+          data: "Something Went wrong. Try later!",
+        };
+      }
     });
-}
+};
 
-
-export const allReturnBooks=(token)=>{
-  
-    return axios.get(url + '/books/return/all',{
-        headers: {
-            'token':token,
-            'Content-Type': 'application/json',
-        }
+export const allReturnBooks = (token) => {
+  return axios
+    .get(url + "/books/return/all", {
+      headers: {
+        token: token,
+        "Content-Type": "application/json",
+      },
     })
     .then((resp) => {
-        if (resp.status === 200) {
-            return {
-                success: true,
-                data: resp.data
-            };
-        } else {
-            return {
-                success: false,
-                data: 'Invalid Request.'
-            };
-        }
+      return {
+        success: true,
+        data: resp.data,
+      };
     })
     .catch((err) => {
-        console.error('Something went wrong: ', err);
+      if (err.response) {
         return {
-            success: false,
-            data: err.message
+          success: false,
+          data: err.response.data.error,
         };
+      } else {
+        return {
+          success: false,
+          data: "Something Went wrong. Try later!",
+        };
+      }
     });
-}
+};
 
-
-
-
-
-export const calculateFine=(bookIssueID,token)=>{
-  
-    return axios.get(url + `/books/return/calculate-fine/${bookIssueID}`,{
-        headers: {
-            'token':token,
-            'Content-Type': 'application/json',
-        }
+export const calculateFine = (bookIssueID, token) => {
+  return axios
+    .get(url + `/books/return/calculate-fine/${bookIssueID}`, {
+      headers: {
+        token: token,
+        "Content-Type": "application/json",
+      },
     })
     .then((resp) => {
-        if (resp.status === 200) {
-            return {
-                success: true,
-                data: resp.data
-            };
-        } else {
-            return {
-                success: false,
-                data: 'Invalid Request.'
-            };
-        }
+        console.log("getting resp")
+      return {
+        success: true,
+        data: resp.data,
+      };
     })
     .catch((err) => {
-        console.error('Something went wrong: ', err);
+      if (err.response) {
         return {
-            success: false,
-            data: err.message
+          success: false,
+          data: err.response.data.error,
         };
+      } else {
+        return {
+          success: false,
+          data: "Something Went wrong. Try later!",
+        };
+      }
     });
-}
+};
 
-
-
-
-export const getParticularIssueBook=(bookIssueID,token)=>{
-  
-    return axios.get(url + `/books/issue/${bookIssueID}`,{
-        headers: {
-            'token':token,
-            'Content-Type': 'application/json',
-        }
+export const getParticularIssueBook = (bookIssueID, token) => {
+  return axios
+    .get(url + `/books/issue/${bookIssueID}`, {
+      headers: {
+        token: token,
+        "Content-Type": "application/json",
+      },
     })
     .then((resp) => {
-        if (resp.status === 200) {
-            return {
-                success: true,
-                data: resp.data
-            };
-        } else {
-            return {
-                success: false,
-                data: 'Invalid Request.'
-            };
-        }
+      return {
+        success: true,
+        data: resp.data,
+      };
     })
     .catch((err) => {
-        console.error('Something went wrong: ', err);
+      if (err.response) {
+        
         return {
-            success: false,
-            data: err.message
+          success: false,
+          data: err.response.data.error,
         };
+      } else {
+        return {
+          success: false,
+          data: "Something Went wrong. Try later!",
+        };
+      }
     });
-}
+};
 
-
-export const getIssueBookByMember=(memberID,token)=>{
-  
-    return axios.get(url + `/books/issue/member/${memberID}`,{
-        headers: {
-            'token':token,
-            'Content-Type': 'application/json',
-        }
+export const getIssueBookByMember = (memberID, token) => {
+  return axios
+    .get(url + `/books/issue/member/${memberID}`, {
+      headers: {
+        token: token,
+        "Content-Type": "application/json",
+      },
     })
     .then((resp) => {
-        if (resp.status === 200) {
-            return {
-                success: true,
-                data: resp.data
-            };
-        } else {
-            return {
-                success: false,
-                data: 'Invalid Request.'
-            };
-        }
+      return {
+        success: true,
+        data: resp.data,
+      };
     })
     .catch((err) => {
-        console.error('Something went wrong: ', err);
+      if (err.response) {
         return {
-            success: false,
-            data: err.message
+          success: false,
+          data: err.response.data.error,
         };
+      } else {
+        return {
+          success: false,
+          data: "Something Went wrong. Try later!",
+        };
+      }
     });
-}
+};
 
-
-export const getAllIssueBook=(token)=>{
-  
-    return axios.get(url + `/books/issue/all`,{
-        headers: {
-            'token':token,
-            'Content-Type': 'application/json',
-        }
+export const getAllIssueBook = (token) => {
+  return axios
+    .get(url + `/books/issue/all`, {
+      headers: {
+        token: token,
+        "Content-Type": "application/json",
+      },
     })
     .then((resp) => {
-        if (resp.status === 200) {
-            return {
-                success: true,
-                data: resp.data
-            };
-        } else {
-            return {
-                success: false,
-                data: 'Invalid Request.'
-            };
-        }
+      return {
+        success: true,
+        data: resp.data,
+      };
     })
     .catch((err) => {
-        console.error('Something went wrong: ', err);
+      if (err.response) {
         return {
-            success: false,
-            data: err.message
+          success: false,
+          data: err.response.data.error,
         };
+      } else {
+        return {
+          success: false,
+          data: "Something Went wrong. Try later!",
+        };
+      }
     });
-}
+};
 
-
-export const dueReturnBook=(token)=>{
-  
-    return axios.get(url + `/books/issue/due-return`,{
-        headers: {
-            'token':token,
-            'Content-Type': 'application/json',
-        }
+export const dueReturnBook = (token) => {
+  return axios
+    .get(url + `/books/issue/due-return`, {
+      headers: {
+        token: token,
+        "Content-Type": "application/json",
+      },
     })
     .then((resp) => {
-        if (resp.status === 200) {
-            return {
-                success: true,
-                data: resp.data
-            };
-        } else {
-            return {
-                success: false,
-                data: 'Invalid Request.'
-            };
-        }
+      return {
+        success: true,
+        data: resp.data,
+      };
     })
     .catch((err) => {
-        console.error('Something went wrong: ', err);
+      if (err.response) {
         return {
-            success: false,
-            data: err.message
+          success: false,
+          data: err.response.data.error,
         };
+      } else {
+        return {
+          success: false,
+          data: "Something Went wrong. Try later!",
+        };
+      }
     });
-}
-export const getBookInstanceIssueHistory=(bookInstanceID,token)=>{
-  
-    return axios.get(url + `/books/issue/instance/${bookInstanceID}`,{
-        headers: {
-            'token':token,
-            'Content-Type': 'application/json',
-        }
+};
+export const getBookInstanceIssueHistory = (bookInstanceID, token) => {
+  return axios
+    .get(url + `/books/issue/instance/${bookInstanceID}`, {
+      headers: {
+        token: token,
+        "Content-Type": "application/json",
+      },
     })
     .then((resp) => {
-        if (resp.status === 200) {
-            return {
-                success: true,
-                data: resp.data
-            };
-        } else {
-            return {
-                success: false,
-                data: 'Invalid Request.'
-            };
-        }
+      return {
+        success: true,
+        data: resp.data,
+      };
     })
     .catch((err) => {
-        console.error('Something went wrong: ', err);
+      if (err.response) {
         return {
-            success: false,
-            data: err.message
+          success: false,
+          data: err.response.data.error,
         };
+      } else {
+        return {
+          success: false,
+          data: "Something Went wrong. Try later!",
+        };
+      }
     });
-}
+};
 
-
-export const fineByID=(id,token)=>{
-  
-    return axios.get(url + `/fine/${id}`,{
-        headers: {
-            'token':token,
-            'Content-Type': 'application/json',
-        }
+export const fineByID = (id, token) => {
+  return axios
+    .get(url + `/fine/${id}`, {
+      headers: {
+        token: token,
+        "Content-Type": "application/json",
+      },
     })
     .then((resp) => {
-        if (resp.status === 200) {
-            return {
-                success: true,
-                data: resp.data
-            };
-        } else {
-            return {
-                success: false,
-                data: 'Invalid Request.'
-            };
-        }
+      return {
+        success: true,
+        data: resp.data,
+      };
     })
     .catch((err) => {
-        console.error('Something went wrong: ', err);
+      if (err.response) {
         return {
-            success: false,
-            data: err.message
+          success: false,
+          data: err.response.data.error,
         };
+      } else {
+        return {
+          success: false,
+          data: "Something Went wrong. Try later!",
+        };
+      }
     });
-}
+};
 
-
-
-
-
-export const getBookInstances=(id,token)=>{
-  
-    return axios.get(url + `/book/${id}/instances`,{
-        headers: {
-            'token':token,
-            'Content-Type': 'application/json',
-        }
+export const getBookInstances = (id, token) => {
+  return axios
+    .get(url + `/book/${id}/instances`, {
+      headers: {
+        token: token,
+        "Content-Type": "application/json",
+      },
     })
     .then((resp) => {
-        if (resp.status === 200) {
-            return {
-                success: true,
-                data: resp.data
-            };
-        } else {
-            return {
-                success: false,
-                data: 'Invalid Request.'
-            };
-        }
+      return {
+        success: true,
+        data: resp.data,
+      };
     })
     .catch((err) => {
-        console.error('Something went wrong: ', err);
+      if (err.response) {
         return {
-            success: false,
-            data: err.message
+          success: false,
+          data: err.response.data.error,
         };
+      } else {
+        return {
+          success: false,
+          data: "Something Went wrong. Try later!",
+        };
+      }
     });
-}
+};
 
-
-export const getBooks=(token)=>{
-  
-    return axios.get(url + '/book/all',{
-        headers: {
-            'token':token,
-            'Content-Type': 'application/json',
-        }
+export const getBooks = (token) => {
+  return axios
+    .get(url + "/book/all", {
+      headers: {
+        token: token,
+        "Content-Type": "application/json",
+      },
     })
     .then((resp) => {
-        if (resp.status === 200) {
-            return {
-                success: true,
-                data: resp.data
-            };
-        } else {
-            return {
-                success: false,
-                data: 'Invalid Request.'
-            };
-        }
+      return {
+        success: true,
+        data: resp.data,
+      };
     })
     .catch((err) => {
-        console.error('Something went wrong: ', err);
+      if (err.response) {
         return {
-            success: false,
-            data: err.message
+          success: false,
+          data: err.response.data.error,
         };
+      } else {
+        return {
+          success: false,
+          data: "Something Went wrong. Try later!",
+        };
+      }
     });
-}
+};
 
-
-
-
-export const getmember=(token)=>{
-  
-    return axios.get(url + '/member/all',{
-        headers: {
-            'token':token,
-            'Content-Type': 'application/json',
-        }
+export const getMember = (token) => {
+  return axios
+    .get(url + "/member/all", {
+      headers: {
+        token: token,
+        "Content-Type": "application/json",
+      },
     })
     .then((resp) => {
-        if (resp.status === 200) {
-            return {
-                success: true,
-                data: resp.data
-            };
-        } else {
-            return {
-                success: false,
-                data: 'Invalid Request.'
-            };
-        }
+      return {
+        success: true,
+        data: resp.data,
+      };
     })
     .catch((err) => {
-        console.error('Something went wrong: ', err);
+      if (err.response) {
         return {
-            success: false,
-            data: err.message
+          success: false,
+          data: err.response.data.error,
         };
+      } else {
+        return {
+          success: false,
+          data: "Something Went wrong. Try later!",
+        };
+      }
     });
-
-
-}
+};

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import MemberAction from '../../action/MemberAction';
 import { useAuth } from '../../context/Authetication';
-
-function AddMembership({ selectedMember, onClose, fetchMembershipStatus }) {
+import toast from "react-hot-toast";
+function AddMembership({ selectedMember, onClose }) {
     const { token } = useAuth();
     const [membershipData, setMembershipData] = useState({
         memberId: selectedMember.memberId,
@@ -21,18 +21,28 @@ function AddMembership({ selectedMember, onClose, fetchMembershipStatus }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            await MemberAction.addMembership(selectedMember.memberId, membershipData, token)
+     
+             MemberAction.addMembership(selectedMember.memberId, membershipData, token)
                 .then((response) => {
-                    console.log(response)
-                    console.log("Membership Added Successfully....")
+
+                    if(response.success){
+                        console.log(response)
+                        console.log("Membership Added Successfully....")
+                        
+                        onClose();
+                    }else{
+                            toast.error(response.data);
+                    }
+                  
                 })
-            await fetchMembershipStatus();
-            onClose();
-        } catch (error) {
-            console.error('Error adding membership:', error);
-        }
-    };
+
+                .catch((err)=>{
+                    console.lof(err);
+                })
+          
+         
+        } 
+
 
     return (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">

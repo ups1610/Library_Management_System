@@ -5,7 +5,7 @@ import { AiOutlineFilePdf } from "react-icons/ai";
 import { MdOutlineLibraryAdd } from "react-icons/md";
 import MembershipPlan from './MembershipPlan';
 import { useAuth } from '../../context/Authetication';
-
+import toast from 'react-hot-toast'
 function ViewMembershipPlan() {
     const { token } = useAuth();
     const [loading, setLoading] = useState(true);
@@ -24,14 +24,21 @@ function ViewMembershipPlan() {
             if (searchQuery) {
                 const response = await MemberAction.getMemberPlanById(searchQuery, token);
                 console.log(response)
-                if (response.data) {
+                if (response.success) {
                     setPlans([response.data]);
                 } else {
+                    toast.error(response.data)
                     setPlans([]); 
                 }
             } else {
                 const response = await MemberAction.getAllMemberPlans(token);
-                setPlans(response.data);
+                if (response.success) {
+                    setPlans(response.data);
+                } else {
+                    toast.error(response.data)
+                    setPlans([]); 
+                }
+             
                 
             }
         } catch (error) {

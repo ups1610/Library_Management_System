@@ -1,5 +1,5 @@
 import React from 'react';
-import {Outlet } from "react-router-dom";
+
 import { useAuth } from '../context/Authetication';
 
 export const AccountantProtectedRoute = ({children}) => {

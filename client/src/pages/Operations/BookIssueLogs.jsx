@@ -10,7 +10,7 @@ import { getAllIssueBook } from "../../action/OperationsAction";
 import IssueBookPDF from "../../utils/pdf/IssueBook";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { BsFileEarmarkPdf } from "react-icons/bs";
-
+import toast from "react-hot-toast"
 function BookIssueLogs() {
   const [issueBooks, setIssueBooks] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -24,18 +24,26 @@ function BookIssueLogs() {
   }, [showReturnModelMap]);
 
   const fetchData = async () => {
-    try {
-      const response = await getAllIssueBook(token);
-      if (response.success) {
-        setIssueBooks(response.data);
-      } else {
-        console.error("Failed to fetch data:", response.data);
-      }
-    } catch (error) {
+  
+      console.log("Fetching issue book data...");
+      getAllIssueBook(token)
+      .then((response)=>{
+        console.log("Response received:", response);
+        if (response.success) {
+          console.log("Setting issue books:", response.data);
+          setIssueBooks(response.data);
+        } else {
+          console.log("Error response:", response.data);
+          toast.error(response.data);
+          console.error("Failed to fetch data:", response.data);
+        }
+        setIsLoading(false);
+      })
+     .catch ((error)=>{
       console.error("Error fetching issue book data:", error);
-    } finally {
-      setIsLoading(false);
     }
+  )
+    
   };
 
   const handleReturnButtonClick = (issueId) => {

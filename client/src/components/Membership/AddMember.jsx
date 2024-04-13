@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import MemberAction from "../../action/MemberAction";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/Authetication";
-
+import toast from "react-hot-toast"
 const AddMember = () => {
     const navigate = useNavigate();
     const { token,user } = useAuth();
@@ -54,32 +54,39 @@ const AddMember = () => {
     const saveMember = async (e) => {
         e.preventDefault();
         try {
-            await MemberAction.addNewMember(member, token);
-            setMember({
-                firstName: "",
-                familyName: "",
-                mobile: "",
-                email: "",
-                currentAddress: {
-                    landmark: "",
-                    address1: "",
-                    address2: "",
-                    city: "",
-                    district: "",
-                    state: "",
-                    pincode: ""
-                },
-                permanentAddress: {
-                    landmark: "",
-                    address1: "",
-                    address2: "",
-                    city: "",
-                    district: "",
-                    state: "",
-                    pincode: ""
-                }
-            });
-            navigate("/dashboard/member/MemberTable");
+            const response= await MemberAction.addNewMember(member, token);
+
+            if(response.success){
+                setMember({
+                    firstName: "",
+                    familyName: "",
+                    mobile: "",
+                    email: "",
+                    currentAddress: {
+                        landmark: "",
+                        address1: "",
+                        address2: "",
+                        city: "",
+                        district: "",
+                        state: "",
+                        pincode: ""
+                    },
+                    permanentAddress: {
+                        landmark: "",
+                        address1: "",
+                        address2: "",
+                        city: "",
+                        district: "",
+                        state: "",
+                        pincode: ""
+                    }
+                });
+                navigate("/dashboard/member/MemberTable");
+            }else{
+                    toast.error(response.data);
+            }
+
+           
         } catch (error) {
             console.log(error);
         }

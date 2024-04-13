@@ -32,8 +32,7 @@ const AuthenticationProvider = ({ children }) => {
         }
       )
       .then((resp) => {
-        console.log(resp, resp.status);
-        if (resp.status === 200) {
+      
           setAuthenticated(true);
           setToken(resp.data.token);
           setUser(resp.data);
@@ -41,23 +40,17 @@ const AuthenticationProvider = ({ children }) => {
           if (resp.data.token) {
             navigate("/dashboard");
           }
-        } else {
-          toast.error(resp.data.error);
-        }
+        
       })
       .catch((error) => {
-        toast.error(error.message);
-        if (error.resp && error.status === 401) {
-          return {
-            success: false,
-            data: "Bad credentials. Please check your username and password.",
-          };
+       
+        if (error.response ) {
+
+           toast.error(error.response.data.error);
         } else {
+          toast.error("Something Went Wrong. Try later!");
           console.error("Something went wrong: ", error);
-          return {
-            success: false,
-            data: "Something went wrong. Please try again later.",
-          };
+         
         }
       });
   };
@@ -71,16 +64,13 @@ const AuthenticationProvider = ({ children }) => {
         },
       })
       .then((resp) => {
-        if (resp.status === 200) {
+     
           setUser({});
           setToken(false);
           setAuthenticated(false);
-
           toast.success("Logout Successfully!")
           navigate("/");
-        } else {
-          console.log(resp);
-        }
+       
       })
       .catch((err) => {
         console.error("Something went wrong: ", err);

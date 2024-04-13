@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   getBooks,
-  getmember,
+  getMember,
   getBookInstances,
   issueBook 
 } from "../../action/OperationsAction";
@@ -32,7 +32,7 @@ export const IssueBook = () => {
 
   const fetchMembers = async () => {
     try {
-      const response = await getmember(token);
+      const response = await getMember(token);
       if (response.success) {
         setMembers(response.data);
       } else {

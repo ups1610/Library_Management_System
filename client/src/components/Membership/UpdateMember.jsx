@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { X } from 'lucide-react'
-
+import toast from "react-hot-toast"
 const UpdateMember = ({ onClose, member, updateMember }) => {
     const [updatedMember, setUpdatedMember] = useState(member);
 
@@ -25,8 +25,15 @@ const UpdateMember = ({ onClose, member, updateMember }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        updateMember(updatedMember);
-        onClose();
+        updateMember(updatedMember)
+        .then((resp)=>{
+            if(resp.success){
+                onClose();
+            }else{
+                toast.error(resp.data);
+            }
+        })
+       
     };
 
     return (

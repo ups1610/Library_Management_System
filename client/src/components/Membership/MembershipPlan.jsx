@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import MemberAction from '../../action/MemberAction';
 import { useAuth } from '../../context/Authetication';
-
+import toast from "react-hot-toast";
 function MembershipPlan({ onClose, updatePlanList }) {
     const { token } = useAuth();
     const [plan, setPlan] = useState({
@@ -22,13 +22,23 @@ function MembershipPlan({ onClose, updatePlanList }) {
 
     const savePlan = async (e) => {
         e.preventDefault();
-        try {
-            await MemberAction.addNewPlan(plan,token);
-            onClose();
-            updatePlanList();
-        } catch (error) {
-            console.error('Error adding new plan:', error);
-        }
+    
+             MemberAction.addNewPlan(plan,token)
+            .then((resp)=>{
+                    if(resp.success){
+                        onClose();
+                       
+                    }else{
+                            toast.error(resp.data);
+                    }
+            })
+            .catch((err)=>{
+                    console.log(err);
+            })
+
+            
+          
+     
     };
 
     return (
