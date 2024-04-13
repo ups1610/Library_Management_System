@@ -19,6 +19,10 @@ import AddMember from "./components/Membership/AddMember";
 import TransactionLogs from "./pages/Transaction/TransactionLogs";
 import MemberInfoPage from "./components/view/MemberInfoPage";
 import Members from "./pages/Membership/Members";
+import { CatalogerProtectedRoute } from "./auth/CatalogerProtectedRoute";
+import { AdminProtectedRoute } from "./auth/AdminProtectedRoute";
+import { LibrarianProtectedRoute } from "./auth/LibrarianProtectedRoute";
+import { AccountantProtectedRoute } from "./auth/AccountantProtectedRoute";
 
 function App() {
   return (
@@ -29,24 +33,23 @@ function App() {
         <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<Layout />}>
           <Route index element={<Dashboard/>}/>
-          <Route path="catalog/books"  element={<Books/>}/>
-          <Route path="catalog/author" element={<Author/>}/>
-          <Route path="catalog/bookshelf" element={<Bookshelf/>}/>
-          <Route path="catalog/genre" element={<Genre/>}/>
-          <Route path="users/manage" element={<Users/>}/>
-          <Route path="users/manage/:id/view" element={<View />} />
-
-          <Route path="operation/BookLog" element={<BookIssueLogs/>} />
-          <Route path="operation/BookLog/Issue" element={<IssueBook/>} />
-          <Route path="operation/BookLog/:id/view" element={<BookView/>} />
+          <Route path="catalog/books"  element={ <CatalogerProtectedRoute> <Books/></CatalogerProtectedRoute>}/>
+          <Route path="catalog/author" element={<CatalogerProtectedRoute> <Author/>  </CatalogerProtectedRoute> }/>
+          <Route path="catalog/bookshelf" element={<CatalogerProtectedRoute><Bookshelf/></CatalogerProtectedRoute> }/>
+          <Route path="catalog/genre" element={ <CatalogerProtectedRoute><Genre/></CatalogerProtectedRoute>}/>
+          <Route path="users/manage/:id/view" element={<AdminProtectedRoute> <View /></AdminProtectedRoute> } />
+          <Route path="users/manage" element={<AdminProtectedRoute> <Users/></AdminProtectedRoute> } />
+          <Route path="operation/BookLog" element={  <LibrarianProtectedRoute><BookIssueLogs/></LibrarianProtectedRoute> } />
+          <Route path="operation/BookLog/Issue" element={<LibrarianProtectedRoute><IssueBook/></LibrarianProtectedRoute> } />
+          <Route path="operation/BookLog/:id/view" element={<LibrarianProtectedRoute><BookView/></LibrarianProtectedRoute>} />
           
-          <Route path="members" element={<Members/>} />
-          <Route path="member/MemberTable/:id/info" element={<MemberInfoPage/>} />
-          <Route path="member/MemberTable/add" element={<AddMember/>} />
-          <Route path="member/membership" element={<ViewMembershipPlan/>} />
+          <Route path="member/MemberTable" element={<LibrarianProtectedRoute><Members/></LibrarianProtectedRoute> } />
+          <Route path="member/MemberTable/:id/info" element={<LibrarianProtectedRoute><MemberInfoPage/></LibrarianProtectedRoute> } />
+          <Route path="member/MemberTable/add" element={ <LibrarianProtectedRoute><AddMember/></LibrarianProtectedRoute>} />
+          <Route path="member/membership" element={<LibrarianProtectedRoute><ViewMembershipPlan/></LibrarianProtectedRoute> } />
 
-          <Route path="transactions" element={<TransactionLogs/>} />
-          <Route path="catalog/:name/view/:id" element={<InfoView/>}/>
+          <Route path="transactions" element={<AccountantProtectedRoute><TransactionLogs/></AccountantProtectedRoute> } />
+          <Route path="catalog/:name/view/:id" element={<CatalogerProtectedRoute><InfoView/></CatalogerProtectedRoute>}/>
         </Route>
         </Route>
       </Routes>

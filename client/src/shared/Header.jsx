@@ -7,8 +7,8 @@ import { useAuth } from "../context/Authetication";
 import user from "../assets/user.png";
 import { VscSignOut } from "react-icons/vsc";
 export default function Header() {
-  const navigate = useNavigate();
-  const auth = useAuth();
+const navigate = useNavigate();
+const auth = useAuth();
 
   function logout() {
     auth.signOut();

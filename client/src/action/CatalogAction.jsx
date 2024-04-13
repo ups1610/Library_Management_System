@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const token = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzYjg1MjNjZS05ZjlmLTQyMjktOGEwYi02M2ExOTJjOGY5MzEiLCJpc3MiOiJTYWdhclRlY2giLCJzdWIiOiJzYWtzaGkiLCJpYXQiOjE3MTI1NTU0NDEsImV4cCI6MTcxMjU5MTQ0MX0.tjKSzCcYJW0DACLq4kc42LUG7X7xdJvsD7xkIrLZkbw"
+// const token = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzYjg1MjNjZS05ZjlmLTQyMjktOGEwYi02M2ExOTJjOGY5MzEiLCJpc3MiOiJTYWdhclRlY2giLCJzdWIiOiJzYWtzaGkiLCJpYXQiOjE3MTI1NTU0NDEsImV4cCI6MTcxMjU5MTQ0MX0.tjKSzCcYJW0DACLq4kc42LUG7X7xdJvsD7xkIrLZkbw"
 
-const fetchBooks = async () => {
+const fetchBooks = async (token) => {
     try {
       const response = await axios.get('http://localhost:8088/catalog/books/all', {
         headers: {
@@ -18,7 +18,7 @@ const fetchBooks = async () => {
 
   export { fetchBooks };
 
-  const fetchBooksById = async (bookId) => {
+  const fetchBooksById = async (bookId,token) => {
     try {
       const response = await axios.get(`http://localhost:8088/catalog/books/${bookId}`, {
         headers: {
@@ -33,7 +33,7 @@ const fetchBooks = async () => {
   };
   export { fetchBooksById };
 
-  const fetchInstanceById = async (bookId) => {
+  const fetchInstanceById = async (bookId,token) => {
     try {
       const response = await axios.get(`http://localhost:8088/catalog/books/${bookId}/instances`, {
         headers: {
@@ -48,7 +48,7 @@ const fetchBooks = async () => {
   };
   export { fetchInstanceById };
 
-  const createBooks = async (bookData) => {
+  const createBooks = async (bookData,token) => {
     try {
       const response = await axios.post(
         'http://localhost:8088/catalog/books/create',
@@ -68,7 +68,7 @@ const fetchBooks = async () => {
   
   export { createBooks };
 
-  const updateBook = async (bookId, bookData) => {
+  const updateBook = async (bookId, bookData,token) => {
     try {
       const response = await axios.put(
         `http://localhost:8088/catalog/books/${bookId}/update`,
@@ -88,7 +88,7 @@ const fetchBooks = async () => {
   
   export { updateBook };
 
-  const deleteBook = async (bookId) => {
+  const deleteBook = async (bookId,token) => {
     try {
       const response = await axios.delete(
         `http://localhost:8088/catalog/books/${bookId}/delete`,
@@ -108,7 +108,7 @@ const fetchBooks = async () => {
   export { deleteBook };
 
 
-  const fetchAuthors = async () => {
+  const fetchAuthors = async (token) => {
     try {
       const response = await axios.get('http://localhost:8088/catalog/authors/all', {
         headers: {
@@ -134,7 +134,7 @@ const fetchBooks = async () => {
   };
   export { fetchAuthors };
 
-  const fetchAuthorsById = async (authorId) => {
+  const fetchAuthorsById = async (authorId,token) => {
     try {
       const response = await axios.get(`http://localhost:8088/catalog/authors/${authorId}`, {
         headers: {
@@ -149,7 +149,7 @@ const fetchBooks = async () => {
   };
   export { fetchAuthorsById };
 
-  const fetchAuthorsBookById = async (authorId) => {
+  const fetchAuthorsBookById = async (authorId,token) => {
     try {
       const response = await axios.get(`http://localhost:8088/catalog/authors/${authorId}/books`, {
         headers: {
@@ -165,7 +165,7 @@ const fetchBooks = async () => {
   export { fetchAuthorsBookById };
 
 
-  const createAuthor = async (authorData) => {
+  const createAuthor = async (authorData,token) => {
     try {
       const response = await axios.post(
         'http://localhost:8088/catalog/authors/create',
@@ -185,7 +185,7 @@ const fetchBooks = async () => {
   
   export { createAuthor };
 
-  const updateAuthor = async (authorId, authorData) => {
+  const updateAuthor = async (authorId, authorData,token) => {
     try {
       const response = await axios.put(
         `http://localhost:8088/catalog/authors/${authorId}/update`,
@@ -206,7 +206,7 @@ const fetchBooks = async () => {
   export { updateAuthor };
   
   
-  const deleteAuthor = async (authorId) => {
+  const deleteAuthor = async (authorId,token) => {
     try {
       const response = await axios.delete(
         `http://localhost:8088/catalog/authors/${authorId}/delete`,
@@ -226,7 +226,7 @@ const fetchBooks = async () => {
   export { deleteAuthor };
 
 
-  const fetchBookshelf = async () => {
+  const fetchBookshelf = async (token) => {
     try {
       const response = await axios.get('http://localhost:8088/catalog/bookshelves/all', {
         headers: {
@@ -242,7 +242,7 @@ const fetchBooks = async () => {
 
   export { fetchBookshelf };
 
-  const fetchBookshelfById = async (bookshelfId) => {
+  const fetchBookshelfById = async (bookshelfId,token) => {
     try {
       const response = await axios.get(`http://localhost:8088/catalog/bookshelves/${bookshelfId}`, {
         headers: {
@@ -257,7 +257,7 @@ const fetchBooks = async () => {
   };
   export { fetchBookshelfById };
 
-  const createBookshelf = async (bookshelfData) => {
+  const createBookshelf = async (bookshelfData,token) => {
     try {
       const response = await axios.post(
         'http://localhost:8088/catalog/bookshelves/create',
@@ -277,7 +277,7 @@ const fetchBooks = async () => {
   
   export { createBookshelf };
 
-  const fetchBookshelfBookById = async (bookshelfId) => {
+  const fetchBookshelfBookById = async (bookshelfId,token) => {
     try {
       const response = await axios.get(`http://localhost:8088/catalog/bookshelves/${bookshelfId}/books`, {
         headers: {
@@ -292,7 +292,7 @@ const fetchBooks = async () => {
   };
   export { fetchBookshelfBookById };
 
-  const updateBookshelf = async (bookshelfId, bookshelfData) => {
+  const updateBookshelf = async (bookshelfId, bookshelfData,token) => {
     try {
       const response = await axios.put(
         `http://localhost:8088/catalog/bookshelves/${bookshelfId}/update`,
@@ -312,7 +312,7 @@ const fetchBooks = async () => {
   
   export { updateBookshelf };
 
-  const deleteBookshelf = async (bookshelfId) => {
+  const deleteBookshelf = async (bookshelfId, token) => {
     try {
       const response = await axios.delete(
         `http://localhost:8088/catalog/bookshelves/${bookshelfId}/delete`,
@@ -332,7 +332,7 @@ const fetchBooks = async () => {
   export { deleteBookshelf };
 
 
-  const fetchGenre = async () => {
+  const fetchGenre = async (token) => {
     try {
       const response = await axios.get('http://localhost:8088/catalog/genre/all', {
         headers: {
@@ -348,7 +348,7 @@ const fetchBooks = async () => {
 
   export { fetchGenre };
 
-  const fetchGenreById = async (genreId) => {
+  const fetchGenreById = async (genreId, token) => {
     try {
       const response = await axios.get(`http://localhost:8088/catalog/genre/${genreId}`, {
         headers: {
@@ -363,7 +363,7 @@ const fetchBooks = async () => {
   };
   export { fetchGenreById };
 
-  const fetchGenreBookById = async (genreId) => {
+  const fetchGenreBookById = async (genreId, token) => {
     try {
       const response = await axios.get(`http://localhost:8088/catalog/genre/${genreId}/books`, {
         headers: {
@@ -378,7 +378,7 @@ const fetchBooks = async () => {
   };
   export { fetchGenreBookById };
 
-  const createGenre = async (genreData) => {
+  const createGenre = async (genreData, token) => {
     try {
       const response = await axios.post(
         'http://localhost:8088/catalog/genre/create',
@@ -398,7 +398,7 @@ const fetchBooks = async () => {
   
   export { createGenre };
 
-  const updateGenre = async (genreId, genreData) => {
+  const updateGenre = async (genreId, genreData, token) => {
     try {
       const response = await axios.put(
         `http://localhost:8088/catalog/genre/${genreId}/update`,
@@ -418,7 +418,7 @@ const fetchBooks = async () => {
   
   export { updateGenre };
 
-  const deleteGenre = async (genreId) => {
+  const deleteGenre = async (genreId, token) => {
     try {
       const response = await axios.delete(
         `http://localhost:8088/catalog/genre/${genreId}/delete`,
@@ -437,7 +437,7 @@ const fetchBooks = async () => {
   
   export { deleteGenre };
 
-  const fetchInstance = async () => {
+  const fetchInstance = async (token) => {
     try {
       const response = await axios.get('http://localhost:8088/catalog/book-instances', {
         headers: {
@@ -453,7 +453,7 @@ const fetchBooks = async () => {
 
   export { fetchInstance };
 
-  const createInstance = async (instanceData) => {
+  const createInstance = async (instanceData, token) => {
     try {
       const response = await axios.post(
         'http://localhost:8088/catalog/book-instances',
@@ -473,7 +473,7 @@ const fetchBooks = async () => {
   
   export { createInstance };
 
-  const deleteInstance = async (instanceId) => {
+  const deleteInstance = async (instanceId, token) => {
     try {
       const response = await axios.delete(
         `http://localhost:8088/catalog/book-instances/${instanceId}`,

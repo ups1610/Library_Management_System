@@ -4,7 +4,7 @@ import { useAuth } from '../context/Authetication';
 
 export const LibrarianProtectedRoute = ({children}) => {
     const {user} = useAuth();
-    if ( user.role==="ROLE_LIBRARIAN") {
+    if ( user.role==="ROLE_ADMIN" || user.role==="ROLE_LIBRARIAN") {
         return <>{children}</>
     }
     return ;

@@ -3,6 +3,7 @@ import toast from "react-hot-toast"
 import ActionTable from "../components/tabels";
 import PopupForm, { EditForm } from "../components/modals";
 import { createBookshelf, deleteBookshelf, fetchBookshelf, fetchBookshelfById, updateBookshelf } from "../action/CatalogAction";
+import { useAuth } from "../context/Authetication";
 
 const Bookshelf = () => {
   const [loading, setLoading] = useState(true);
@@ -11,10 +12,11 @@ const Bookshelf = () => {
   const [showEditForm, setShowEditForm] = useState(false);
   const [editBookshelf, setEditBookshelf] = useState([])
   const [id,setId] =useState(null)
+  const { token } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
-      const booksData = await fetchBookshelf();
+      const booksData = await fetchBookshelf(token);
       setBookshelf(booksData);
       setLoading(false);
     };
@@ -25,7 +27,7 @@ const Bookshelf = () => {
     const fetchIdData = async () => {
       if (showEditForm && id) {
         try {
-          const bookshelfDataById = await fetchBookshelfById(id);
+          const bookshelfDataById = await fetchBookshelfById(id, token);
           setEditBookshelf(bookshelfDataById);
         } catch (error) {
           toast.error("Error fetching author data");
@@ -37,9 +39,9 @@ const Bookshelf = () => {
 
   const handleAddBookshelf = async (formData) => {
     try {
-      await createBookshelf(formData);
+      await createBookshelf(formData, token);
       // Optionally, refetch the authors list after adding a new author
-      const updatedBookshelf = await fetchBookshelf();
+      const updatedBookshelf = await fetchBookshelf(token);
       setBookshelf(updatedBookshelf);
       setShowFormBookshelf(false);
     } catch (error) {
@@ -50,9 +52,9 @@ const Bookshelf = () => {
 
   const handleBookshelfData = async (formData) => {
     try {
-      const updateBookshelfData = await updateBookshelf(id, formData);
+      const updateBookshelfData = await updateBookshelf(id, formData, token);
       setEditBookshelf(updateBookshelfData)
-      const updatedBookshelf = await fetchBookshelf();
+      const updatedBookshelf = await fetchBookshelf(token);
       setBookshelf(updatedBookshelf);
       setShowEditForm(false)
     } catch (error) {
@@ -65,9 +67,9 @@ const Bookshelf = () => {
     const confirmDelete = window.confirm("Are you sure you want to delete this bookshelf?");
     if (confirmDelete) {
       try {
-        await deleteBookshelf(bookshelfId);
+        await deleteBookshelf(bookshelfId, token);
         toast.success("Bookshelf deleted successfully");
-        const updatedBookshelf = await fetchBookshelf();
+        const updatedBookshelf = await fetchBookshelf(token);
         setBookshelf(updatedBookshelf);
       } catch (error) {
         toast.error("Error deleting bookshelf");

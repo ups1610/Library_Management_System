@@ -3,6 +3,7 @@ import toast from "react-hot-toast"
 import PopupForm, { EditForm } from "../components/modals";
 import ActionTable from "../components/tabels";
 import { createGenre, deleteGenre, fetchGenre, fetchGenreById, updateGenre } from "../action/CatalogAction";
+import { useAuth } from "../context/Authetication";
 
 const Genre = () => {
   const [loading, setLoading] = useState(true);
@@ -11,10 +12,11 @@ const Genre = () => {
   const [showEditForm, setShowEditForm] = useState(false);
   const [editGenre, setEditGenre] = useState([])
   const [id,setId] =useState(null)
+  const { token } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
-      const booksData = await fetchGenre();
+      const booksData = await fetchGenre(token);
       setGenre(booksData);
       setLoading(false);
     };
@@ -25,7 +27,7 @@ const Genre = () => {
     const fetchIdData = async () => {
       if (showEditForm && id) {
         try {
-          const authorDataById = await fetchGenreById(id);
+          const authorDataById = await fetchGenreById(id, token);
           setEditGenre(authorDataById);
         } catch (error) {
           toast.error("Error fetching author data");
@@ -37,9 +39,9 @@ const Genre = () => {
 
   const handleAddGenre = async (formData) => {
     try {
-      await createGenre(formData);
+      await createGenre(formData, token);
       // Optionally, refetch the authors list after adding a new author
-      const updatedGenre = await fetchGenre();
+      const updatedGenre = await fetchGenre(token);
       setGenre(updatedGenre);
       setShowFormGenere(false);
     } catch (error) {
@@ -50,9 +52,9 @@ const Genre = () => {
 
   const handleGenreData = async (formData) => {
     try {
-      const updateAuthorData = await updateGenre(id, formData);
+      const updateAuthorData = await updateGenre(id, formData, token);
       setEditGenre(updateAuthorData)
-      const updatedAuthor = await fetchGenre();
+      const updatedAuthor = await fetchGenre(token);
       setGenre(updatedAuthor);
       setShowEditForm(false)
     } catch (error) {
@@ -67,7 +69,7 @@ const Genre = () => {
       try {
         await deleteGenre(genreId);
         toast.success("Genredeleted successfully");
-        const updatedGenre = await fetchGenre();
+        const updatedGenre = await fetchGenre(token);
         setGenre(updatedGenre);
       } catch (error) {
         toast.error("Error deleting genre");

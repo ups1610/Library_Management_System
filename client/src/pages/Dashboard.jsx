@@ -17,11 +17,12 @@ import {
 
   BookIssueChart,
   MembersChart,
-  TransactionCharts,
+
 } from "../components/charts";
 import { NewMembers, RecentBookTable, RecentTransactionTable, UsersTable } from "../components/tabels";
 import { MemberTable } from "../components/tabels/MemberTable";
 import { DueReturnTable } from "../components/tabels/DueReturnTable";
+import TransactionChart from "../components/charts/TransactionCharts";
 
 
 function Dashboard() {
@@ -37,11 +38,7 @@ function Dashboard() {
         <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           <AdminProtectedRoute>
             <UserCard />
-            <BookCard />
-            <MemberCard />
-            <BookIssueCard />
-            <DueReturnCard />
-            <PaymentCard />
+           
           </AdminProtectedRoute>
 
           <CatalogerProtectedRoute>
@@ -61,27 +58,26 @@ function Dashboard() {
         </div>
         <div className="mt-5 rounded-lg">
           <AdminProtectedRoute>
-          <BookIssueChart />
-            <MembersChart />
-            <TransactionCharts />
+        
+           
           </AdminProtectedRoute>
 
           <CatalogerProtectedRoute></CatalogerProtectedRoute>
 
           <LibrarianProtectedRoute>
             <BookIssueChart />
-            <MembersChart />
+        
           </LibrarianProtectedRoute>
 
           <AccountantProtectedRoute>
-            <TransactionCharts />
+          <TransactionChart/>
           </AccountantProtectedRoute>
 
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
             <div className="w-full mt-5 rounded-lg border border-gray-100 p-4 shadow-sm">
               <AdminProtectedRoute>
                 <UsersTable/>
-                <RecentBookTable/>
+             
               </AdminProtectedRoute>
 
               <CatalogerProtectedRoute>
@@ -89,8 +85,8 @@ function Dashboard() {
               </CatalogerProtectedRoute>
 
               <LibrarianProtectedRoute>
-               <RecentBookTable/>
-               <MemberTable/>
+              
+              
               </LibrarianProtectedRoute>
 
               <AccountantProtectedRoute>
@@ -99,15 +95,15 @@ function Dashboard() {
             </div>
             <div className="w-full mt-5 rounded-lg border border-gray-100  p-4 shadow-sm">
               <AdminProtectedRoute>
-              <MemberTable/>
-                <DueReturnTable/>
-              <RecentTransactionTable/>
+             
+            
               
               </AdminProtectedRoute>
 
               <CatalogerProtectedRoute></CatalogerProtectedRoute>
 
               <LibrarianProtectedRoute>
+              <MemberTable/>
               <DueReturnTable/>
               </LibrarianProtectedRoute>
 
