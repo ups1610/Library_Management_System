@@ -39,14 +39,14 @@ export const UserCard = () => {
     className="rounded-lg border border-gray-100 bg-white p-4 shadow-sm transition hover:shadow-lg w-full"
   >
     <div className="flex justify-between items-center">
-      <span className="inline-block rounded bg-blue-600 p-2 text-white">
-      <RiAdminFill />
+      <span className="inline-block rounded-full bg-blue-600 p-2 text-white">
+      <RiAdminFill size={24} />
       </span>
       <div className="flex flex-col ml-2">
         {/* Title */}
-        <h2 className="text-lg font-bold"> Total Users</h2>
+        <h2 className="text-right font-medium"> Number of Users</h2>
         {/* Value */}
-        <p className="text-gray-500">{activeUsers.length} </p>
+        <p className="text-gray-500 text-right font-bold text-xl">{activeUsers.length} </p>
       </div>
     </div>
   </article>
