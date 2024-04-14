@@ -38,6 +38,7 @@ export const login = (userName, password) => {
     });
 };
 
+
 export const logout = (token) => {
   return axios
     .post(url + "/logout", {
@@ -66,6 +67,7 @@ export const logout = (token) => {
       }
     });
 };
+
 
 export const users = (token) => {
   console.log(token);
@@ -97,6 +99,7 @@ export const users = (token) => {
     });
 };
 
+
 export const particularUser = (id, token) => {
   return axios
     .get(url + `/user/${id}`, {
@@ -126,6 +129,7 @@ export const particularUser = (id, token) => {
     });
 };
 
+
 export const addNewUser = (user, token) => {
   return axios
     .post(url + "/addNew", user, {
@@ -135,24 +139,23 @@ export const addNewUser = (user, token) => {
       },
     })
     .then((resp) => {
-      if (resp.status === 201) {
+      return {
+        success: true,
+        data: resp.data,
+      };
+    })
+    .catch((err) => {
+      if (err.response) {
         return {
-          success: true,
-          data: resp.data,
+          success: false,
+          data: err.response.data.error,
         };
       } else {
         return {
           success: false,
-          data: resp.data,
+          data: "Something Went wrong. Try later!",
         };
       }
-    })
-    .catch((err) => {
-      console.error("Something went wrong: ", err);
-      return {
-        success: false,
-        data: err.message,
-      };
     });
 };
 
@@ -165,26 +168,26 @@ export const updateUser = (id, user, token) => {
       },
     })
     .then((resp) => {
-      if (resp.status === 200) {
+      return {
+        success: true,
+        data: resp.data,
+      };
+    })
+    .catch((err) => {
+      if (err.response) {
         return {
-          success: true,
-          data: resp.data,
+          success: false,
+          data: err.response.data.error,
         };
       } else {
         return {
           success: false,
-          data: "Invalid Request.",
+          data: "Something Went wrong. Try later!",
         };
       }
-    })
-    .catch((err) => {
-      console.error("Something went wrong: ", err);
-      return {
-        success: false,
-        data: "Something went wrong. Please try again later.",
-      };
     });
 };
+
 
 export const changePassword = (id, password, token) => {
   return axios
@@ -195,26 +198,26 @@ export const changePassword = (id, password, token) => {
       },
     })
     .then((resp) => {
-      if (resp.status === 200) {
+      return {
+        success: true,
+        data: resp.data,
+      };
+    })
+    .catch((err) => {
+      if (err.response) {
         return {
-          success: true,
-          data: resp.data,
+          success: false,
+          data: err.response.data.error,
         };
       } else {
         return {
           success: false,
-          data: "Invalid Request.",
+          data: "Something Went wrong. Try later!",
         };
       }
-    })
-    .catch((err) => {
-      console.error("Something went wrong: ", err);
-      return {
-        success: false,
-        data: "Something went wrong. Please try again later.",
-      };
     });
 };
+
 
 export const changeStatus = (id, token) => {
   return axios
@@ -225,23 +228,22 @@ export const changeStatus = (id, token) => {
       },
     })
     .then((resp) => {
-      if (resp.status === 200) {
+      return {
+        success: true,
+        data: resp.data,
+      };
+    })
+    .catch((err) => {
+      if (err.response) {
         return {
-          success: true,
-          data: resp.data,
+          success: false,
+          data: err.response.data.error,
         };
       } else {
         return {
           success: false,
-          data: "Invalid Request.",
+          data: "Something Went wrong. Try later!",
         };
       }
-    })
-    .catch((err) => {
-      console.error("Something went wrong: ", err);
-      return {
-        success: false,
-        data: "Something went wrong. Please try again later.",
-      };
     });
 };

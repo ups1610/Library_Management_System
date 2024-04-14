@@ -111,14 +111,14 @@ export default function View() {
       </div>
       <div className="flex flex-row gap-3 mt-20 justify-center">
         <button
-          className="inline-block rounded border border-green-600 bg-green-600 px-2 py-1 text-sm font-medium text-white hover:bg-transparent hover:text-green-600 focus:outline-none focus:ring"
+          className="inline-block rounded border border-green-600  px-2 py-1 text-sm font-medium text-green-600 hover:bg-transparent hover:text-green-600 focus:outline-none focus:ring"
           onClick={() => setUpdateUser(true)}
         >
           Update Detail
         </button>
         {updateUser && <UpdateUser  userData={userData} onClose={() =>{ setUpdateUser(false); fetchUserData();}} />}
         <button
-          className="inline-block rounded border border-orange-600 bg-orange-600 px-2 py-1 text-sm font-medium text-white hover:bg-transparent  hover:text-orange-600  focus:outline-none focus:ring"
+          className="inline-block rounded border border-orange-600  px-2 py-1 text-sm font-medium text-orange-600 hover:bg-transparent  hover:text-orange-600  focus:outline-none focus:ring"
           onClick={() => setChangePassword(true)}
         >
           Change Password

@@ -182,7 +182,7 @@ const {token}=useAuth();
                 required
               >
               
-                <option value="ROLE_CATALOGER">Cataloger</option>
+              <option value="ROLE_CATALOGER">Cataloger</option>
                 <option value="ROLE_LIBRARIAN">Librarian</option>
                 <option value="ROLE_ACCOUNTANT">Accountant</option>
                 <option value="ROLE_ADMIN">Admin</option>
@@ -196,7 +196,7 @@ const {token}=useAuth();
             </div>
             <button
               type="submit"
-              className="text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center "
+              className="ml-2 text-white bg-gray-900  border-gray-900 border-2   focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md  w-full sm:w-auto px-2 py-1 text-md text-center "
             >
               Save
             </button>
@@ -204,7 +204,7 @@ const {token}=useAuth();
             <button
               type="reset"
               onClick={onClose}
-              className="ml-2 text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center "
+              className="ml-2 text-gray-900 border-gray-900 border-2   focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md  w-full sm:w-auto px-2 py-1 text-md text-center "
             >
               Cancel
             </button>

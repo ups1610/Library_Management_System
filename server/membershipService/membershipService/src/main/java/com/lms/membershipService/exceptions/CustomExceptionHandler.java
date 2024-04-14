@@ -51,7 +51,8 @@ public class CustomExceptionHandler {
     @ExceptionHandler(Exception.class)
     public Map<String,String> exphandle(Exception ex){
         Map<String,String> error= new HashMap<>();
-        error.put("error", ex.getMessage());
+        log.error("Membership Service", ex);
+        error.put("error", "Something Went Wrong!");
 
         return error;
     }   

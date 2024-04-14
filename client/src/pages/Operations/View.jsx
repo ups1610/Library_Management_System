@@ -83,38 +83,39 @@ export const View = () => {
       <div className="w-full mt-5 rounded-lg border border-gray-100 bg-white p-4 shadow-sm">
         <h2 className="text-lg mb-4">Book Issue Information:</h2>
         <div className="grid grid-cols-2 gap-4">
-          <div>
-            <p>
-              <span className="text-md font-medium">Book Name:</span>
-              <small className="text-sm">
+
+        <div  className="">
+            <p  className="m-2">
+              <span className="text-sm font-medium">Book Name:</span>
+              <small className="text-xs">
                
                 {bookIssueData.bookInstance.book.title}
               </small>
             </p>
-            <p>
-              <span className="text-md font-medium">Author:</span>
-              <small className="text-sm">
+          <p  className="m-2">
+               <span className="text-sm font-medium">Author:</span>
+              <small className="text-xs">
               
                 {bookIssueData.bookInstance.book.authorName}
               </small>
             </p>
-            <p>
-              <span className="text-md font-medium">ISBN:</span>
-              <small className="text-sm">
+          <p  className="m-2">
+               <span className="text-sm font-medium">ISBN:</span>
+              <small className="text-xs">
                 {" "}
                 {bookIssueData.bookInstance.book.ISBN}
               </small>
             </p>
-            <p>
-              <span className="text-md font-medium">Genre:</span>
+          <p  className="m-2">
+               <span className="text-sm font-medium">Genre:</span>
               {bookIssueData.bookInstance.book.genre.map((item, index) => (
                 <small className="text-sm" key={index}>
                   {item}
                 </small>
               ))}
             </p>
-            <p>
-              <span className="text-md font-medium">Status:</span>
+          <p  className="m-2">
+               <span className="text-sm font-medium">Status:</span>
               {isDue ? (
                 <span className="rounded-md text-red-700 p-1">Due Return</span>
               ) : isReturned ? (
@@ -127,37 +128,37 @@ export const View = () => {
             </p>
           </div>
           <div>
-            <p>
+          <p  className="m-2">
             
-              <span className="text-md font-medium">Book Id:</span>{" "}
-              <small className="text-sm">{bookIssueData.bookInstance.id}</small>
+               <span className="text-sm font-medium">Book Id:</span>{" "}
+              <small className="text-xs">{bookIssueData.bookInstance.id}</small>
             </p>
-            <p>
+          <p  className="m-2">
            
-              <span className="text-md font-medium">Issue Date:</span>
-              <small className="text-sm">{issueDate}</small>
+               <span className="text-sm font-medium">Issue Date:</span>
+              <small className="text-xs">{issueDate}</small>
             </p>
-            <p>
-              <span className="text-md font-medium">Return Date</span>
-              <small className="text-sm">{returnDate}</small>
+          <p  className="m-2">
+               <span className="text-sm font-medium">Return Date</span>
+              <small className="text-xs">{returnDate}</small>
             </p>
             {bookReturn !== null && (
               <>
-                <p>
-                  <span className="text-md font-medium">Return On:</span>
-                  <small className="text-sm">{ new Date(bookReturn.date).toLocaleDateString()}</small>
+              <p  className="m-2">
+                   <span className="text-sm font-medium">Return On:</span>
+                  <small className="text-xs">{ new Date(bookReturn.date).toLocaleDateString()}</small>
                 </p>
                 {
                   bookReturn.fine!==null && (
                     <>
 
-                    <p>
-                    <span className="text-md font-medium">Fine Amount:</span>
-                    <small className="text-sm">{bookReturn.fine.amount}</small>
+                  <p  className="m-2">
+                     <span className="text-sm font-medium">Fine Amount:</span>
+                    <small className="text-xs">{bookReturn.fine.amount}</small>
                   </p>
-                  <p>
-                    <span className="text-md font-medium">isWaveOFf:</span>
-                    <small className="text-sm">{bookReturn.fine.isWaveOff}</small>
+                <p  className="m-2">
+                     <span className="text-sm font-medium">isWaveOff:</span>
+                    <small className="text-xs">{bookReturn.fine.isWaveOff}</small>
                   </p>
                   </>
                   )

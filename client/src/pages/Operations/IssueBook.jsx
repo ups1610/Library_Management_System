@@ -101,8 +101,8 @@ export const IssueBook = () => {
   return (
     <div>
       <h1>Issue Book</h1>
-      <div className="w-full mt-5 rounded-lg bg-white p-4 shadow-sm border-t-2 border-black">
-        <div className="max-w-md">
+      <div className="w-full mt-5 rounded-lg bg-white p-4 flex  flex-wrap shadow-sm border-t-2 border-black">
+        <div className="max-w-md border-2  m-auto p-4">
           <form className="space-y-4" onSubmit={handleSubmit}>
             {/* Member */}
             <div>
@@ -227,6 +227,18 @@ export const IssueBook = () => {
               </button>
             </div>
           </form>
+        </div>
+
+        <div className=" p-4 hidden md:inline">
+          <div>
+            {/* Member */}
+
+          </div>
+
+          <div>
+            {/* Book */}
+          </div>
+
         </div>
       </div>
     </div>

@@ -104,7 +104,7 @@ public class TransactionServiceImpl implements TransactionService{
         UserResponseDto user=userService.getUser(entity.getInitiatedBy());
         return new TransactionResponseDTO(
                 entity.getTransactionId(),
-                member.familyName()+" "+member.familyName(),
+                member.firstName()+" "+member.familyName(),
                 entity.getPaidMode(),
                 entity.getTransactionTimeStamp(),
                 entity.getAmount(),

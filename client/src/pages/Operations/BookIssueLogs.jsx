@@ -144,28 +144,28 @@ function BookIssueLogs() {
 
       <div className="overflow-x-auto rounded-t-lg">
         <table className="w-full divide-y-2 divide-gray-200 bg-white text-sm">
-          <thead className="divide-y-2 divide-gray-200">
+          <thead className="divide-y-2 divide-gray-200 bg-gray-700 text-white">
             <tr>
-              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">#</th>
-              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+              <th className="whitespace-nowrap px-4 py-2 font-medium ">#</th>
+              <th className="whitespace-nowrap px-4 py-2 font-medium ">
                 Memeber Id
               </th>
-              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+              <th className="whitespace-nowrap px-4 py-2 font-medium ">
                 Member Name
               </th>
-              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+              <th className="whitespace-nowrap px-4 py-2 font-medium">
                 Book Title
               </th>
-              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+              <th className="whitespace-nowrap px-4 py-2 font-medium ">
                 Book Instance
               </th>
-              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+              <th className="whitespace-nowrap px-4 py-2 font-medium ">
                 Issue Date
               </th>
-              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+              <th className="whitespace-nowrap px-4 py-2 font-medium ">
                 Status
               </th>
-              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+              <th className="whitespace-nowrap px-4 py-2 font-medium ">
                 Action
               </th>
             </tr>
@@ -221,15 +221,15 @@ function BookIssueLogs() {
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                       {isDue ? (
-                        <span className="bg-red-300 rounded-md text-red-900 p-1">
+                        <span className="bg-red-200 rounded-md text-xs text-red-900 p-1">
                           Due Return
                         </span>
                       ) : isReturned ? (
-                        <span className="bg-orange-300 rounded-md text-orange-900 p-1">
+                        <span className="bg-orange-200 rounded-md text-xs text-orange-900 p-1">
                           Returned
                         </span>
                       ) : (
-                        <span className="bg-green-300 rounded-md text-green-900 p-1">
+                        <span className="bg-green-200 text-xs rounded-md text-green-900 p-1">
                           Issued
                         </span>
                       )}
@@ -237,7 +237,7 @@ function BookIssueLogs() {
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700 flex">
                       <Link
                         to={`${issueBook.bookIssueId}/view`}
-                        className="text-gray-400 bg-gray-200 p-1 rounded-sm"
+                        className="text-gray-500 border-[1px] border-gray-300 p-1 "
                       >
                         <FaRegEye />
                       </Link>

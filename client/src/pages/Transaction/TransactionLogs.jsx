@@ -147,16 +147,16 @@ function TransactionLogs() {
 
       <div className="overflow-x-auto rounded-t-lg">
         <table className="w-full divide-y-2 divide-gray-200 bg-white text-sm">
-          <thead className="divide-y-2 divide-gray-200">
+        <thead className="divide-y-2 divide-gray-200 bg-gray-700 text-white">
             <tr>
-              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">#</th>
-              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Transaction Id</th>
-              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Date</th>
-              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Member Name</th>
-              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Mode</th>
-              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Amount</th>
-              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Narration</th>
-              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Initiated By</th>
+              <th className="whitespace-nowrap px-4 py-2 font-medium ">#</th>
+              <th className="whitespace-nowrap px-4 py-2 font-medium ">Transaction Id</th>
+              <th className="whitespace-nowrap px-4 py-2 font-medium ">Date</th>
+              <th className="whitespace-nowrap px-4 py-2 font-medium ">Member Name</th>
+              <th className="whitespace-nowrap px-4 py-2 font-medium ">Mode</th>
+              <th className="whitespace-nowrap px-4 py-2 font-medium ">Amount</th>
+              <th className="whitespace-nowrap px-4 py-2 font-medium ">Narration</th>
+              <th className="whitespace-nowrap px-4 py-2 font-medium ">Initiated By</th>
             </tr>
           </thead>
 
@@ -245,6 +245,10 @@ function Filter({ onClose, applyFilters, resetFilters }) {
               />
             </svg>
           </button>
+            <div className="flex nowrap gap-1 items-center font-medium">
+            <CiFilter /><span> Filter</span>
+            </div>
+         
           <form className="w-[400px]  mt-5 mx-auto" onSubmit={handleSubmit}>
             {/* Member Name */}
             <div className="relative z-0 w-full mb-5 group">
@@ -253,15 +257,10 @@ function Filter({ onClose, applyFilters, resetFilters }) {
                 name="memberName"
                 value={filters.memberName}
                 onChange={handleInputChange}
-                className="block py-2.5 px-1 w-full text-sm text-gray-900 bg-transparent border-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" "
+                className="block py-2.5 px-2 w-full text-sm text-gray-900 bg-transparent border-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 "
+                placeholder="Member Name"
               />
-              <label
-                htmlFor="memberName"
-                className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >
-                Member Name
-              </label>
+             
             </div>
 
             {/* From Date */}
@@ -276,7 +275,7 @@ function Filter({ onClose, applyFilters, resetFilters }) {
               />
               <label
                 htmlFor="fromDate"
-                className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-2 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
               >
                 From Date
               </label>
@@ -294,7 +293,7 @@ function Filter({ onClose, applyFilters, resetFilters }) {
               />
               <label
                 htmlFor="toDate"
-                className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-2 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
               >
                 To Date
               </label>
@@ -308,14 +307,9 @@ function Filter({ onClose, applyFilters, resetFilters }) {
                 value={filters.narration}
                 onChange={handleInputChange}
                 className="block py-2.5 px-1 w-full text-sm text-gray-900 bg-transparent border-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" "
+                placeholder="Narration"
               />
-              <label
-                htmlFor="narration"
-                className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >
-                Narration
-              </label>
+            
             </div>
 
             {/* Initiated By */}
@@ -325,15 +319,10 @@ function Filter({ onClose, applyFilters, resetFilters }) {
                 name="initiatedBy"
                 value={filters.initiatedBy}
                 onChange={handleInputChange}
-                className="block py-2.5 px-1 w-full text-sm text-gray-900 bg-transparent border-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" "
+                className="block py-2.5 px-1 w-full text-sm text-gray-900 bg-transparent border-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 "
+                placeholder="Initiated By "
               />
-              <label
-                htmlFor="initiatedBy"
-                className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >
-                Initiated By
-              </label>
+             
             </div>
 
             {/* Mode */}
@@ -348,26 +337,21 @@ function Filter({ onClose, applyFilters, resetFilters }) {
                 <option value="Cash">Cash</option>
                 <option value="Online">Online</option>
               </select>
-              <label
-                htmlFor="mode"
-                className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >
-                Mode
-              </label>
+             
             </div>
 
             {/* Submit Button */}
             <div className="flex nowrap">
             <button
               type="submit"
-              className="border-2 text-sm px-2 py-1.5 mr-2 rounded-lg flex items-center"  >
+              className="border-[1px]  border-gray-900 text-sm px-2 py-1.5 mr-2 rounded-lg flex items-center"  >
              <CiFilter /> Apply
             </button>
 
             {/* Reset Filter Button */}
             <button
               type="button"
-              className="border-2 text-sm px-2 py-1.5 mr-2 rounded-lg flex items-center" onClick={resetFilters}
+              className="border-[1px]  border-gray-900 text-sm px-2 py-1.5 mr-2 rounded-lg flex items-center" onClick={resetFilters}
             >
              <MdFilterAltOff /> Reset 
             </button>

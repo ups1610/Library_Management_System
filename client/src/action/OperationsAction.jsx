@@ -7,7 +7,7 @@ export const issueBook = (book, token) => {
   return axios
     .post(url + "/books/issue", book, {
       headers: {
-        token: token,
+       Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     })
@@ -36,7 +36,7 @@ export const returnBook = (book, token) => {
   return axios
     .post(url + "/books/return", book, {
       headers: {
-        token: token,
+       Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     })
@@ -65,7 +65,7 @@ export const getParticularReturnBook = (id, token) => {
   return axios
     .get(url + `/books/return/${id}`, {
       headers: {
-        token: token,
+       Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     })
@@ -94,7 +94,7 @@ export const allReturnBooks = (token) => {
   return axios
     .get(url + "/books/return/all", {
       headers: {
-        token: token,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     })
@@ -123,7 +123,7 @@ export const calculateFine = (bookIssueID, token) => {
   return axios
     .get(url + `/books/return/calculate-fine/${bookIssueID}`, {
       headers: {
-        token: token,
+       Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     })
@@ -153,7 +153,7 @@ export const getParticularIssueBook = (bookIssueID, token) => {
   return axios
     .get(url + `/books/issue/${bookIssueID}`, {
       headers: {
-        token: token,
+       Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     })
@@ -183,7 +183,7 @@ export const getIssueBookByMember = (memberID, token) => {
   return axios
     .get(url + `/books/issue/member/${memberID}`, {
       headers: {
-        token: token,
+       Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     })
@@ -212,7 +212,7 @@ export const getAllIssueBook = (token) => {
   return axios
     .get(url + `/books/issue/all`, {
       headers: {
-        token: token,
+       Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     })
@@ -241,7 +241,7 @@ export const dueReturnBook = (token) => {
   return axios
     .get(url + `/books/issue/due-return`, {
       headers: {
-        token: token,
+       Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     })
@@ -269,7 +269,7 @@ export const getBookInstanceIssueHistory = (bookInstanceID, token) => {
   return axios
     .get(url + `/books/issue/instance/${bookInstanceID}`, {
       headers: {
-        token: token,
+       Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     })
@@ -298,7 +298,7 @@ export const fineByID = (id, token) => {
   return axios
     .get(url + `/fine/${id}`, {
       headers: {
-        token: token,
+       Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     })
@@ -327,7 +327,7 @@ export const getBookInstances = (id, token) => {
   return axios
     .get(url + `/book/${id}/instances`, {
       headers: {
-        token: token,
+       Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     })
@@ -356,7 +356,7 @@ export const getBooks = (token) => {
   return axios
     .get(url + "/book/all", {
       headers: {
-        token: token,
+       Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     })
@@ -385,7 +385,7 @@ export const getMember = (token) => {
   return axios
     .get(url + "/member/all", {
       headers: {
-        token: token,
+       Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     })

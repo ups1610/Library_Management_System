@@ -30,7 +30,7 @@ function ReturnBook({ onClose, issueId, bookTitle }) {
     const returnData = {
       bookIssue: issueId,
       date: new Date().toISOString(),
-      fine: isFineWaived ? 0 : fine,
+      fine: fine,
       waveOffFine: isFineWaived,
       mode: "cash", 
       collectBy: user.userId, 
@@ -42,7 +42,7 @@ function ReturnBook({ onClose, issueId, bookTitle }) {
         console.log("Book returned successfully:", response.data);
         onClose(); 
       } else {
-        toast.error(response.date);
+        toast.error(response.data);
       }
    
   };
@@ -72,66 +72,18 @@ function ReturnBook({ onClose, issueId, bookTitle }) {
               />
             </svg>
           </button>
+
+          <div className="mt-3 mb-5">
+          <h3> {bookTitle}</h3>
+
+          <h4>  {fine !== 0 && (  <>Fine:  {fine}   </>  )}</h4>
+          
           <form className="space-y-4" onSubmit={handleFormSubmit}>
-            {/* Book */}
-            <div>
-              <label
-                htmlFor="book"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Book:
-              </label>
-              <input
-                type="text"
-                value={bookTitle}
-                id="book"
-                name="book"
-                disabled
-                autoComplete="off"
-                className="w-full p-1 border-2 border-gray-500 rounded-md text-gray-600 font-normal text-sm"
-              />
-            </div>
+           
 
-            {/* Fine */}
-            {fine !== 0 && (
-              <div>
-                <label
-                  htmlFor="fine"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Fine:
-                </label>
-                <input
-                  type="number"
-                  id="fine"
-                  name="fine"
-                  value={fine}
-                  disabled
-                  className="w-full p-1 border-2 border-gray-500 rounded-md text-gray-600 font-normal text-sm"
-                />
-              </div>
-            )}
+           
 
-            {/* Fine Mode */}
-            {fine !== 0 && (
-              <div>
-                <label
-                  htmlFor="fineMode"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Fine Mode:
-                </label>
-                <select
-                  id="fineMode"
-                  name="fineMode"
-                  className="w-full p-1 border-2 border-gray-500 rounded-md text-gray-600 font-normal text-sm"
-                >
-                  <option value="cash">Cash</option>
-                  <option value="credit">Credit</option>
-                  {/* Add more fine options as needed */}
-                </select>
-              </div>
-            )}
+           
 
             {/* Fine Waive-off */}
             {fine !== 0 && (
@@ -154,15 +106,16 @@ function ReturnBook({ onClose, issueId, bookTitle }) {
             )}
 
             {/* Submit Button */}
-            <div>
+            <div className="mt-4">
               <button
                 type="submit"
-                className="py-2 px-10 border-2 bg-black focus:border-0 focus:outline-none rounded-md text-white font-normal text-sm"
+                className="py-2 px-4 border-2 bg-black focus:border-0 focus:outline-none rounded-md text-white font-normal text-sm"
               >
                 Return
               </button>
             </div>
           </form>
+          </div>
         </div>
       </div>
     </div>

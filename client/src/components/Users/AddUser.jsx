@@ -195,7 +195,7 @@ const handleSubmit = (e) => {
             </div>
             <button
                 type="submit"
-              className="text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center "
+              className="ml-2 text-white bg-gray-900  border-gray-900 border-2   focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md  w-full sm:w-auto px-2 py-1 text-md text-center "
             onClick={handleSubmit}
            >
               Save
@@ -203,7 +203,7 @@ const handleSubmit = (e) => {
 
             <button
               type="reset"
-              className="ml-2 text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center "
+              className="ml-2 text-gray-900 border-gray-900 border-2   focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md  w-full sm:w-auto px-2 py-1 text-md text-center "
             >
               Reset
             </button>

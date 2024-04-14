@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
             String token = jwtService.generateToken(user.userName());
 
             UserCredential loginUser = userRepository.findByUsername(user.userName())
-                    .orElseThrow(() -> new BadCredentialsException("User not Found"));
+                    .orElseThrow(() -> new BadCredentialsException("Bad Credentials"));
 
             return new LoginResponseDto(token, loginUser.getUserId(), loginUser.getUsername(), loginUser.getFirstname(),
                     loginUser.getLastname(), loginUser.getMobile(), loginUser.getEmail(), loginUser.getRole());

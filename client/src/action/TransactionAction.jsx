@@ -6,7 +6,7 @@ export const getAllTransaction = (token) => {
   return axios
     .get(url + "/all", {
       headers: {
-        token: token,
+       Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     })
@@ -35,7 +35,7 @@ export const getTodayTransaction = (token) => {
   return axios
     .get(url + "/today", {
       headers: {
-        token: token,
+       Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     })

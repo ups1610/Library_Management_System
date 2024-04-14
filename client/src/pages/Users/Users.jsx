@@ -11,12 +11,12 @@ import UserPDF from "../../utils/pdf/Users";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 
 function Users() {
-  const {user,token} = useAuth();
+  const { user, token } = useAuth();
 
   const [showAddUserModel, setAddUserModal] = useState(false);
   const [userData, setUserData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading,setIsLoading]=useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchData = async () => {
     try {
@@ -32,8 +32,6 @@ function Users() {
   };
 
   useEffect(() => {
-   
-
     fetchData();
     setIsLoading(false);
   }, [token]);
@@ -87,19 +85,37 @@ function Users() {
           </div>
         </div>
         <div className="flex flex-col sm:flex-row justify-end">
-     
-        <PDFDownloadLink   className="border-2 text-sm px-2 py-1.5 rounded-lg flex items-center" document={<UserPDF userData={filteredUsers} username={user.userName}/>}  fileName="users.pdf">
-  {({ loading }) => (loading ? "Loading..." : <><BsFileEarmarkPdf /> Download PDF</>)}
-</PDFDownloadLink>
-       
+          <PDFDownloadLink
+            className="border-2 text-sm px-2 py-1.5 rounded-lg flex items-center"
+            document={
+              <UserPDF userData={filteredUsers} username={user.userName} />
+            }
+            fileName="users.pdf"
+          >
+            {({ loading }) =>
+              loading ? (
+                "Loading..."
+              ) : (
+                <>
+                  <BsFileEarmarkPdf /> Download PDF
+                </>
+              )
+            }
+          </PDFDownloadLink>
+
           <button
             className="border-2 text-sm px-2 py-1.5 rounded-lg flex items-center"
             onClick={() => setAddUserModal(true)}
           >
-            <IoMdPersonAdd />  Add User
+            <IoMdPersonAdd /> Add User
           </button>
           {showAddUserModel && (
-            <AddUser onClose={() =>{ setAddUserModal(false); fetchData()}} />
+            <AddUser
+              onClose={() => {
+                setAddUserModal(false);
+                fetchData();
+              }}
+            />
           )}
         </div>
       </div>
@@ -109,61 +125,85 @@ function Users() {
         <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
           <thead></thead>
           <tbody className="divide-y divide-gray-200">
-
-            {isLoading?(
+            {isLoading ? (
               <tr>
-              <td colSpan="8" className="py-4">
-                Loading...
-              </td>
-            </tr>
-            ): filteredUsers.length===0?(
-              <tr>
-              <td colSpan="8" className="py-4">
-                No records available.
-              </td>
-            </tr>
-            ):( filteredUsers.map((user) => (
-              <tr key={user.id}>
-                <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                  <div className="flex items-center space-x-4">
-                    <img
-                      src={userImg}
-                      alt="user"
-                      className="h-8 w-8 rounded-full"
-                    />
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">
-                        {user.userName}
-                      </p>
-                      <p className="text-sm text-gray-500">{user.email}</p>
-                    </div>
-                  </div>
-                </td>
-                <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                  {user.firstName} {user.lastName}
-                </td>
-                <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                  {user.role}
-                </td>
-                <td className="whitespace-nowrap px-4 py-2">
-                  <span
-                    className={`p-1 rounded-md text-white text-sm ${
-                      user.status === "active" ? "bg-orange-500" : "bg-red-500"
-                    }`}
-                  >
-                    {user.status}
-                  </span>
-                </td>
-                <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                  <Link
-                    to={`/dashboard/users/manage/${user.userId}/view`}
-                    className="bg-green-700 p-1 rounded-md text-white text-sm"
-                  >
-                    View/Edit
-                  </Link>
+                <td colSpan="8" className="py-4">
+                  Loading...
                 </td>
               </tr>
-            )))}
+            ) : filteredUsers.length === 0 ? (
+              <tr>
+                <td colSpan="8" className="py-4">
+                  No records available.
+                </td>
+              </tr>
+            ) : (
+              filteredUsers.map((user) => (
+                <tr key={user.id}>
+                  <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                    <div className="flex items-center space-x-4">
+                      <img
+                        src={userImg}
+                        alt="user"
+                        className="h-8 w-8 rounded-full"
+                      />
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">
+                          {user.userName}
+                        </p>
+                        <p className="text-sm text-gray-500">{user.email}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    {user.firstName} {user.lastName}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    {user.role}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2">
+                    <span
+                      className={`p-1 rounded-md text-xs text-white ${
+                        user.status === "active"
+                          ? "bg-green-500  "
+                          : "bg-red-500"
+                      }`}
+                    >
+                      {user.status}
+                    </span>
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                   
+                      <Link
+                        to={`/dashboard/users/manage/${user.userId}/view`}
+                        class="inline-flex items-center gap-1 rounded-md  text-xs text-gray-500 hover:text-gray-700 focus:relative"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="h-4 w-4"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+                          />
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                          />
+                        </svg>
+                        View
+                      </Link>
+                
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
