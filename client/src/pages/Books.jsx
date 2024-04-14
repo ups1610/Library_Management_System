@@ -61,16 +61,37 @@ const Books = () => {
 
   const handleBookData = async (formData) => {
     try {
-      const updateBookData = await updateBook(id, formData, token);
-      setEditBook(updateBookData)
+      // Fetch genre data if needed
+      const genreData = await fetchGenre(token);
+  
+      // Map author and genre IDs
+      const authorId = formData.authorId;
+      const genreIds = formData.genre.map(genre => {
+        const foundGenre = genreData.find(item => item.genreName === genre);
+        return foundGenre ? foundGenre.id : null;
+      });
+  
+      // Format formData
+      const updatedFormData = {
+        title: formData.title,
+        authorId: authorId,
+        genre: genreIds,
+        ISBN: formData.ISBN
+      };
+  
+      const updateBookData = await updateBook(id, updatedFormData, token);
+      setEditBook(updateBookData);
+      
       const updatedBook = await fetchBooks(token);
       setBooks(updatedBook);
-      setShowEditForm(false)
+      
+      setShowEditForm(false);
     } catch (error) {
-      toast.error("Error edit book");
+      toast.error("Error editing book");
       throw error;
     }
   };
+  
 
   const handleDeleteBook = async (bookId) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this book?");
@@ -113,7 +134,7 @@ const Books = () => {
           }
           name1={"Book Name"}
           name2={"ISBN"}
-          button={"Add Book"}
+          button={"Edit Book"}
           onSubmit={handleBookData}
           passKeyNam1="title"
           passKeyNam2="ISBN"
