@@ -4,18 +4,24 @@ import { Link } from "react-router-dom";
 
 import { useAuth } from "../../context/Authetication";
 import MemberAction from "../../action/MemberAction";
-
+import toast from "react-hot-toast"
 export const MemberTable = () => {
-  const [userData, setUserData] = useState([]);
+  const [memberData, setMemberData] = useState([]);
   const { token } = useAuth();
+  const [loading,setLoading]=useState(true);
 
   useEffect(() => {
     const fetchMembers = async () => {
       try {
         const response = await MemberAction.getAllMembers(token);
-
-        const recentMembers = response.data.slice(0, 5); 
-        setUserData(recentMembers);
+        if(response.success){
+          const recentMembers = response.data.slice(0, 5); 
+          setMemberData(recentMembers);
+          setLoading(false);
+        }else{
+              toast.error("Something Went Wrong!");
+        }
+       
       } catch (error) {
         console.log(error);
       }
@@ -37,6 +43,12 @@ export const MemberTable = () => {
         </Link>
       </span>
       <div className="overflow-x-auto">
+
+      {loading ? ( 
+          <p className="text-xs">Loading...</p>
+        ) : memberData.length === 0 ? ( 
+          <p className="text-xs">No books available</p>
+        ) : (
         <table className="min-w-full mt-6 border-0 divide-y-2 divide-gray-200 bg-white text-sm align-center">
           <thead className="text-gray-600">
             <tr>
@@ -55,7 +67,8 @@ export const MemberTable = () => {
             </tr>
           </thead>
           <tbody className=" border-0 divide-y divide-gray-200 text-center">
-            {userData.map((member, index) => (
+            
+            {  memberData.map((member, index) => (
               <tr key={index}>
                 <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                   {member.memberId}
@@ -84,6 +97,7 @@ export const MemberTable = () => {
             ))}
           </tbody>
         </table>
+        )}
         <hr></hr>
         <Link to="/dashboard/member/MemberTable" className="text-xs float-right mt-4 text-blue-700">
           {" "}
