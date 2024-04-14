@@ -1,26 +1,29 @@
 import React, { Fragment } from "react";
-import { Menu, Popover, Transition } from "@headlessui/react";
+import { Menu, Transition } from "@headlessui/react";
 import { HiOutlineBell, HiOutlineChatAlt } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import classNames from "classnames";
 import { useAuth } from "../context/Authetication";
 import user from "../assets/user.png";
 import { VscSignOut } from "react-icons/vsc";
+
 export default function Header() {
-const navigate = useNavigate();
-const auth = useAuth();
+  const navigate = useNavigate();
+  const auth = useAuth();
 
   function logout() {
     auth.signOut();
   }
 
   return (
-    <div className="md:w-full w-screen bg-white h-16 px-4 flex items-center border-b border-gray-200  justify-between">
-      <div></div>
+    <div className="md:w-full w-screen bg-white h-16 px-4 flex items-center border-b border-gray-200 justify-between">
+      <div>
+        {/* Logo or brand name can be placed here */}
+      </div>
       <div className="flex items-center gap-2 mr-2">
         <Menu as="div" className="relative">
           <div>
-            <Menu.Button className="ml-2  flex text-sm   rounded-full   ">
+            <Menu.Button className="ml-2 flex text-sm rounded-full">
               <div className="flex items-center">
                 <img src={user} className="mr-2 w-[30px] h-[30px]" alt="user" />
                 <p className="text-left">{auth.user.userName}</p>
@@ -46,10 +49,9 @@ const auth = useAuth();
                       "active:bg-gray-200 rounded-sm px-4 py-2 text-gray-700 cursor-pointer focus:bg-gray-200"
                     )}
                   >
-					<div className="flex nowrap gap-2 items-center">
-					<VscSignOut />  Sign out
-					</div>
-                 
+                    <div className="flex nowrap gap-2 items-center">
+                      <VscSignOut /> Sign out
+                    </div>
                   </div>
                 )}
               </Menu.Item>

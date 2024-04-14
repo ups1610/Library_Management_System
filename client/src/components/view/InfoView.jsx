@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { options, settings } from "../../utils/constants/InfoViewData";
 import PopupForm from "../modals";
+import toast from "react-hot-toast"
+import { Image, Transformation } from "cloudinary-react";
+import { Cloudinary } from "@cloudinary/base";
 import { Link, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   createInstance,
   deleteInstance,
@@ -18,8 +22,8 @@ import {
   fetchInstanceById,
 } from "../../action/CatalogAction";
 import { MdAdd } from "react-icons/md";
-import toast from "react-hot-toast";
 import { useAuth } from "../../context/Authetication";
+import { X } from "lucide-react";
 
 function BookView(props) {
   const [book, setBook] = useState([]);
@@ -28,8 +32,8 @@ function BookView(props) {
   const [bookByAuthor, setBookByAuthor] = useState([]);
   const [genre, setGenre] = useState([]);
   const [genreBook, setGenreBook] = useState([]);
-  const [shelf, setShelf] = useState([])
-  const [shelfBook , setShelfBook] = useState([])
+  const [shelf, setShelf] = useState([]);
+  const [shelfBook, setShelfBook] = useState([]);
   const { name, id } = useParams();
   const { token } = useAuth();
   useEffect(() => {
@@ -41,16 +45,16 @@ function BookView(props) {
         const fetchAuthorBooks = await fetchAuthorsBookById(id, token);
         const fetchGenreData = await fetchGenreById(id, token);
         const fetchGenreBooks = await fetchGenreBookById(id, token);
-        const fetchShelfData = await fetchBookshelfById(id, token)
-        const fetchShelfBookData = await fetchBookshelfBookById(id, token)
+        const fetchShelfData = await fetchBookshelfById(id, token);
+        const fetchShelfBookData = await fetchBookshelfBookById(id, token);
         setBook(fetchBookData);
         setInstance(fetchInstanceData);
         setAuthor(fetchAuthor);
         setBookByAuthor(fetchAuthorBooks);
         setGenre(fetchGenreData);
         setGenreBook(fetchGenreBooks);
-        setShelf(fetchShelfData)
-        setShelfBook(fetchShelfBookData)
+        setShelf(fetchShelfData);
+        setShelfBook(fetchShelfBookData);
       } catch (error) {
         console.log("Error occur: " + error);
       }
@@ -114,6 +118,7 @@ function BookView(props) {
 export default BookView;
 
 const Options = (props) => {
+  
   return (
     <>
       <table className="table table-auto w-full">
@@ -124,7 +129,9 @@ const Options = (props) => {
           {options.map((option, index) => (
             <tr key={index} className="border-b">
               <td className="w-full text-sm gap-3 flex flex-row hover:bg-gray-100">
-                <button className="flex items-center p-2 rounded-lg group ">
+                <button
+                  className="flex items-center p-2 rounded-lg group "
+                >
                   <span>{option.icon}</span>
                   <span className="ms-3">{option.label}</span>
                 </button>
@@ -233,9 +240,7 @@ export const PersonDetail = (props) => {
 
             <tr className="border-b border-gray-100">
               <td className="w-1/4 p-2">Description :</td>
-              <td className="text-medium">
-                {props.person.biography}
-              </td>
+              <td className="text-medium">{props.person.biography}</td>
             </tr>
           </tbody>
         </table>
@@ -245,7 +250,6 @@ export const PersonDetail = (props) => {
 };
 
 export const GenreDetail = (props) => {
-  
   return (
     <>
       <div className="flex-grow">
@@ -320,7 +324,6 @@ export const GenreDetail = (props) => {
 };
 
 export const BookshelfDetail = (props) => {
-
   function getGenre(bookshelfData) {
     const allGenres = bookshelfData.reduce((all, book) => {
       return all.concat(book.book.genre);
@@ -328,7 +331,7 @@ export const BookshelfDetail = (props) => {
     const uniqueGenres = Array.from(new Set(allGenres));
     return uniqueGenres.join(", ");
   }
-  
+
   return (
     <>
       <div className="flex-grow">
@@ -344,7 +347,7 @@ export const BookshelfDetail = (props) => {
             <tr className="border-b border-gray-100">
               <td className="w-1/4 p-2">Total Books Entitled :</td>
               <td className="font-medium">
-                {props.book ? Object.keys(props.book).length : 'N/A'}
+                {props.book ? Object.keys(props.book).length : "N/A"}
               </td>
             </tr>
             <tr className="border-b border-gray-100">
@@ -356,7 +359,9 @@ export const BookshelfDetail = (props) => {
               <td className="w-1/4 p-2">Popular Books :</td>
               <td>
                 <ul className="flex flex-row gap-2">
-                  {props.book && Array.isArray(props.book) && props.book.length > 0 ? (
+                  {props.book &&
+                  Array.isArray(props.book) &&
+                  props.book.length > 0 ? (
                     props.book.map((item) => (
                       <li key={item.id} className="bg-gray-200 p-1 rounded-sm">
                         {item.book.title}
@@ -373,14 +378,18 @@ export const BookshelfDetail = (props) => {
               <td className="w-1/4 p-2">Popular Authors :</td>
               <td>
                 <ul className="flex flex-row gap-2">
-                  {props.book && Array.isArray(props.book) && props.book.length > 0 ? (
-                    [...new Set(props.book.map((item) => item.book.authorName))].map(
-                      (authorName, index) => (
-                        <li key={index} className="bg-gray-200 p-1 rounded-sm">
-                          {authorName}
-                        </li>
-                      )
-                    )
+                  {props.book &&
+                  Array.isArray(props.book) &&
+                  props.book.length > 0 ? (
+                    [
+                      ...new Set(
+                        props.book.map((item) => item.book.authorName)
+                      ),
+                    ].map((authorName, index) => (
+                      <li key={index} className="bg-gray-200 p-1 rounded-sm">
+                        {authorName}
+                      </li>
+                    ))
                   ) : (
                     <li className="bg-gray-200 p-1 rounded-sm">N/A</li>
                   )}
@@ -390,9 +399,7 @@ export const BookshelfDetail = (props) => {
 
             <tr className="border-b border-gray-100">
               <td className="w-1/4 p-2">Description :</td>
-              <td className="text-medium">
-                {props.shelf.description}
-              </td>
+              <td className="text-medium">{props.shelf.description}</td>
             </tr>
           </tbody>
         </table>
@@ -401,9 +408,91 @@ export const BookshelfDetail = (props) => {
   );
 };
 
-
 export const InfoDetails = (props) => {
+  const [uploadForm, setUploadForm] = useState(false);
+  const [file, setFile] = useState(null);
+  const [image, setImage] = useState(true);
+  const navigate = useNavigate();
+  const {id} = useParams()
+  const uploadImage = async (e) => {
+    const fileData = e.target.files[0];
+    setFile(fileData)
+    const formData = new FormData();
+    formData.append("file", fileData);
+    formData.append("upload_preset", "lms_books"); 
+    formData.append("public_id", id.toString());
+    try {
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/upsdata/image/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const data = await response.json();
+      console.log(data)
+      setImage(data.secure_url);
+    } catch (error) {
+      console.error("Error uploading image: ", error);
+    }
+  };
+
+  const handleSubmit = async() =>{ 
+    toast.success("Uploaded successfully")
+    setUploadForm(false);
+    setImage(true)
+  }; 
+
+  useEffect(()=>{
+    const upload = async() =>{
+      setTimeout(()=>{
+        navigate(`/dashboard/catalog/book/view/${id}`);
+      },1500)
+    }
+    upload()
+  },[uploadForm])
+
   return (
+    <>
+    {uploadForm && (
+        <div className="z-10 fixed inset-0 flex justify-center items-center bg-black bg-opacity-30 backdrop-blur-sm">
+          <div className="bg-white rounded-lg mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+            <div className="flex flex-col sm:flex-row justify-center gap-3">
+            <button onClick={()=>setUploadForm(false)}>
+          <X size="24" />
+          </button>
+          <h2 className="text-center text-2xl font-medium">
+              Upload Book Image
+          </h2>
+          </div>
+          <form
+            className="mb-0 mt-6 space-y-4 rounded-lg p-4  sm:p-6 lg:p-8"
+          >
+            <div className="border-2">
+              <label htmlFor="file" className="sr-only">
+                Choose
+              </label>
+
+              <div className="relative">
+                <input
+                  type="file"
+                  onChange={(uploadImage)}
+                  className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
+                  placeholder="Enter email"
+                />
+              </div>
+            </div>
+            <button
+              type="submit"
+              onClick={handleSubmit}
+              className="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white"
+            >
+              Upload
+            </button>
+          </form>
+          </div>
+        </div>
+      )}
     <div className="max-w-screen-xl mx-auto">
       <div className="p-4 sm:p-8">
         <h2 className="text-lg sm:text-xl font-medium mb-4">
@@ -413,10 +502,10 @@ export const InfoDetails = (props) => {
           {/* Image Div */}
           <div className="max-w-xs md:max-w-none mb-4 md:mb-0 md:mr-4">
             <div className="border-2 p-2 h-72">
-              <img
+              <img onClick={()=>setUploadForm(true)}
                 alt=""
-                src="https://m.media-amazon.com/images/I/411t3aQzVaL.jpg"
-                className="w-full h-full object-contain"
+                src={`https://res.cloudinary.com/upsdata/image/upload/${id}.jpg`?`https://res.cloudinary.com/upsdata/image/upload/${id}.jpg`: "https://cdn0.iconfinder.com/data/icons/reading/154/add-books-read-literature-512.png"}
+                className="w-full h-full object-contain cursor-pointer"
               />
             </div>
             <h3 className="secondaryText text-lg sm:text-xl font-bold text-gray-900 mt-4 text-center">
@@ -500,6 +589,7 @@ export const InfoDetails = (props) => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
