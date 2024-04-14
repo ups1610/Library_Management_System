@@ -61,7 +61,7 @@ function EditForm(props) {
         </button>
         <div className="mx-auto max-w-lg">
           {props.title && (
-            <h1 className="text-center text-2xl font-bold text-indigo-600 sm:text-3xl">
+            <h1 className="text-center text-2xl font-bold text-black sm:text-3xl">
               {props.title}
             </h1>
           )}
@@ -187,7 +187,7 @@ function EditForm(props) {
             {props.button && (
               <button
                 type="submit"
-                className="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white"
+                className="block w-full rounded-lg bg-black px-5 py-3 text-sm font-medium text-white"
               >
                 {props.button}
               </button>
