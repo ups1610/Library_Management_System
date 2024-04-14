@@ -5,11 +5,11 @@ The Library Management System is designed to efficiently manage the operations o
 
 **Microservices:**
 
-Authentication Service: Handles user authentication and authorization, assigning roles to users.
-Transaction Service: Manages library transactions such as book borrowing, returning, and fine calculation.
-Membership Service: Handles membership management, including membership plans and fees.
-Catalog Service: Manages book cataloging, including details such as author, genre, and book instances.
-Library Service: Manages library operations such as book shelving and location tracking.
+**Authentication Service:** Handles user authentication and authorization, assigning roles to users.
+**Transaction Service:** Manages library transactions such as book borrowing, returning, and fine calculation.
+**Membership Service:** Handles membership management, including membership plans and fees.
+**Catalog Service:** Manages book cataloging, including details such as author, genre, and book instances.
+**Library Service:** Manages library operations such as book shelving and location tracking.
 Infrastructure:
 
 Utilizes an API gateway for routing and load balancing.
@@ -25,7 +25,8 @@ User management allowing new user registration, editing, and role assignment.
 Responsive UI design for accessibility across devices.
 Charts and graphs for data visualization.
 Downloadable reports with various filtering options.
-Screenshots: [Placeholder for screenshots]
+
+**Some UI Screenshots:**
 
 **Future Enhancements:**
 Integration with external systems for book reservation.
