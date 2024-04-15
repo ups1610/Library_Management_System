@@ -1,7 +1,12 @@
 **Project Title: Library Management System**
 
 **Project Demo:**
+
 https://drive.google.com/file/d/1bn2rdj35qe-xDDBhfd1AMqKIwXeLvwIh/view?usp=sharing
+
+                                  or
+
+https://firebasestorage.googleapis.com/v0/b/face-recognition-system-d0666.appspot.com/o/LMS_DEMO%20-%20Made%20with%20Clipchamp%20(1).mp4?alt=media&token=6f17c75b-799d-4568-9192-6b997fdc9207
 
 **Overview:**
 The Library Management System is designed to efficiently manage the operations of a library, including cataloging, membership management, book transactions, and reporting. The system is built using microservices architecture with Spring Boot for the backend and React with Tailwind CSS for the frontend. It incorporates various features to streamline library processes and enhance user experience.
