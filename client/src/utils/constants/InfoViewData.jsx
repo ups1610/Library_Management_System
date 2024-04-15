@@ -4,7 +4,7 @@ import { MdDriveFolderUpload, MdOutlineContactSupport, MdMoreHoriz } from "react
 import { FaAffiliatetheme, FaRegEdit } from "react-icons/fa";
 export const options = [
   { icon: <MdDriveFolderUpload />, label: "Upload Book Image", field1:"Url", button:"Upload", state: true},
-  { icon: <FaRegEdit />, label: "Update Book Details", field1:"Imprint", field2:"Status", state:false},
+  { icon: <FaRegEdit />, label: "Update Book Details", state:true},
   { icon: <PiBooks />, label: "Add Instance", field1:"Imprint", button:"Add Instance", state:true},
   { icon: <IoPrintOutline />, label: "Print Book Detail", field1:"Imprint", field2:"Status", state:false },
 ];

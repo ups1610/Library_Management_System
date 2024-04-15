@@ -106,7 +106,7 @@ function AddMembership({ selectedMember, onClose }) {
                         <button type="button" onClick={onClose} className="mr-2 px-4 py-2 text-gray-600">
                             Cancel
                         </button>
-                        <button type="submit" className="px-4 py-2 bg-indigo-600 text-white font-semibold rounded">
+                        <button type="submit" className="px-4 py-2 bg-black text-white font-semibold rounded">
                             Add Membership
                         </button>
                     </div>

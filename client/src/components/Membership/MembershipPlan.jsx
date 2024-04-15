@@ -43,23 +43,23 @@ function MembershipPlan({ onClose, updatePlanList }) {
 
     return (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
-            <div className="relative max-w-xl rounded-lg bg-gray-100 p-6 shadow-lg">
+            <div className="relative max-w-xl rounded-lg h-auto bg-gray-100 p-6 shadow-lg">
                 <div className="flex justify-end">
                     <button onClick={onClose}>
-                        <X />
+                        <X size={24}/>
                     </button>
                 </div>
-                <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
                     <div className="mx-auto max-w-lg">
-                        <h1 className="text-center text-2xl font-bold text-slate-800 sm:text-3xl">
+                        <h1 className="text-center text-xl font-bold text-slate-800 sm:text-3xl">
                             Add New Membership Plan
                         </h1>
 
                         <form
-                            className="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8"
+                            className="mb-0 mt-6 border-2 space-y-4 rounded-lg p-4  sm:p-6 lg:p-8"
                         >
                             <div>
-                                <label className="block text-gray-600 text-base font-normal">
+                                <label className="block text-gray-600 text-base font-medium">
                                     Membership Plan Name
                                 </label>
                                 <div className="relative">
@@ -68,13 +68,13 @@ function MembershipPlan({ onClose, updatePlanList }) {
                                         name="planName"
                                         value={plan.planName}
                                         onChange={handleChange}
-                                        className="w-full h-8 border-gray-200 p-4 pe-12 text-sm shadow-sm"
+                                        className="w-full h-10 border-gray-200 rounded-md p-4 pe-12 text-sm shadow-sm"
                                     />
                                 </div>
                             </div>
 
                             <div>
-                                <label className="block text-gray-600 text-base font-normal">
+                                <label className="block text-gray-600 text-base font-medium">
                                     Description
                                 </label>
                                 <div className="relative">
@@ -83,12 +83,12 @@ function MembershipPlan({ onClose, updatePlanList }) {
                                         name="description"
                                         value={plan.description}
                                         onChange={handleChange}
-                                        className="w-full  border-gray-200 p-4 pe-12 text-sm shadow-sm"
+                                        className="w-full h-20 rounded-md border-gray-200 p-4 pe-12 text-sm shadow-sm"
                                     />
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-gray-600 text-base font-normal">
+                                <label className="block text-gray-600 text-base font-medium">
                                     Price
                                 </label>
                                 <div className="relative">
@@ -97,12 +97,12 @@ function MembershipPlan({ onClose, updatePlanList }) {
                                         name="price"
                                         value={plan.price}
                                         onChange={handleChange}
-                                        className="w-full h-8 border-gray-200 p-4 pe-12 text-sm shadow-sm"
+                                        className="w-full h-10 rounded-md border-gray-200 p-4 pe-12 text-sm shadow-sm"
                                     />
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-gray-600 text-base font-normal">
+                                <label className="block text-gray-600 text-base font-medium">
                                     Duration (in months)
                                 </label>
                                 <div className="relative">
@@ -111,7 +111,7 @@ function MembershipPlan({ onClose, updatePlanList }) {
                                         name="durationMonth"
                                         value={plan.durationMonth}
                                         onChange={handleChange}
-                                        className="w-full h-8 border-gray-200 p-4 pe-12 text-sm shadow-sm"
+                                        className="w-full h-10 rounded-md border-gray-200 p-4 pe-12 text-sm shadow-sm"
                                     />
                                 </div>
                             </div>
@@ -119,7 +119,7 @@ function MembershipPlan({ onClose, updatePlanList }) {
                             <button
                                 type="submit"
                                 onClick={savePlan}
-                                className="block rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white"
+                                className="block w-full rounded-lg bg-black px-5 py-3 text-sm font-medium text-white"
                             >
                                 Add
                             </button>

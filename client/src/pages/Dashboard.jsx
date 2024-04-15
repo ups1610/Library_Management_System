@@ -26,7 +26,7 @@ import TransactionChart from "../components/charts/TransactionCharts";
 
 
 function Dashboard() {
-  const auth = useAuth();
+  const {auth,user} = useAuth();
 
   return (
     <>
@@ -35,7 +35,7 @@ function Dashboard() {
         <p className="text-[11px]">Admin / Dashboard</p>
       </div>
       <div className="flex flex-col m-5">
-        <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="flex flex-col md:flex-row justify-between gap-2">
           <AdminProtectedRoute>
             <UserCard />
            
@@ -43,7 +43,6 @@ function Dashboard() {
 
           <CatalogerProtectedRoute>
             <BookCard />
-           
           </CatalogerProtectedRoute>
 
           <LibrarianProtectedRoute>
@@ -73,7 +72,9 @@ function Dashboard() {
           <TransactionChart/>
           </AccountantProtectedRoute>
 
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div className="flex flex-col md:flex-row justify-between gap-2">
+            {user.role ==="ROLE_ADMIN" || user.role === "ROLE_CATALOGER" ? (
+              
             <div className="w-full mt-5 rounded-lg border border-gray-100 p-4 shadow-sm">
               <AdminProtectedRoute>
                 <UsersTable/>
@@ -86,18 +87,20 @@ function Dashboard() {
 
               <LibrarianProtectedRoute>
               
-              
               </LibrarianProtectedRoute>
 
               <AccountantProtectedRoute>
               
               </AccountantProtectedRoute>
             </div>
+            ): null}
+
+            {user.role === "ROLE_ADMIN" || user.role ==="ROLE_LIBRARIAN" || user.role === "ROLE_ACCOUNTANT" ? (
             <div className="w-full mt-5 rounded-lg border border-gray-100  p-4 shadow-sm">
               <AdminProtectedRoute>
              
             
-              
+
               </AdminProtectedRoute>
 
               <CatalogerProtectedRoute></CatalogerProtectedRoute>
@@ -106,11 +109,13 @@ function Dashboard() {
               <MemberTable/>
               <DueReturnTable/>
               </LibrarianProtectedRoute>
+              
 
               <AccountantProtectedRoute>
                    <RecentTransactionTable/>
               </AccountantProtectedRoute>
             </div>
+            ): null}
           </div>
         </div>
       </div>

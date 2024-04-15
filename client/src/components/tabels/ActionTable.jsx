@@ -108,7 +108,7 @@ function ActionTable(props) {
                   <th className="whitespace-nowrap px-3 py-2 font-medium max-lg:hidden">
                     {props.col4}
                   </th>
-                  <th className="px-1 py-2"></th>
+                  <th className="px-1 py-2">Action</th>
                 </tr>
               </thead>
 
@@ -135,9 +135,9 @@ function ActionTable(props) {
                     </td>
                     <td className="whitespace-nowrap px-1 py-2 flex gap-2 ">
                       <div className="inline-flex rounded-lg">
-                        <div className="hidden md:block">
+                        <div className="hidden md:block mx-1">
                         <button onClick={() => handleEditData(item.id)}
-                        className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-500 hover:text-gray-700 focus:relative ">
+                        className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm bg-blue-500 text-white hover:bg-blue-700 focus:relative ">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -157,7 +157,7 @@ function ActionTable(props) {
                         </div>
                         
                         <div>
-                        <Link to={`${props.path}/${item.id}`} className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-500 hover:text-gray-700 focus:relative ">
+                        <Link to={`${props.path}/${item.id}`} className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm bg-green-500 text-white hover:bg-green-700 focus:relative ">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -181,9 +181,9 @@ function ActionTable(props) {
                         </Link>
                         </div>
                         
-                        <div className="hidden lg:block">
+                        <div className="hidden lg:block mx-1">
                           <button  onClick={()=>handleDeleteData(item.id)}
-                          className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-gray-500 hover:text-gray-700 focus:relative ">
+                          className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm bg-red-500 hover:bg-red-700 text-white focus:relative ">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
