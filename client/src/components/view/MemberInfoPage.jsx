@@ -1,230 +1,474 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import MemberAction from '../../action/MemberAction';
-import { useAuth } from '../../context/Authetication';
-import UpdateMember from '../Membership/UpdateMember';
-import AddMembership from '../Membership/AddMembership';
+import React, { useEffect, useState } from "react";
 
-function MemberInfoPage() {
-    const { id } = useParams();
-    const { token } = useAuth();
-    const [memberInfo, setMemberInfo] = useState([]);
-    const [showModalUpdate, setShowModalUpdate] = useState(false);
-    const [showModalAdd, setShowModalAdd] = useState(false);
-    const [selectedMember, setSelectedMember] = useState(null);
-    const [membershipInfo, setMembershipInfo] = useState(null);
-    const [membershipStatus, setMembershipStatus] = useState({});
+import {
+  HiOutlineAcademicCap,
+  HiOutlineCalculator,
+  HiOutlineCalendar,
+  HiOutlineCash,
+  HiOutlineCog,
+  HiOutlineDocumentAdd,
+  HiOutlineExclamation,
+  HiOutlineLogin,
+  HiOutlinePencil,
+  HiOutlineSearch,
+  HiOutlineTemplate,
+  HiOutlineUpload,
+  HiOutlineUser,
+  HiOutlineUserAdd,
+} from "react-icons/hi";
+import { Link, useParams } from "react-router-dom";
+import { useAuth } from "../../context/Authetication";
+import MemberAction from "../../action/MemberAction";
+import toast from "react-hot-toast";
+import AddMembership from "../Membership/AddMembership";
+import { getIssueBookByMember } from "../../action/OperationsAction";
+import { FaRegEye } from "react-icons/fa";
+import { BsToggle2Off, BsToggle2On } from "react-icons/bs";
 
-    useEffect(() => {
-        const fetchMemberInfo = async () => {
-            try {
-                const memberResponse = await MemberAction.getMemberById(id, token);
-                console.log(memberResponse.data)
-                setMemberInfo(memberResponse.data);
-                if (memberResponse.data && memberResponse.data.memberId) {
-                    const membershipResponse = await MemberAction.getMemberMembership(id, token);
-                    console.log(membershipResponse.data)
-                    setMembershipInfo(membershipResponse.data);
-                }
-            } catch (error) {
-                console.error('Error fetching member info:', error);
-            }
-        };
+export default function MemberInfoPage() {
+  const { id } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [member, setMember] = useState(null);
+  const [membership, setMembership] = useState(null);
+  const [haveMemebrship, sethaveMemebrship] = useState(false);
+  const { token } = useAuth();
 
-        fetchMemberInfo();
-    }, [id]);
-    const editMember = () => {
-        setSelectedMember(memberInfo);
-        setShowModalUpdate(true);
-    };
-
-    const updateMember = (updatedMember) => {
-        MemberAction.updateMember(updatedMember, updatedMember.memberId, token)
-            .then((response) => {
-                console.log(response);
-                console.log("Member Updated Successfully....");
-                setMemberInfo(updatedMember);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    };
-    const handleAddMembership = (id) => {
-        setSelectedMember(memberInfo);
-        setShowModalAdd(true);
-    };
-    const fetchMembershipStatus = async () => {
-        if (Array.isArray(memberInfo)) {
-            const updatedStatusMap = { ...membershipStatus };
-            for (const member of memberInfo) {
-                try {
-                    const response = await MemberAction.getMemberMembership(member.memberId, token);
-                    updatedStatusMap[member.memberId] = response.data ? "Active" : "Not Active";
-                } catch (error) {
-                    updatedStatusMap[member.memberId] = "Not Active";
-                }
-            }
-            setMembershipStatus(updatedStatusMap);
-        } else if (memberInfo && memberInfo.memberId) {
-            try {
-                const response = await MemberAction.getMemberMembership(memberInfo.memberId, token);
-                setMembershipInfo(response.data);
-                const updatedStatusMap = { [memberInfo.memberId]: response.data ? "Active" : "Not Active" };
-                setMembershipStatus(updatedStatusMap);
-            } catch (error) {
-                console.error('Error fetching membership status : ', error);
-            }
+  const fetchMember=()=>{
+    MemberAction.getMemberById(id, token).then((response) => {
+        setLoading(false);
+        if (response.success) {
+          console.log(response);
+          setMember(response.data);
+        } else {
+          setMember(null);
         }
-    };
-    
-    return (
-        <div>
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8">
-                <div className="h-96 rounded-lg bg-white">
-                    {memberInfo && (
-                        <div>
-                            <h2 className="text-left mb-4 font-semibold mt-4 px-4">Member Information</h2>
-                            <div className="flow-root">
-                                <dl className="-my-3 divide-y divide-gray-100 text-sm">
-                                    <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                                        <dt className="font-medium text-gray-900 px-4">Member ID</dt>
-                                        <dd className="text-gray-700 sm:col-span-2">{memberInfo.memberId}</dd>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                                        <dt className="font-medium text-gray-900 px-4">Member Name</dt>
-                                        <dd className="text-gray-700 sm:col-span-2">{memberInfo.firstName} {memberInfo.familyName}</dd>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                                        <dt className="font-medium text-gray-900 px-4">Phone Number</dt>
-                                        <dd className="text-gray-700 sm:col-span-2">{memberInfo.mobile}</dd>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                                        <dt className="font-medium text-gray-900 px-4">Email</dt>
-                                        <dd className="text-gray-700 sm:col-span-2">{memberInfo.email}</dd>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                                        <dt className="font-medium text-gray-900 px-4">Address</dt>
-                                        <dd className="text-gray-700 sm:col-span-2">
-                                            {memberInfo.currentAddress?.address1}, {memberInfo.currentAddress?.address2}, <br></br>{memberInfo.currentAddress?.city} , {memberInfo.currentAddress?.state},<br></br> {memberInfo.currentAddress?.pincode}
-                                        </dd>
-                                    </div>
-                                </dl>
-
-                            </div>
-                            <div className="px-4 mt-6">
-                                <button onClick={() => editMember(memberInfo.memberId)} className="px-4 py-2 bg-indigo-600 text-white rounded">
-                                    Update Member Details
-                                </button>
-                                {showModalUpdate && <UpdateMember onClose={() => setShowModalUpdate(false)} member={selectedMember} updateMember={updateMember} />}
-                            </div>
-
-                        </div>
-                    )}
-                </div>
-                <div className="h-96 rounded-lg bg-white">
-                    {membershipInfo && (
-                        <div>
-                            <div className="bg-white rounded-lg">
-                            <h2 className="text-left mb-4 font-semibold mt-4 px-4">Membership Information</h2>
-                            <div className="flow-root">
-                                <dl className="-my-3 divide-y divide-gray-100 text-sm">
-                                <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                                        <dt className="font-medium text-gray-900 px-4">Member ID</dt>
-                                        <dd className="text-gray-700 sm:col-span-2">{membershipInfo.memberId}</dd>
-                                    </div>
-                                    <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                                        <dt className="font-medium text-gray-900 px-4">Membership ID</dt>
-                                        <dd className="text-gray-700 sm:col-span-2">{membershipInfo.membershipId}</dd>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                                        <dt className="font-medium text-gray-900 px-4">Member Name</dt>
-                                        <dd className="text-gray-700 sm:col-span-2">{membershipInfo.memberName}</dd>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                                        <dt className="font-medium text-gray-900 px-4">Start Date</dt>
-                                        <dd className="text-gray-700 sm:col-span-2">{membershipInfo.startDate}</dd>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                                        <dt className="font-medium text-gray-900 px-4">End Date</dt>
-                                        <dd className="text-gray-700 sm:col-span-2">{membershipInfo.endDate}</dd>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                                        <dt className="font-medium text-gray-900 px-4">Status</dt>
-                                        <dd className="text-gray-700 sm:col-span-2">
-                                        <button
-                                            className="rounded-full px-3 py-1 text-sm bg-green-500 text-white"
-                                                    
-                                                    
-                                                
-                                        >
-                                            {membershipInfo.status}
-                                        </button>
-                                           
-                                        </dd>
-                                    </div>
-                                    <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                                        <dt className="font-medium text-gray-900 px-4">Plan</dt>
-                                        <dd className="text-gray-700 sm:col-span-2">
-                                            {membershipInfo.plan}
-                                        </dd>
-                                    </div>
-                                </dl>
-
-                            </div>
-
-                        </div>
-                        </div>
-                    )}
+      });
 
 
-                    {!membershipInfo && (
-                         <div>
-                         <div className="bg-white rounded-lg">
-                         <h2 className="text-left mb-4 font-semibold mt-4 px-4">Membership Information</h2>
-                         <div role="alert" className="rounded border-s-4 mx-2 border-red-500 bg-red-50 p-4">
-  <div className="flex items-center gap-2 text-red-800">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
-      <path
-        fillRule="evenodd"
-        d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"
-        clipRule="evenodd"
-      />
-    </svg>
-
-    <strong className="block font-medium"> Something went wrong </strong>
-  </div>
-
-  <p className="mt-2 text-sm text-red-700">
-  This Member does not have an active membership.<br></br> Please take any membership plan soon.<br></br>To add membership, please click the button below.<br></br>Thank you !
-  </p>
-</div>
-                         <div className="px-4 mt-40">
-                                <button onClick={() => handleAddMembership(memberInfo.memberId)} className="px-4 py-2 bg-indigo-600 text-white rounded">
-                                    Add Membership
-                                </button>
-                                {showModalAdd && <AddMembership selectedMember={selectedMember} onClose={() => setShowModalAdd(false)} fetchMembershipStatus={fetchMembershipStatus} />}
-                            </div>
-
-                     </div>
-                     </div>
-                    )}
-                </div>
-            </div>
+      MemberAction.getMemberMembership(id, token).then((response) => {
+        if (response.success) {
+          console.log(response);
+          setMembership(response.data);
+          sethaveMemebrship(true);
+        } else {
+         
+        }
+      });
+  }
 
 
 
-            {/* Display membership info */}
+  useEffect(() => {
+   
 
+        fetchMember();
+        setLoading(false);
+
+  
+  }, [haveMemebrship]);
+
+
+
+  const toggleStatus= ()=>{
+
+    MemberAction.toggleMemberShipStatus(membership.membershipId, token).then((response) => {
+      if (response.success) {
+        console.log(response);
+        setMembership(response.data);
+        sethaveMemebrship(true);
+      } else {
+              toast.error("Failed o change Membership Status") 
+      }
+    });
+
+  
+  }
+
+
+
+
+
+
+
+  if (loading) return <p className="text-xs">Loading</p>;
+  if (!member) return <p className="text-xs"> No record Found</p>;
+
+  return (
+    <div className="mb-3 rounded-md w-full">
+
+      {membership === null && <MembershipAlert member={member}  />}
+     
+      <div className="p-2">
+        <div className="bg-white p-2 mb-2 flex flex-col sm:flex-row items-start sm:items-center justify-between">
+          <div className="mb-2 sm:mb-0">
+            <h5 className="text-lg font-semibold text-blue-gray-800">
+              Member
+            </h5>
+            <p className="text-sm text-blue-gray-600 mt-1">[ {member.firstName} {member.familyName}]</p>
+          </div>
         </div>
-    );
+      </div>
+
+      <div className="flex flex-col sm:flex-row w-full h-full">
+        <div className="sm:w-1/4 flex flex-col gap-4">
+          <div className="w-full p-2 bg-white border rounded-md shadow-md sm:w-2.5/3">
+            <Options member={member}/>
+          </div>
+        </div>
+        <div className="sm:w-3/4">
+          <div className="flex flex-col gap-4 sm:pl-2">
+            <div className="w-full p-2 bg-white border rounded-md mt-4 sm:mt-0">
+              <MemberDetails member={member} membership={membership} toggleStatus={toggleStatus} />
+            </div>
+            <div className="w-full p-2 bg-white border rounded-md mt-4 sm:mt-0">
+              <Tabs  member={member}/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-export default MemberInfoPage;
+function Options({member}) {
+  return (
+    <table className="table table-auto w-full">
+      <thead>
+        <caption className="text-lg flex flex-row gap-2 m-2 font-medium items-center group">
+          Options
+        </caption>
+      </thead>
+      <tbody>
+        <tr className="border-b">
+          <td className="w-full text-sm gap-3 flex flex-row">
+            <Link className={`flex items-center p-2 rounded-lg group`}
+              to={`/dashboard/member/save?memberId=${member.memberId}`}
+            >
+              <span className="">
+                <HiOutlineUpload />
+              </span>
+              <span className="ms-3">Update Details</span>
+            </Link>
+          </td>
+        </tr>
+        <tr className="border-b text-sm font-normal">
+        
+        </tr>
+      </tbody>
+    </table>
+  );
+}
+
+function MemberDetails({ member, membership,toggleStatus }) {
+  return (
+    <table className="w-full table-auto">
+      <thead>
+        <caption className="text-lg inline font-semibold mb-2">Detail</caption>
+      </thead>
+      <tbody className="text-sm">
+        <tr className="border-b border-gray-100">
+          <td className="w-1/4 p-2">Member Id</td>
+          <td>: {member.memberId}</td>
+        </tr>
+        <tr className="border-b border-gray-100">
+          <td className="w-1/4 p-2">Name</td>
+          <td className="font-medium">: {member.firstName} {member.familyName} </td>
+        </tr>
+        <tr className="border-b border-gray-100">
+          <td className="w-1/4 p-2">Membership Id</td>
+          <td className="w-1/4">: {membership ? membership.membershipId : "No Membership"}</td>
+        </tr>
+        <tr className="border-b border-gray-100">
+          <td className="p-2 w-1/4">Membership Start Date</td>
+          <td className="w-1/4">: {membership ? new Date(membership.startDate).toLocaleDateString(): "No Membership"}</td>
+         
+        </tr>
+        <tr  className="border-b border-gray-100">
+        <td className="w-1/4">Membership End Date</td>
+          <td className="w-1/4">: {membership ?new Date(membership.endDate).toLocaleDateString(): "No Membership"}</td>
+        </tr>
+        <tr className="border-b border-gray-100">
+          <td className="w-1/4 p-2">Status</td>
+          <td className="w-1/4">
+            {membership===null? (<span className={`bg-orange-700 px-2 rounded-sm text-white`}>
+                No Membership
+              </span>) :  membership.status==='active' ? (
+                <div className="flex nowrap gap-2 items-center">
+                    <span className={`bg-green-700 px-2 rounded-sm text-white`}>
+                Active
+              </span>
+              <button  onClick={toggleStatus}  className=" text-lg text-red-700"><BsToggle2Off /></button>
+                </div>
+              
+            ) : (
+              <div className="flex nowrap gap-2 items-center">
+                <span className={`bg-red-700 px-2 rounded-sm text-white`}>
+                Block   
+              </span> <button  onClick={toggleStatus}  className="text-green-700"><BsToggle2On /></button>
+          
+              </div>
+                )}
+          </td>
+        </tr>
+        <tr className="border-b border-gray-100 ">
+          <td className="w-1/4 p-2">Phone No</td>
+          <td>: {member.mobile}</td>
+        </tr>
+        <tr className="border-b border-gray-100 ">
+          <td className="w-1/4 p-2">Email</td>
+          <td>: {member.email}</td>
+        </tr>
+        <tr className="border-b border-gray-100 ">
+          <td className="w-1/4 p-2">Current Address</td>
+          <td>: {member.currentAddress.landmark} {member.currentAddress.address1} {member.currentAddress.address2} {member.currentAddress.city} {member.currentAddress.district} {member.currentAddress.state} -{member.currentAddress.pincode} </td>
+        </tr>
+        <tr className="border-b border-gray-100 ">
+          <td className="w-1/4 p-2">Permanent Address</td>
+          <td className="w-full">: {member.permanentAddress.landmark} {member.permanentAddress.address1} {member.permanentAddress.address2} {member.permanentAddress.city} {member.permanentAddress.district} {member.permanentAddress.state} -{member.permanentAddress.pincode} </td>
+        </tr>
+        <tr className="border-b border-gray-100 ">
+          <td className="w-1/4 p-2">Membership Plan</td>
+          <td>{membership ? membership.plan : "No Membership"}</td>
+        </tr>
+      </tbody>
+    </table>
+  );
+}
+
+function MembershipAlert({member, Callback }) {
+
+    const [addMembership,setAddMembership]=useState(false);
+
+
+  return (
+    <div className="bg-red-50 border border-red-400 rounded text-red-800 text-sm p-4 flex items-start">
+      <div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-4 w-4 mr-2"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fillRule="evenodd"
+            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </div>
+      <div className="w-full">
+        <p>
+          This member does not currently hold an active membership. Without a
+          membership, members are unable to issue books. Please consider
+          obtaining a membership to access library services.
+        </p>
+        <button className="border-red-400 bg-white hover:bg-gray-50 px-4 py-2 mt-4 border rounded font-bold"
+        onClick={()=>setAddMembership(true)}
+        >
+          Add Membership
+        </button>
+
+       {addMembership && <AddMembership selectedMember={member} onClose={()=>{setAddMembership(false)}}/>}
+      </div>
+      <div></div>
+    </div>
+  );
+}
+
+function Tabs({member}) {
+  const [activeTab, setActiveTab] = useState("BookIssue");
+    const memberID=member.memberId;
+  const handleTabClick = (tabName) => {
+    setActiveTab(tabName);
+    console.log("-----",memberID)
+  };
+
+  return (
+    <div>
+      <div className="sm:hidden">
+        <label htmlFor="Tab" className="sr-only">
+          Tab
+        </label>
+        <select
+          id="Tab"
+          className="w-full rounded-md border-gray-200"
+          value={activeTab}
+          onChange={(e) => handleTabClick(e.target.value)}
+        >
+          <option value="BookIssue">Book Issue</option>
+          <option value="Transaction">Transaction</option>
+        </select>
+      </div>
+
+      <div className="hidden sm:block">
+        <div className="border-b border-gray-200">
+          <nav className="-mb-px flex gap-6" aria-label="Tabs">
+            <a
+              href="#"
+              className={`inline-flex shrink-0 items-center gap-2 border-b-2 border-transparent px-1 pb-4 text-sm font-medium ${
+                activeTab === "BookIssue"
+                  ? "text-gray-900 border-gray-900"
+                  : "text-gray-500 hover:border-gray-300 hover:text-gray-700"
+              }`}
+              onClick={() => handleTabClick("BookIssue")}
+              aria-current={activeTab === "BookIssue" ? "page" : undefined}
+            >
+              Book Issue
+            </a>
+            <a
+              href="#"
+              className={`inline-flex shrink-0 items-center gap-2 border-b-2 border-transparent px-1 pb-4 text-sm font-medium ${
+                activeTab === "Transaction"
+                  ? "text-gray-900 border-gray-900"
+                  : "text-gray-500 hover:border-gray-300 hover:text-gray-700"
+              }`}
+              onClick={() => handleTabClick("Transaction")}
+              aria-current={activeTab === "Transaction" ? "page" : undefined}
+            >
+              Transaction
+            </a>
+          </nav>
+        </div>
+      </div>
+
+      {/* Content for each tab */}
+      {activeTab === "BookIssue" && <LibraryRecord  member={member.memberId}/>}
+      {activeTab === "Transaction" && <TransactionRecord  member={member.memberId}/>}
+    </div>
+  );
+}
+
+const LibraryRecord = ({member}) => {
+  const [loading, setLoading] = useState(true); 
+  const [issueBooks, setIssueBooks] = useState([]); 
+    const {token}=useAuth();
+  const fetchIssueBooks = () => {
+    getIssueBookByMember(member, token)
+      .then((response) => {
+        console.log(response);
+        setLoading(false);
+        if (response.success) {
+          setIssueBooks(response.data);
+        } else {
+          setIssueBooks([]);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching transactions:", error);
+        setIssueBooks([]);
+      });
+  };
+
+  useEffect(() => {
+    fetchIssueBooks();
+  }, []); 
+
+  if (loading) return <p className="text-xs">Loading...</p>;
+  if (issueBooks.length === 0) return <p className="text-xs">No Book Issue</p>;
+
+  return (
+    <table className="w-full divide-y-2 divide-gray-200 bg-white text-sm">
+      <thead className="divide-y-2 divide-gray-200">
+        <tr>
+          <th className="whitespace-nowrap px-4 py-2 font-medium">#</th>
+          <th className="whitespace-nowrap px-4 py-2 font-medium">Book Title</th>
+          <th className="whitespace-nowrap px-4 py-2 font-medium">Book Instance</th>
+          <th className="whitespace-nowrap px-4 py-2 font-medium">Issue Date</th>
+          <th className="whitespace-nowrap px-4 py-2 font-medium">Status</th>
+          <th className="whitespace-nowrap px-4 py-2 font-medium">Action</th>
+        </tr>
+      </thead>
+
+      <tbody className="divide-y-2 divide-gray-200 text-center">
+        {issueBooks.map((issueBook, index) => {
+          const currentDate = new Date();
+          const issueDateObj = new Date(issueBook.dateOfIssue);
+          const issueDate = `${issueDateObj.getDate()}/${issueDateObj.getMonth() + 1}/${issueDateObj.getFullYear()}`;
+          const returnDate = new Date(issueBook.dateOfReturn);
+          const isDue = issueBook.isReturn === "No" && currentDate >= returnDate;
+          const isReturned = issueBook.isReturn === "Yes";
+
+          return (
+            <tr key={index}>
+              <td className="whitespace-nowrap px-4 py-2 text-gray-700">{index + 1}</td>
+              <td className="whitespace-nowrap px-4 py-2 text-gray-700">{issueBook.bookInstance.book.title}</td>
+              <td className="whitespace-nowrap px-4 py-2 text-gray-700">{issueBook.bookInstance.id} {issueBook.bookInstance.imprint}</td>
+              <td className="whitespace-nowrap px-4 py-2 text-gray-700">{issueDate}</td>
+              <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                {isDue ? (
+                  <span className="bg-red-200 rounded-md text-xs text-red-900 p-1">Due Return</span>
+                ) : isReturned ? (
+                  <span className="bg-orange-200 rounded-md text-xs text-orange-900 p-1">Returned</span>
+                ) : (
+                  <span className="bg-green-200 text-xs rounded-md text-green-900 p-1">Issued</span>
+                )}
+              </td>
+              <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                <Link to={`/dashboard/operation/bookLog/${issueBook.bookIssueId}/view`} className="text-gray-500 flex items-center nowrap gap-1 ">
+                  <FaRegEye /> View
+                </Link>
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  );
+};
+function TransactionRecord({ member }) {
+    const [loading, setLoading] = useState(true);
+    const [transactions, setTransactions] = useState([]);
+    const { token } = useAuth();
+  
+    const fetchTransactions = () => {
+      MemberAction.getMemberTransactions(member, token)
+        .then((response) => {
+          setLoading(false);
+          if (response.success) {
+            setTransactions(response.data);
+          } else {
+            setTransactions([]);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching transactions:", error);
+          setTransactions([]);
+        });
+    };
+  
+    useEffect(() => {
+      fetchTransactions();
+    }, []);
+  
+    if (loading) return <p className="text-xs">Loading...</p>;
+    if (transactions.length===0) return <p className="text-xs">No Transactions</p>;
+  
+    return (
+      <table className="w-full divide-y-2 divide-gray-200 bg-white text-sm">
+        <thead className="divide-y-2 divide-gray-200">
+          <tr>
+            <th className="whitespace-nowrap px-4 py-2 font-medium">#</th>
+            <th className="whitespace-nowrap px-4 py-2 font-medium">Transaction Id</th>
+            <th className="whitespace-nowrap px-4 py-2 font-medium">Date</th>
+            <th className="whitespace-nowrap px-4 py-2 font-medium">Amount</th>
+            <th className="whitespace-nowrap px-4 py-2 font-medium">Narration</th>
+            <th className="whitespace-nowrap px-4 py-2 font-medium">Mode</th>
+          </tr>
+        </thead>
+  
+        <tbody className="divide-y-2 divide-gray-200 text-center">
+          {transactions.map((transaction, index) => (
+            <tr key={index}>
+              <td className="whitespace-nowrap px-4 py-2 text-gray-700">{index + 1}</td>
+              <td className="whitespace-nowrap px-4 py-2 text-gray-700">{transaction.transactionId}</td>
+              <td className="whitespace-nowrap px-4 py-2 text-gray-700">{transaction.date}</td>
+              <td className="whitespace-nowrap px-4 py-2 text-gray-700">{transaction.amount}</td>
+              <td className="whitespace-nowrap px-4 py-2 text-gray-700">{transaction.narration}</td>
+              <td className="whitespace-nowrap px-4 py-2 text-gray-700">{transaction.mode}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  }
+  

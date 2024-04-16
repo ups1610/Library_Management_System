@@ -133,6 +133,72 @@ class MemberAction {
       });
   }
 
+  getAllMembership(token) {
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
+
+  return  axios
+      .get(
+        `http://localhost:8088/membershipService/membership/all`,
+        { headers }
+      )
+      .then((resp) => {
+        return {
+          success: true,
+          data: resp.data,
+        };
+      })
+      .catch((err) => {
+        if (err.response) {
+          return {
+            success: false,
+            data: err.response.data.error,
+          };
+        } else {
+          return {
+            success: false,
+            data: "Something Went wrong. Try later!",
+          };
+        }
+      });
+  }
+
+
+  
+  toggleMemberShipStatus(memberId, token) {
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
+
+  return  axios
+      .get(
+        `http://localhost:8088/membershipService/membership/toggle/${memberId}`,
+        { headers }
+      )
+      .then((resp) => {
+        return {
+          success: true,
+          data: resp.data,
+        };
+      })
+      .catch((err) => {
+        if (err.response) {
+          return {
+            success: false,
+            data: err.response.data.error,
+          };
+        } else {
+          return {
+            success: false,
+            data: "Something Went wrong. Try later!",
+          };
+        }
+      });
+  }
+
   getAllMembers(token) {
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -372,9 +438,16 @@ class MemberAction {
       });
   }
 
-  getMemberTransactions(id) {
+  getMemberTransactions(id,token) {
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
    return axios
-      .get(MEMBERSHIP_API_BASE_URL + `/transaction/${id}`)
+      .get(MEMBERSHIP_API_BASE_URL + `/transaction/${id}`,{  headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },})
       .then((resp) => {
         return {
           success: true,

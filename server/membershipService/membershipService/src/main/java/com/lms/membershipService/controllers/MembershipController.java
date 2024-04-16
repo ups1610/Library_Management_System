@@ -50,6 +50,12 @@ public class MembershipController {
         MembershipResponseDTO membership = membershipService.getMembershipByMemberID(id);
         return new ResponseEntity<>(membership, HttpStatus.OK);
     }
+
+    @GetMapping("/toggle/{id}")
+    public  ResponseEntity<MembershipResponseDTO>toggleMmeberShip(@PathVariable Long id) {
+        MembershipResponseDTO membership = membershipService.toggleStatus(id);
+        return new ResponseEntity<>(membership, HttpStatus.OK);
+    }
     
 
    

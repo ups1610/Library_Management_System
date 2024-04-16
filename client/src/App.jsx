@@ -43,9 +43,9 @@ function App() {
           <Route path="operation/BookLog/Issue" element={<LibrarianProtectedRoute><IssueBook/></LibrarianProtectedRoute> } />
           <Route path="operation/BookLog/:id/view" element={<LibrarianProtectedRoute><BookView/></LibrarianProtectedRoute>} />
           
-          <Route path="member/MemberTable" element={<LibrarianProtectedRoute><Members/></LibrarianProtectedRoute> } />
-          <Route path="member/MemberTable/:id/info" element={<LibrarianProtectedRoute><MemberInfoPage/></LibrarianProtectedRoute> } />
-          <Route path="member/MemberTable/add" element={ <LibrarianProtectedRoute><AddMember/></LibrarianProtectedRoute>} />
+          <Route path="member/" element={<LibrarianProtectedRoute><Members/></LibrarianProtectedRoute> } />
+          <Route path="member/:id/manage" element={<LibrarianProtectedRoute><MemberInfoPage/></LibrarianProtectedRoute> } />
+          <Route path="member/save" element={ <LibrarianProtectedRoute><AddMember/></LibrarianProtectedRoute>} />
           <Route path="member/membership" element={<LibrarianProtectedRoute><ViewMembershipPlan/></LibrarianProtectedRoute> } />
 
           <Route path="transactions" element={<AccountantProtectedRoute><TransactionLogs/></AccountantProtectedRoute> } />

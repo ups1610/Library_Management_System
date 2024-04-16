@@ -37,7 +37,8 @@ function ReturnBook({ onClose, issueId, bookTitle }) {
     };
 
   
-      const response =returnBook(returnData, token);
+      const response =await returnBook(returnData, token);
+      console.log(response);
       if (response.success) {
         console.log("Book returned successfully:", response.data);
         onClose(); 

@@ -98,8 +98,8 @@ export const SUB_MENU_CATALOG_ITEMS = [
   export const SUB_MENU_MEMBER_ITEMS = [
 	{
 		key: 'member',
-		label: 'Membership',
-		path: '/dashboard/member/MemberTable',
+		label: 'Member',
+		path: '/dashboard/member',
 		role:"ROLE_LIBRARIAN",
 		icon: <PiAddressBookLight />
 	},

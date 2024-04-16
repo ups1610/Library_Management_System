@@ -7,7 +7,7 @@ import {
 } from "../../action/OperationsAction";
 import { useAuth } from "../../context/Authetication";
 import toast from "react-hot-toast";
-
+import { debounce } from "lodash";
 
 import {useNavigate} from "react-router-dom";
 export const IssueBook = () => {
@@ -81,8 +81,8 @@ export const IssueBook = () => {
   setFormData({ ...formData, [name]: formattedValue });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+   
     try {
       const response = await issueBook(formData, token);
       if (response.success) {
@@ -98,12 +98,14 @@ export const IssueBook = () => {
     }
   };
 
+  const debounceHandleSubmit= debounce(handleSubmit,5000);
+
   return (
     <div>
       <h1>Issue Book</h1>
       <div className="w-full mt-5 rounded-lg bg-white p-4 flex  flex-wrap shadow-sm border-t-2 border-black">
         <div className="max-w-md border-2  m-auto p-4">
-          <form className="space-y-4" onSubmit={handleSubmit}>
+          <form className="space-y-4" >
             {/* Member */}
             <div>
               <label
@@ -220,7 +222,7 @@ export const IssueBook = () => {
             {/* Submit Button */}
             <div>
               <button
-                type="submit"
+                onClick={debounceHandleSubmit}
                 className="py-2 px-10 border-2 bg-black focus:border-0 focus:outline-none rounded-md text-white font-normal text-sm"
               >
                 Issue

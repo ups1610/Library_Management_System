@@ -1,130 +1,149 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import MemberAction from "../../action/MemberAction";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/Authetication";
-import toast from "react-hot-toast"
+import toast from "react-hot-toast";
+import { debounce } from 'lodash';
+
 const AddMember = () => {
-    const navigate = useNavigate();
-    const { token,user } = useAuth();
-    const [member, setMember] = useState({
-        firstName: "",
-        familyName: "",
-        mobile: "",
-        email: "",
-        currentAddress: {
-            landmark: "",
-            address1: "",
-            address2: "",
-            city: "",
-            district: "",
-            state: "",
-            pincode: ""
-        },
-        permanentAddress: {
-            landmark: "",
-            address1: "",
-            address2: "",
-            city: "",
-            district: "",
-            state: "",
-            pincode: ""
-        },
-        initiatedBy:user.userId
+  const navigate = useNavigate();
+  const location = useLocation();
+
+
+  const { token, user } = useAuth();
+  const [member, setMember] = useState({
+    memberId:"",
+    firstName: "",
+    familyName: "",
+    mobile: "",
+    email: "",
+    currentAddress: {
+      landmark: "",
+      address1: "",
+      address2: "",
+      city: "",
+      district: "",
+      state: "",
+      pincode: "",
+    },
+    permanentAddress: {
+      landmark: "",
+      address1: "",
+      address2: "",
+      city: "",
+      district: "",
+      state: "",
+      pincode: "",
+    },
+    initiatedBy: user.userId,
+  });
+  const [isUpdate, setIsUpdate] = useState(false);
+
+
+
+
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const memberId = queryParams.get("memberId");
+    if (memberId) {
+      
+      setIsUpdate(true);
+      fetchMemberDetails(memberId);
+    }
+  }, [location.search]);
+
+  const fetchMemberDetails = async (memberId) => {
+    try {
+      const response = await MemberAction.getMemberById(memberId, token);
+      if (response.success) {
+        setMember(response.data);
+      } else {
+        toast.error(response.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setMember((prevMember) => ({
+      ...prevMember,
+      [name]: value,
+    }));
+  };
+
+  const handleAddressChange = (e) => {
+    const { name, value } = e.target;
+    const [addressType, field] = name.split(".");
+    setMember((prevMember) => ({
+      ...prevMember,
+      [addressType]: {
+        ...prevMember[addressType],
+        [field]: value,
+      },
+    }));
+  };
+
+  const saveMember = async () => {
+          console.log("Adding membersips");
+    try {
+      let response;
+      if (isUpdate) {
+      
+        response = await MemberAction.updateMember(member,member.memberId, token);
+      } else {
+        response = await MemberAction.addNewMember(member, token);
+      }
+      if (response.success) {
+        toast.success(isUpdate ? "Member updated successfully" : "Member added successfully");
+        navigate(`/dashboard/member/${response.data.memberId}/manage`);
+      } else {
+        toast.error(response.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const reset = (e) => {
+    e.preventDefault();
+    setMember({
+      firstName: "",
+      familyName: "",
+      mobile: "",
+      email: "",
+      currentAddress: {
+        landmark: "",
+        address1: "",
+        address2: "",
+        city: "",
+        district: "",
+        state: "",
+        pincode: "",
+      },
+      permanentAddress: {
+        landmark: "",
+        address1: "",
+        address2: "",
+        city: "",
+        district: "",
+        state: "",
+        pincode: "",
+      },
     });
+  };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setMember(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
-    };
-    const handleAddressChange = (e) => {
-        const { name, value } = e.target;
-        const [addressType, field] = name.split('.');
-        setMember(prevState => ({
-            ...prevState,
-            [addressType]: {
-                ...prevState[addressType],
-                [field]: value
-            }
-        }));
-    };
 
-    const saveMember = async (e) => {
-        e.preventDefault();
-        try {
-            const response= await MemberAction.addNewMember(member, token);
 
-            if(response.success){
-                setMember({
-                    firstName: "",
-                    familyName: "",
-                    mobile: "",
-                    email: "",
-                    currentAddress: {
-                        landmark: "",
-                        address1: "",
-                        address2: "",
-                        city: "",
-                        district: "",
-                        state: "",
-                        pincode: ""
-                    },
-                    permanentAddress: {
-                        landmark: "",
-                        address1: "",
-                        address2: "",
-                        city: "",
-                        district: "",
-                        state: "",
-                        pincode: ""
-                    }
-                });
-                navigate("/dashboard/member/MemberTable");
-            }else{
-                    toast.error(response.data);
-            }
-
-           
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const reset = (e) => {
-        e.preventDefault();
-        setMember({
-            firstName: "",
-            familyName: "",
-            mobile: "",
-            email: "",
-            currentAddress: {
-                landmark: "",
-                address1: "",
-                address2: "",
-                city: "",
-                district: "",
-                state: "",
-                pincode: ""
-            },
-            permanentAddress: {
-                landmark: "",
-                address1: "",
-                address2: "",
-                city: "",
-                district: "",
-                state: "",
-                pincode: ""
-            }
-        });
-    };
+  const debouncedSaveMember = debounce(saveMember,2000);
 
     return (
         <>
             <div className="">
-    <h1 className="font-semibold text-gray-800 mb-4">Add New Member</h1>
-    <div className="w-full flex flex-col bg-white rounded-md shadow-md p-4">
+            <h1 className="font-semibold text-gray-800 mb-4">{isUpdate ? "Update Member" : "Add New Member"}</h1>
+        <div className="w-full flex flex-col bg-white rounded-md shadow-md p-4">
         <div className="font-thin text-lg mb-2">Personal Details</div>
         <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col">
@@ -233,7 +252,7 @@ const AddMember = () => {
             <div className="flex flex-col">
                 <label className="text-gray-600 text-sm mb-1">Pincode</label>
                 <input
-                    type="text"
+                    type="number"
                     name="currentAddress.pincode"
                     value={member.currentAddress.pincode}
                     onChange={handleAddressChange}
@@ -306,7 +325,7 @@ const AddMember = () => {
             <div className="flex flex-col">
                 <label className="text-gray-600 text-sm mb-1">Pincode</label>
                 <input
-                    type="text"
+                    type="number"
                     name="permanentAddress.pincode"
                     value={member.permanentAddress.pincode}
                     onChange={handleAddressChange}
@@ -316,15 +335,15 @@ const AddMember = () => {
         </div>
         <div className="items-center justify-center h-14 w-full my-4 space-x-4 pt-4">
             <button
-                onClick={saveMember}
-                className="rounded text-white font-semibold bg-green-600 hover:bg-indigo-900 py-2 px-6"
+                onClick={debouncedSaveMember}
+                className="py-2 px-10 border-2 bg-black  focus:outline-none rounded-md text-white font-normal text-sm"
             >
                 Save
             </button>
             <button
                 onClick={reset}
-                className="rounded text-white font-semibold bg-red-600 hover:bg-gray-800 py-2 px-6"
-            >
+                className="py-2 px-10 border-2   focus:outline-none rounded-md text-black font-normal text-sm"
+                >
                 Clear
             </button>
         </div>
