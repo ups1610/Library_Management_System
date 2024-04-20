@@ -8,6 +8,7 @@ import { getAllTransaction } from "../../action/TransactionAction";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import TransactionPDF from "../../utils/pdf/Transaction";
 import { BsFileEarmarkPdf } from "react-icons/bs";
+import { loadStripe } from '@stripe/stripe-js';
 // import Filter from "../../components/transaction/Filter";
 
 function TransactionLogs() {
@@ -94,6 +95,31 @@ function TransactionLogs() {
     setFilterModel(false);
   };
 
+  const makePayment = async(transaction) =>{
+    const stripe = await loadStripe('pk_test_51P7CTlSCKWbIqmQ9a6EDDrb8hlZBCMZcpPvmXNw35B9qKLueqyDDC6VqfSiyhB26f0E3NpNNjMDGmAWtzUwPkQ5600UddyXcjw');
+
+    const body = {
+      products:transaction
+  }
+  const headers = {
+      "Content-Type":"application/json"
+  }
+  const response = await fetch("http://localhost:5000/api/create-checkout-session",{
+      method:"POST",
+      headers:headers,
+      body:JSON.stringify(body)
+  });
+  console.log(response)
+
+  const session = await response.json();
+
+  const paymentLink = `https://buy.stripe.com/${session.id}`;
+
+  console.log(paymentLink)
+
+    
+  }
+
   return (
     <div className="md:w-full w-screen mt-5 rounded-lg border border-gray-100 bg-white p-4 shadow-sm">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center mb-5">
@@ -149,14 +175,14 @@ function TransactionLogs() {
         <table className="w-full divide-y-2 divide-gray-200 bg-white text-sm">
         <thead className="divide-y-2 divide-gray-200 bg-gray-700 text-white">
             <tr>
-              <th className="whitespace-nowrap px-4 py-2 font-medium ">#</th>
-              <th className="whitespace-nowrap px-4 py-2 font-medium ">Transaction Id</th>
+              <th className="whitespace-nowrap px-4 py-2 font-medium "># Transaction Id</th>
               <th className="whitespace-nowrap px-4 py-2 font-medium ">Date</th>
               <th className="whitespace-nowrap px-4 py-2 font-medium ">Member Name</th>
               <th className="whitespace-nowrap px-4 py-2 font-medium ">Mode</th>
               <th className="whitespace-nowrap px-4 py-2 font-medium ">Amount</th>
               <th className="whitespace-nowrap px-4 py-2 font-medium ">Narration</th>
               <th className="whitespace-nowrap px-4 py-2 font-medium ">Initiated By</th>
+              <th className="whitespace-nowrap px-4 py-2 font-medium ">Generate Pay</th>
             </tr>
           </thead>
 
@@ -176,7 +202,6 @@ function TransactionLogs() {
             ) : (
               transactions.map((transaction, index) => (
                 <tr key={transaction.transactionId}>
-                    <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">{index+1}</td>
                   <td className="whitespace-nowrap px-4 py-2  text-gray-900">{transaction.transactionId}</td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700">{transaction.date}</td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700">{transaction.member}</td>
@@ -184,6 +209,9 @@ function TransactionLogs() {
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700">{transaction.amount}</td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700">{transaction.narration}</td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700">{transaction.initiatedBy}</td>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    <button className="border-2 p-1 rounded-md hover:bg-green-500 hover:text-white" onClick={()=>makePayment(transaction)}>Pay Now</button>
+                  </td>
                 </tr>
               ))
             )}

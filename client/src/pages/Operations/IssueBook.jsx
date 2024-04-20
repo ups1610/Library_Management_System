@@ -62,8 +62,11 @@ export const IssueBook = () => {
 
     try {
       const response = await getBookInstances(selectedBookId, token);
+
       if (response.success) {
+        console.log("++++++++++",response)
         setInstances(response.data);
+        console.log("========="+instances.length)
       } else {
         console.error("Failed to fetch instances:", response.data);
       }
@@ -175,7 +178,9 @@ export const IssueBook = () => {
                     <option key={instance.id} value={instance.id}>
                       {instance.id} - {instance.imprint}
                     </option>
-                  ))}
+                  ))
+    
+                  }
               </select>
             </div>
 

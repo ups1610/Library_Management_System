@@ -27,7 +27,7 @@ public class CustomExceptionHandler {
     @ExceptionHandler(Exception.class)
     public Map<String,String> exphandle(Exception ex){
         Map<String,String> error= new HashMap<>();
-            log.error("Library Service", ex);
+            log.error("Library Service", ex.getMessage());
 
         error.put("error", ex.getMessage());
 
