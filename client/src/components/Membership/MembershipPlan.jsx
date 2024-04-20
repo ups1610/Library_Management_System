@@ -60,7 +60,7 @@ function MembershipPlan({ onClose, updatePlanList }) {
                         >
                             <div>
                                 <label className="block text-gray-600 text-base font-medium">
-                                    Membership Plan Name
+                                   Title
                                 </label>
                                 <div className="relative">
                                     <input
@@ -89,7 +89,7 @@ function MembershipPlan({ onClose, updatePlanList }) {
                             </div>
                             <div>
                                 <label className="block text-gray-600 text-base font-medium">
-                                    Price
+                                    Fee
                                 </label>
                                 <div className="relative">
                                     <input
