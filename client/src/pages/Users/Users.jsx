@@ -176,7 +176,7 @@ function Users() {
                    
                       <Link
                         to={`/dashboard/users/manage/${user.userId}/view`}
-                        class="inline-flex items-center gap-1 rounded-md  text-xs text-gray-500 hover:text-gray-700 focus:relative"
+                        class="inline-flex items-center gap-1   text-xs text-gray-500 hover:text-gray-700 focus:relative"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

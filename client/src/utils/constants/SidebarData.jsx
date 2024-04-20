@@ -6,7 +6,7 @@ import { SiBookstack } from "react-icons/si";
 import { FaRegAddressBook } from "react-icons/fa6";
 import { PiAddressBookLight } from "react-icons/pi";
 import { IoAccessibilityOutline } from "react-icons/io5";
-
+import { CiBarcode } from "react-icons/ci";
 export const DASHBOARD_SIDEBAR_LINKS = [
 	{
 		key: 'dashboard',
@@ -92,7 +92,14 @@ export const SUB_MENU_CATALOG_ITEMS = [
       label: "BookShelf",
       path: "/dashboard/catalog/bookshelf",
       icon: <BsBookshelf />,
-    }
+    },
+
+	{
+		key: "barcode",
+		label: "Book Barcode",
+		path: "/dashboard/catalog/barcode",
+		icon: <CiBarcode />,
+	  }
   ];
 
   export const SUB_MENU_MEMBER_ITEMS = [

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useAuth } from '../context/Authetication';
-import { debounce } from 'lodash';
+
 
 function LoginModel({onClose}) {
 
@@ -8,14 +8,19 @@ function LoginModel({onClose}) {
   console.log(auth)
   const [userName,setUser]=useState("");
   const [password,setPassword]=useState("");
+const [loading,setLoading]=useState(false);
 
 
   const handleSubmit =(e)=>{
     e.preventDefault();
+    setLoading(true);
+    
     auth.signUp(userName,password);
+
+    setLoading(false)
   }
 
-  const debounceHandleSubmit= debounce(handleSubmit,4000);
+
 
   return (
     <div className='fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm z-50'>
@@ -120,14 +125,13 @@ function LoginModel({onClose}) {
                 <button
                
                   className="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white"
-                  onClick={debounceHandleSubmit}
+                  onClick={handleSubmit}
+                  disabled={loading}
                 >
                   Sign in
                 </button>
 
-                <p className="text-center text-sm text-white">
-                  <a className="underline" href="/"> Forgot Password?</a>
-                </p>
+              
               </form>
             </div>
           </div>

@@ -48,21 +48,21 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserResponseDto addUser(UserRequestDto userRequest) {
-    //     Optional<UserCredential> optionalUser=null;
-    //    optionalUser = userRepository.findByEmail(userRequest.email());
-    //     if (optionalUser.isPresent()) {
-    //         throw new DuplicateUserException("Email already registered!");
-    //     }
+        Optional<UserCredential> optionalUser=null;
+       optionalUser = userRepository.findByEmail(userRequest.email());
+        if (optionalUser.isPresent()) {
+            throw new DuplicateUserException("Email already registered!");
+        }
 
-    //    optionalUser = userRepository.findByUsername(userRequest.userName());
-    //     if (optionalUser.isPresent()) {
-    //         throw new DuplicateUserException("Username not available!");
-    //     }
+       optionalUser = userRepository.findByUsername(userRequest.userName());
+        if (optionalUser.isPresent()) {
+            throw new DuplicateUserException("Username not available!");
+        }
 
-    //     optionalUser = userRepository.findByMobile(userRequest.mobile());
-    //     if (optionalUser.isPresent()) {
-    //         throw new DuplicateUserException("Mobile No already registered!");
-    //     }
+        optionalUser = userRepository.findByMobile(userRequest.mobile());
+        if (optionalUser.isPresent()) {
+            throw new DuplicateUserException("Mobile No already registered!");
+        }
 
 
         UserCredential user = new UserCredential();

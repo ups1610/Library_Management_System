@@ -325,7 +325,7 @@ export const fineByID = (id, token) => {
 
 export const getBookInstances = (id, token) => {
   return axios
-    .get(url + `/book/${id}/instances`, {
+    .get(url + `/books/${id}/instances`, {
       headers: {
        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
