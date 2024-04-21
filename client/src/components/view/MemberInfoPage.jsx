@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import emailjs from "@emailjs/browser"
 import {
   HiOutlineAcademicCap,
   HiOutlineCalculator,
@@ -24,6 +24,8 @@ import AddMembership from "../Membership/AddMembership";
 import { getIssueBookByMember } from "../../action/OperationsAction";
 import { FaRegEye } from "react-icons/fa";
 import { BsToggle2Off, BsToggle2On } from "react-icons/bs";
+import { MdPayment } from "react-icons/md";
+import makeCheckoutSessionRequest from "../../action/PaymentAction";
 
 export default function MemberInfoPage() {
   const { id } = useParams();
@@ -32,6 +34,8 @@ export default function MemberInfoPage() {
   const [membership, setMembership] = useState(null);
   const [haveMemebrship, sethaveMemebrship] = useState(false);
   const { token } = useAuth();
+  const [mailStatusOk, setMailStatusOk] = useState(false);
+  const [mailStatusErr, setMailStatusErr] = useState(false);
 
   const fetchMember=()=>{
     MemberAction.getMemberById(id, token).then((response) => {
@@ -67,6 +71,10 @@ export default function MemberInfoPage() {
   
   }, [haveMemebrship]);
 
+  const handleMailSatus = () =>{
+      setMailStatusOk(true)
+  }
+
 
 
   const toggleStatus= ()=>{
@@ -93,11 +101,55 @@ export default function MemberInfoPage() {
   if (loading) return <p className="text-xs">Loading</p>;
   if (!member) return <p className="text-xs"> No record Found</p>;
 
-  return (
-    <div className="mb-3 rounded-md w-full">
+  
 
+  return (
+    
+    <div className="mb-3 rounded-md w-full">
+      {mailStatusOk && (
+        <div role="alert" className="rounded-xl border border-gray-100 bg-white p-4">
+        <div className="flex items-start gap-4">
+          <span className="text-green-600">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="h-6 w-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </span>
+      
+          <div className="flex-1">
+            <strong className="block font-medium text-gray-900"> Mail sent </strong>
+      
+            <p className="mt-1 text-sm text-gray-700">Check you email for payment.</p>
+          </div>
+      
+          <button onClick={()=>setMailStatusOk(false)} className="text-gray-500 transition hover:text-gray-600">
+            <span className="sr-only">Dismiss popup</span>
+      
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="h-6 w-6"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    )}
       {membership === null && <MembershipAlert member={member}  />}
-     
       <div className="p-2">
         <div className="bg-white p-2 mb-2 flex flex-col sm:flex-row items-start sm:items-center justify-between">
           <div className="mb-2 sm:mb-0">
@@ -112,7 +164,7 @@ export default function MemberInfoPage() {
       <div className="flex flex-col sm:flex-row w-full h-full">
         <div className="sm:w-1/4 flex flex-col gap-4">
           <div className="w-full p-2 bg-white border rounded-md shadow-md sm:w-2.5/3">
-            <Options member={member}/>
+            <Options member={member} membership={membership} onClick={handleMailSatus}/>
           </div>
         </div>
         <div className="sm:w-3/4">
@@ -130,7 +182,35 @@ export default function MemberInfoPage() {
   );
 }
 
-function Options({member}) {
+function Options({member,membership,onClick}) {
+  
+  const handlePayment = async()=>{
+    const reqestData = {
+      member: member ? member.firstName + " " + member.familyName + " for " + membership.plan + " plan" : "",
+      amount: membership.transactionId ? membership.transactionId.amount : 0
+    }
+    const serviceId = process.env.REACT_APP_serviceId;
+    const templateId = process.env.REACT_APP_templateId;
+    const publicKey = process.env.REACT_APP_publicKey;
+    
+    const payUrl = await makeCheckoutSessionRequest(reqestData)
+    
+    const templateParms = {
+      to_name : member ? member.firstName + " " + member.familyName : "",
+      from_email: "pratapsinghupendra96@gmail.com",
+      to_email: member ? member.email : "",
+      message : payUrl && payUrl.data ? payUrl.data.url : "Oops sorry for inconvenience"
+    }
+
+    emailjs.send(serviceId, templateId, templateParms, publicKey)
+    .then((res)=>{
+      onClick()
+      console.log("Email sent successfully!", res)
+    })
+    .catch((err)=>{
+      console.error("Error sending email:",err)
+    })
+  }
   return (
     <table className="table table-auto w-full">
       <thead>
@@ -150,6 +230,18 @@ function Options({member}) {
               <span className="ms-3">Update Details</span>
             </Link>
           </td>
+          {member && membership && membership.transactionId && membership.transactionId.mode && membership.transactionId.mode === "Online" && (
+              <td className="w-full text-sm gap-3 flex flex-row">
+              <button onClick={handlePayment}
+               className={`flex items-center p-2 rounded-lg group`}
+              >
+                <span className="">
+                  <MdPayment />
+                </span>
+                <span className="ms-3">Request Payment</span>
+              </button>
+            </td>
+          )}
         </tr>
         <tr className="border-b text-sm font-normal">
         
@@ -184,7 +276,7 @@ function MemberDetails({ member, membership,toggleStatus }) {
          
         </tr>
         <tr  className="border-b border-gray-100">
-        <td className="w-1/4">Membership End Date</td>
+        <td className="p-2 w-1/4">Membership End Date</td>
           <td className="w-1/4">: {membership ?new Date(membership.endDate).toLocaleDateString(): "No Membership"}</td>
         </tr>
         <tr className="border-b border-gray-100">
