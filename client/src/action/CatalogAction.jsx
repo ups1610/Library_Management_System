@@ -34,6 +34,7 @@ const fetchBooks = async (token) => {
   export { fetchBooksById };
 
   const fetchInstanceById = async (bookId,token) => {
+    console.log("--bid--",bookId);
     try {
       const response = await axios.get(`http://localhost:8088/catalog/books/${bookId}/instances`, {
         headers: {

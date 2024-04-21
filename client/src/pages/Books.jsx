@@ -27,7 +27,7 @@ const Books = () => {
       setLoading(false);
     };
     fetchData();
-  }, []);
+  },[]);
 
   useEffect(() => {
     const fetchIdData = async () => {

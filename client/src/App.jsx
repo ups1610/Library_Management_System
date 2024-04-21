@@ -23,6 +23,7 @@ import { CatalogerProtectedRoute } from "./auth/CatalogerProtectedRoute";
 import { AdminProtectedRoute } from "./auth/AdminProtectedRoute";
 import { LibrarianProtectedRoute } from "./auth/LibrarianProtectedRoute";
 import { AccountantProtectedRoute } from "./auth/AccountantProtectedRoute";
+import { BarcodePrint } from "./pages/BarcodePrint";
 
 function App() {
   return (
@@ -37,15 +38,16 @@ function App() {
           <Route path="catalog/author" element={<CatalogerProtectedRoute> <Author/>  </CatalogerProtectedRoute> }/>
           <Route path="catalog/bookshelf" element={<CatalogerProtectedRoute><Bookshelf/></CatalogerProtectedRoute> }/>
           <Route path="catalog/genre" element={ <CatalogerProtectedRoute><Genre/></CatalogerProtectedRoute>}/>
+          <Route path="catalog/barcode" element={ <CatalogerProtectedRoute><BarcodePrint/></CatalogerProtectedRoute>}/>
           <Route path="users/manage/:id/view" element={<AdminProtectedRoute> <View /></AdminProtectedRoute> } />
           <Route path="users/manage" element={<AdminProtectedRoute> <Users/></AdminProtectedRoute> } />
           <Route path="operation/BookLog" element={  <LibrarianProtectedRoute><BookIssueLogs/></LibrarianProtectedRoute> } />
           <Route path="operation/BookLog/Issue" element={<LibrarianProtectedRoute><IssueBook/></LibrarianProtectedRoute> } />
           <Route path="operation/BookLog/:id/view" element={<LibrarianProtectedRoute><BookView/></LibrarianProtectedRoute>} />
           
-          <Route path="member/MemberTable" element={<LibrarianProtectedRoute><Members/></LibrarianProtectedRoute> } />
-          <Route path="member/MemberTable/:id/info" element={<LibrarianProtectedRoute><MemberInfoPage/></LibrarianProtectedRoute> } />
-          <Route path="member/MemberTable/add" element={ <LibrarianProtectedRoute><AddMember/></LibrarianProtectedRoute>} />
+          <Route path="member/" element={<LibrarianProtectedRoute><Members/></LibrarianProtectedRoute> } />
+          <Route path="member/:id/manage" element={<LibrarianProtectedRoute><MemberInfoPage/></LibrarianProtectedRoute> } />
+          <Route path="member/save" element={ <LibrarianProtectedRoute><AddMember/></LibrarianProtectedRoute>} />
           <Route path="member/membership" element={<LibrarianProtectedRoute><ViewMembershipPlan/></LibrarianProtectedRoute> } />
 
           <Route path="transactions" element={<AccountantProtectedRoute><TransactionLogs/></AccountantProtectedRoute> } />
