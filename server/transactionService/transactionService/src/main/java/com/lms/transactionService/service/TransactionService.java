@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.lms.transactionService.dto.TransactionRequestDTO;
 import com.lms.transactionService.dto.TransactionResponseDTO;
+import com.razorpay.RazorpayException;
 
 public interface TransactionService {
 
@@ -17,4 +18,8 @@ public interface TransactionService {
     public List<TransactionResponseDTO>getByInitiator(long initiator);
    
     public List<TransactionResponseDTO>getCollectionToday();
+
+    public String newPaymentOrder(String name, String email,double amount);
+
+    public String paymentVerification();
 }

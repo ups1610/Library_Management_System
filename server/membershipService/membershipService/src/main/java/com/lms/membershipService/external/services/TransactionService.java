@@ -26,4 +26,8 @@ public interface TransactionService {
      @PostMapping("transaction")
      TransactionResponseDTO transaction(TransactionRequestDTO transaction);
 
+
+     @PostMapping("transaction/paymentOrder")
+     String makePayment( @RequestParam String name,@RequestParam  String email, @RequestParam double amount);
+
 }

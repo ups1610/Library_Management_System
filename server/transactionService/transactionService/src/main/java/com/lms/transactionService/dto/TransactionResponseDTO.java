@@ -10,6 +10,7 @@ public record TransactionResponseDTO(
     Date date,
     double amount,
     String narration,
+    String referenceId,
     String initiatedBy
 ) {
 

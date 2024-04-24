@@ -24,13 +24,17 @@ import { AdminProtectedRoute } from "./auth/AdminProtectedRoute";
 import { LibrarianProtectedRoute } from "./auth/LibrarianProtectedRoute";
 import { AccountantProtectedRoute } from "./auth/AccountantProtectedRoute";
 import { BarcodePrint } from "./pages/BarcodePrint";
+import RequestPayment from "./pages/payment/RequestPayment";
 
 function App() {
   return (
     <Router>
       <AuthenticationProvider>
       <Routes>
+
         <Route index path="/" element={<Landing />} />
+        <Route path="/payment/:name/:amount/:id/:narration" element={<RequestPayment />} />
+
         <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<Layout />}>
           <Route index element={<Dashboard/>}/>

@@ -172,7 +172,14 @@ function Members() {
                           <span className="bg-green-200 text-xs rounded-md text-green-900 p-1">
                             Active
                           </span>
-                        ) : (
+                        ) : memberships.find(
+                          (membership) =>
+                            membership.memberId === member.memberId
+                        ).status === "pending" ? (
+                          <span className="text-xs rounded-md text-red-900 p-1">
+                            Pending Payment..
+                          </span>
+                        ): (
                           <span className="bg-red-200 rounded-md text-xs text-red-900 p-1">
                             Blocked
                           </span>

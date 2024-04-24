@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CommunicationServiceApplication",
+            "request": "launch",
+            "mainClass": "com.lms.communicationservice.CommunicationServiceApplication",
+            "projectName": ""
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-AuthServiceApplication<authService>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
@@ -60,7 +67,8 @@
             "mainClass": "com.lms.transactionService.TransactionServiceApplication",
             "projectName": "transactionService",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=61757 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=transactionService"
         },
         {
             "type": "java",
@@ -69,6 +77,17 @@
             "cwd": "${workspaceFolder}",
             "mainClass": "com.gateway.ApiGateway.ApiGatewayApplication",
             "projectName": "ApiGateway",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=61765 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=ApiGateway"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-CommunicationServiceApplication<communication-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.lms.communicationservice.CommunicationServiceApplication",
+            "projectName": "communication-service",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
         }

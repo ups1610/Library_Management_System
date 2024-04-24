@@ -32,6 +32,7 @@ public class Transaction {
 
     private String paidMode;
 
+    private String referenceId=null;
     private long initiatedBy;
 
 }

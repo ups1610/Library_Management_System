@@ -52,7 +52,7 @@ public class CustomExceptionHandler {
     public Map<String,String> exphandle(Exception ex){
         Map<String,String> error= new HashMap<>();
         log.error("Membership Service", ex);
-        error.put("error", "Something Went Wrong!");
+        error.put("error", ex.getMessage());
 
         return error;
     }   

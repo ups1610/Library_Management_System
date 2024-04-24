@@ -51,11 +51,21 @@ public class MembershipController {
         return new ResponseEntity<>(membership, HttpStatus.OK);
     }
 
-    @GetMapping("/toggle/{id}")
+    @PutMapping("/toggle/{id}")
     public  ResponseEntity<MembershipResponseDTO>toggleMmeberShip(@PathVariable Long id) {
         MembershipResponseDTO membership = membershipService.toggleStatus(id);
         return new ResponseEntity<>(membership, HttpStatus.OK);
     }
+
+
+    @PutMapping("/paymentSuccess/{id}")
+    public  ResponseEntity<MembershipResponseDTO>activateMembership(@PathVariable Long id) {
+        MembershipResponseDTO membership = membershipService.activateMembership(id);
+        return new ResponseEntity<>(membership, HttpStatus.OK);
+    }
+
+
+
     
 
    

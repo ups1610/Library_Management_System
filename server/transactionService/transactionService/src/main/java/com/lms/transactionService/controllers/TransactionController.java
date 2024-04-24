@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lms.transactionService.dto.TransactionRequestDTO;
@@ -66,6 +67,21 @@ public class TransactionController {
     public ResponseEntity<List<TransactionResponseDTO>> getTodayTransaction() {
         List<TransactionResponseDTO> transactions = transactionService.getCollectionToday();
         return new ResponseEntity<>(transactions, HttpStatus.OK);
+    }
+
+
+
+    @PostMapping("/paymentOrder")
+    public ResponseEntity<String> makePayment(@RequestParam String name, @RequestParam String email, @RequestParam double amount) {
+        String order = transactionService.newPaymentOrder(name, email, amount);
+        return new ResponseEntity<>(order, HttpStatus.OK);
+    }
+
+    
+    @PostMapping("/payment-verification")
+    public ResponseEntity<String> verifyPayment() {
+            String resp= transactionService.paymentVerification();
+        return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
 }

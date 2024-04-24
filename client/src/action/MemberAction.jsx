@@ -174,7 +174,7 @@ class MemberAction {
     };
 
   return  axios
-      .get(
+      .put(
         `http://localhost:8088/membershipService/membership/toggle/${memberId}`,
         { headers }
       )
@@ -198,6 +198,42 @@ class MemberAction {
         }
       });
   }
+
+
+  
+  activateMemberShipStatus(memberId, token) {
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
+
+  return  axios
+      .put(
+        `http://localhost:8088/membershipService/membership/paymentSuccess/${memberId}`,
+        { headers }
+      )
+      .then((resp) => {
+        return {
+          success: true,
+          data: resp.data,
+        };
+      })
+      .catch((err) => {
+        if (err.response) {
+          return {
+            success: false,
+            data: err.response.data.error,
+          };
+        } else {
+          return {
+            success: false,
+            data: "Something Went wrong. Try later!",
+          };
+        }
+      });
+  }
+
+
 
   getAllMembers(token) {
     const headers = {
@@ -438,6 +474,12 @@ class MemberAction {
       });
   }
 
+   requestPayment = async (amount,name, memberId, narration, email, token) => {
+    const url = `http://localhost:3000/payment/${name}/${amount}/${memberId}/${narration}`;
+      console.log(url);
+  };
+  
+
   getMemberTransactions(id,token) {
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -470,6 +512,10 @@ class MemberAction {
   }
 }
 
+
+
+
+
 export default new MemberAction();
 
 const getAllMembership = async (token) => {
@@ -499,5 +545,9 @@ const getAllMembership = async (token) => {
       }
     });
 };
+
+
+
+
 
 export { getAllMembership };
