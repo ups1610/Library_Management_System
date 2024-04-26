@@ -33,7 +33,7 @@ function App() {
       <Routes>
 
         <Route index path="/" element={<Landing />} />
-        <Route path="/payment/:name/:amount/:id/:narration" element={<RequestPayment />} />
+        <Route path="/membership/pay/:orderId" element={<RequestPayment />} />
 
         <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<Layout />}>

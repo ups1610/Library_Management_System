@@ -3,6 +3,7 @@ package com.lms.transactionService.service;
 import java.util.Date;
 import java.util.List;
 
+import com.lms.transactionService.dto.OnlinePaymentRequestDto;
 import com.lms.transactionService.dto.TransactionRequestDTO;
 import com.lms.transactionService.dto.TransactionResponseDTO;
 import com.razorpay.RazorpayException;
@@ -21,5 +22,5 @@ public interface TransactionService {
 
     public String newPaymentOrder(String name, String email,double amount);
 
-    public String paymentVerification();
+    public long paymentVerification(OnlinePaymentRequestDto onlinePayment);
 }

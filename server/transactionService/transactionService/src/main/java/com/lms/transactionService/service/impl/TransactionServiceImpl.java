@@ -1,13 +1,22 @@
 package com.lms.transactionService.service.impl;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.lms.transactionService.dto.OnlinePaymentRequestDto;
 import com.lms.transactionService.dto.TransactionRequestDTO;
 import com.lms.transactionService.dto.TransactionResponseDTO;
 import com.lms.transactionService.entities.Transaction;
@@ -20,6 +29,7 @@ import com.lms.transactionService.service.TransactionService;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
+import com.razorpay.Utils;
 
 import lombok.AllArgsConstructor;
 
@@ -31,6 +41,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final UserService userService;
     private final MemberService memberService;
 
+    private final Logger log= LoggerFactory.getLogger(TransactionServiceImpl.class);
 
 
     @Value("${razorpay.key_id}")
@@ -114,7 +125,15 @@ public class TransactionServiceImpl implements TransactionService {
 
         MemberResponseDTO member = memberService.getMember(entity.getMember());
 
-        UserResponseDto user = userService.getUser(entity.getInitiatedBy());
+        String user = "Self";
+        String referenceId=  "Cash";
+
+        if(entity.getReferenceId()!=null){
+            referenceId= entity.getReferenceId();
+        }
+        if(entity.getInitiatedBy()>0){
+            user = userService.getUser(entity.getInitiatedBy()).userName();
+        }
         return new TransactionResponseDTO(
                 entity.getTransactionId(),
                 member.firstName() + " " + member.familyName(),
@@ -122,13 +141,14 @@ public class TransactionServiceImpl implements TransactionService {
                 entity.getTransactionTimeStamp(),
                 entity.getAmount(),
                 entity.getNarration(),
-                entity.getReferenceId(),
-                user.userName());
+                referenceId,
+                user
+                );
     }
 
     @Override
     public List<TransactionResponseDTO> getCollectionToday() {
-        // TODO Auto-generated method stub
+     
         Date today = new Date();
         List<Transaction> transactionsToday = transactionRepository.findByTransactionTimeStampBetween(today,
                 endOfDay(today));
@@ -160,7 +180,7 @@ public class TransactionServiceImpl implements TransactionService {
             orderRequest.put("notes", notes);
     
             Order order = razorpay.orders.create(orderRequest);
-            return order.toString();
+            return order.get("id");
         } catch (RazorpayException e) {
           
             e.printStackTrace(); 
@@ -169,8 +189,64 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public String paymentVerification() {
-        return "Success";
+    public long paymentVerification(OnlinePaymentRequestDto payment) {
+        RazorpayClient razorpay =null;
+        try {
+             razorpay = new RazorpayClient(apiKeyId,apiKeySecret);
+       
+
+        String secret = apiKeySecret;
+                        
+     
+
+        System.out.println(payment.orderId()+"Order ID");
+        JSONObject options = new JSONObject();
+        options.put("razorpay_order_id", payment.orderId());
+        options.put("razorpay_payment_id",  payment.paymentId());
+        options.put("razorpay_signature", payment.signature());
+        
+        boolean status = Utils.verifyPaymentSignature(options, secret);
+
+        if(status==true){
+            Transaction entity = new Transaction();
+
+            entity.setMember(payment.member());
+            entity.setTransactionTimeStamp(new Date());
+            entity.setAmount(payment.amount());
+            entity.setNarration(payment.narration());
+            entity.setPaidMode("Online");
+            entity.setInitiatedBy(-1);
+            entity.setReferenceId(payment.paymentId());
+            entity = transactionRepository.save(entity);
+                return entity.getTransactionId();
+        }
+       
+        return -1;
+        } catch (RazorpayException e) {
+           log.error("Error", e);
+         
+           return -1;
+        }
+
+       
+    }
+
+
+
+
+    private String hmac_sha256(String message, String secret) {
+        try {
+            Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
+            SecretKeySpec secret_key = new SecretKeySpec(secret.getBytes(), "HmacSHA256");
+            sha256_HMAC.init(secret_key);
+
+            byte[] hash = sha256_HMAC.doFinal(message.getBytes());
+            return Base64.getEncoder().encodeToString(hash);
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            e.printStackTrace();
+            log.error("SHa256",e);
+            return null;
+        }
     }
 
 }

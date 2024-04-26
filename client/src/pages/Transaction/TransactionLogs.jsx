@@ -151,6 +151,7 @@ function TransactionLogs() {
             <tr>
               <th className="whitespace-nowrap px-4 py-2 font-medium ">#</th>
               <th className="whitespace-nowrap px-4 py-2 font-medium ">Transaction Id</th>
+              <th className="whitespace-nowrap px-4 py-2 font-medium ">Reference No</th>
               <th className="whitespace-nowrap px-4 py-2 font-medium ">Date</th>
               <th className="whitespace-nowrap px-4 py-2 font-medium ">Member Name</th>
               <th className="whitespace-nowrap px-4 py-2 font-medium ">Mode</th>
@@ -178,6 +179,7 @@ function TransactionLogs() {
                 <tr key={transaction.transactionId}>
                     <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">{index+1}</td>
                   <td className="whitespace-nowrap px-4 py-2  text-gray-900">{transaction.transactionId}</td>
+                  <td className="whitespace-nowrap px-4 py-2  text-gray-900">{transaction.referenceId}</td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700">{transaction.date}</td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700">{transaction.member}</td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700">{transaction.mode}</td>

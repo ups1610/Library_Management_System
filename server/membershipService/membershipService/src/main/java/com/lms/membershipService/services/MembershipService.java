@@ -16,6 +16,6 @@ public interface MembershipService {
     
     public MembershipResponseDTO toggleStatus(long id);
     
-    public MembershipResponseDTO activateMembership(long id);
+    public MembershipResponseDTO activateMembership(long id ,long transaction);
     public List<MembershipResponseDTO> getAllMemberships();
 }

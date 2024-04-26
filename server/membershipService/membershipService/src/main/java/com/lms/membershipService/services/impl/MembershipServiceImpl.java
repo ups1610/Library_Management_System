@@ -116,8 +116,11 @@ public class MembershipServiceImpl implements MembershipService {
     }
 
     private MembershipResponseDTO mapToMembershipResponseDTO(Membership membership) {
-        TransactionResponseDTO transaction= membership.getStatus().equals("pending")?null: transactionService.getTransaction(membership.getTransactionId());
-        return new MembershipResponseDTO(
+        TransactionResponseDTO transaction = null;
+    if (membership.getTransactionId() != 0) {
+        transaction = transactionService.getTransaction(membership.getTransactionId());
+    }
+     return new MembershipResponseDTO(
                 membership.getMemberShipId(),
                 membership.getMember().getMemberId(),
                 membership.getMember().getFirstName()+" "+ membership.getMember().getFamilyName(),
@@ -152,14 +155,17 @@ public MembershipResponseDTO getMembershipByMemberID(long id) {
 }
 
 @Override
-public MembershipResponseDTO activateMembership(long id) {
+public MembershipResponseDTO activateMembership(long id,long transaction) {
         
 
         Membership membership = membershipRepository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Membership not found with id: " + id));
-        if("pending".equals(membership.getStatus()))
+        if("pending".equals(membership.getStatus())){
                 membership.setStatus("active");
-     
+                membership.setTransactionId(transaction);
+        }
+              
+
         
         membership= membershipRepository.save(membership);
         return mapToMembershipResponseDTO(membership);

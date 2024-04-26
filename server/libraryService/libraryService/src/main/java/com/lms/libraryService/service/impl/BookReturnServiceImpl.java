@@ -17,9 +17,12 @@ import com.lms.libraryService.dto.FineResponseDTO;
 import com.lms.libraryService.entities.BookIssue;
 import com.lms.libraryService.entities.BookReturn;
 import com.lms.libraryService.entities.BookReturnFine;
+import com.lms.libraryService.external.dto.BookInstanceResponseDTO;
 import com.lms.libraryService.external.dto.MemberResponseDTO;
+import com.lms.libraryService.external.dto.SendMailRequestDto;
 import com.lms.libraryService.external.dto.UserResponseDto;
 import com.lms.libraryService.external.service.BookService;
+import com.lms.libraryService.external.service.EmailService;
 import com.lms.libraryService.external.service.MemberService;
 import com.lms.libraryService.external.service.UserService;
 import com.lms.libraryService.repository.BookIssueRepository;
@@ -41,14 +44,17 @@ public class BookReturnServiceImpl implements BookReturnService {
     private final MemberService memberService;
     private final FineService fineService;
 
+    private final EmailService emailService;
+
     public BookReturnServiceImpl(BookReturnRepository bookReturnRepository, BookIssueRepository bookIssueRepository,
-            BookService bookService, UserService userService, FineService fineService, MemberService memberService) {
+            BookService bookService, UserService userService, FineService fineService, MemberService memberService, EmailService emailService) {
         this.bookIssueRepository = bookIssueRepository;
         this.bookReturnRepository = bookReturnRepository;
         this.bookService = bookService;
         this.userService = userService;
         this.fineService = fineService;
         this.memberService = memberService;
+        this.emailService=emailService;
 
     }
 
@@ -160,5 +166,24 @@ public class BookReturnServiceImpl implements BookReturnService {
             fine.getIsWavedOff(),
             fine.getTransaction_id()
         );
+    }
+
+    @Override
+    public String sendReturnReminder(long bookIssue) {
+            BookIssue  issueBook= bookIssueRepository.findById(bookIssue).orElseThrow(()->new IllegalArgumentException("Invalid Book issue Id: "+bookIssue));
+            MemberResponseDTO memberResponseDTO = memberService.getMember(issueBook.getMember());
+            BookInstanceResponseDTO bookInstance= bookService.getBookInstance(issueBook.getBookInstance());
+
+            return emailService.sendMail(new SendMailRequestDto(
+                memberResponseDTO.email(),
+                "Book Return Due",
+                "Dear " + memberResponseDTO.firstName() + ",\n\n" +
+                "This is a friendly reminder that the book  \"" + bookInstance.book().title() + "\"   (ID: "+bookInstance.id()+") is due for return.\n\n" +
+                "Please ensure to return it at your earliest .\n\n" +
+                "Thank you,\n" +
+                "Your Library Team"
+            ));
+             
+            
     }
 }

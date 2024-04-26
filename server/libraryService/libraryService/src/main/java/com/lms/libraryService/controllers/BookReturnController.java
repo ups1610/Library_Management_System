@@ -61,4 +61,11 @@ public class BookReturnController {
         return new ResponseEntity<>(fineAmount, HttpStatus.OK);
     }
 
+
+    @PostMapping("/dueMail/{id}")
+    public ResponseEntity<String> dueMail(   @PathVariable("id") long id) {
+        String resp = bookReturnService.sendReturnReminder(id);
+        return new ResponseEntity<>(resp, HttpStatus.OK);
+    }
+
 }

@@ -6,12 +6,15 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.lms.membershipService.dto.AddressResponseDTO;
+import com.lms.membershipService.dto.MailRequestDto;
 import com.lms.membershipService.dto.MemberRequestDTO;
 import com.lms.membershipService.dto.MemberResponseDTO;
 import com.lms.membershipService.entities.Address;
 import com.lms.membershipService.entities.Member;
 import com.lms.membershipService.exceptions.DuplicateDataException;
+import com.lms.membershipService.external.dto.SendMailRequestDto;
 import com.lms.membershipService.external.dto.TransactionResponseDTO;
+import com.lms.membershipService.external.services.EmailService;
 import com.lms.membershipService.external.services.TransactionService;
 import com.lms.membershipService.repositories.MemberRepository;
 import com.lms.membershipService.services.MemberService;
@@ -24,6 +27,7 @@ public class MemberServiceImpl implements MemberService {
 
     private MemberRepository memberRepository;
       private TransactionService transactionService;
+      private EmailService emailService;
 
     @Override
     public MemberResponseDTO newMember(MemberRequestDTO memberRequest) {
@@ -112,4 +116,13 @@ public class MemberServiceImpl implements MemberService {
     public List<TransactionResponseDTO> getMemberTransactions(long id) {
         return transactionService.getTransactionsByMember(id);
     }
+
+    @Override
+    public String sendMail(MailRequestDto mail) {
+        Member member= memberRepository.findById(mail.id()).orElseThrow(()-> new IllegalArgumentException("Invalid member id: "+mail.id()));
+
+        return emailService.sendMail(new SendMailRequestDto(member.getEmail(), mail.subject(), mail.body()));
+    }
+
+    
 }

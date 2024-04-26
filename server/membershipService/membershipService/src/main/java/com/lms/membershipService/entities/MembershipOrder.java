@@ -27,16 +27,19 @@ public class MembershipOrder {
     @Column(length = 300)
     private String orderId;
 
+    @Column(name="ORDER_AMOUNT")
+    private double price;
+
     private Date orderDate;
 
     private String status;
 
-    // Constructor without date parameter
-    public MembershipOrder(long memberId, String orderId, String status) {
+    public MembershipOrder(long memberId, String orderId,double amount, String status) {
        
         this.memberId = memberId;
         this.orderId = orderId;
         this.orderDate = new Date();
         this.status = status;
+        this.price=amount;
     }
 }

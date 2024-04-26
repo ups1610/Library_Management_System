@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lms.transactionService.dto.OnlinePaymentRequestDto;
 import com.lms.transactionService.dto.TransactionRequestDTO;
 import com.lms.transactionService.dto.TransactionResponseDTO;
 import com.lms.transactionService.service.TransactionService;
@@ -79,8 +80,8 @@ public class TransactionController {
 
     
     @PostMapping("/payment-verification")
-    public ResponseEntity<String> verifyPayment() {
-            String resp= transactionService.paymentVerification();
+    public ResponseEntity<Long> verifyPayment(@RequestBody OnlinePaymentRequestDto payment) {
+            long resp= transactionService.paymentVerification(payment);
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 

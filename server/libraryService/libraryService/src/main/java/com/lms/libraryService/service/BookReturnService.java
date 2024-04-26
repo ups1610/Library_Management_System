@@ -20,4 +20,6 @@ public interface BookReturnService {
     public BookReturnResponseDTO getReturnDetailsofIssueBook(long  bookIssue);
 
     public int  getFine(long bookIssue);
+
+    public String  sendReturnReminder(long bookIssue);
 }

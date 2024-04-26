@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.lms.membershipService.external.dto.OnlinePaymentRequestDto;
 import com.lms.membershipService.external.dto.TransactionRequestDTO;
 import com.lms.membershipService.external.dto.TransactionResponseDTO;
 
@@ -29,5 +30,8 @@ public interface TransactionService {
 
      @PostMapping("transaction/paymentOrder")
      String makePayment( @RequestParam String name,@RequestParam  String email, @RequestParam double amount);
+
+     @PostMapping("transaction/payment-verification")
+     long verifyPayment(OnlinePaymentRequestDto payment);
 
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lms.membershipService.dto.MailRequestDto;
 import com.lms.membershipService.dto.MemberRequestDTO;
 import com.lms.membershipService.dto.MemberResponseDTO;
 import com.lms.membershipService.external.dto.TransactionResponseDTO;
@@ -64,6 +65,13 @@ public class MemberController {
     public ResponseEntity<MemberResponseDTO> deleteMember(@PathVariable("id") long id) {
         MemberResponseDTO deletedMember = memberService.deleteMember(id);
         return new ResponseEntity<>(deletedMember, HttpStatus.OK);
+    }
+
+
+    @PostMapping("/sendMail")
+    public ResponseEntity<String> sendMail(@RequestBody MailRequestDto mail) {
+        String response = memberService.sendMail(mail);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     
