@@ -30,7 +30,7 @@ public class CustomExceptionHandler {
         Map<String,String> error= new HashMap<>();
 
         log.error("Catalogue Service", ex);
-        error.put("error", "Something Went Wrong");
+        error.put("error", ex.getMessage());
 
         return error;
     }   

@@ -25,6 +25,7 @@ import { LibrarianProtectedRoute } from "./auth/LibrarianProtectedRoute";
 import { AccountantProtectedRoute } from "./auth/AccountantProtectedRoute";
 import { BarcodePrint } from "./pages/BarcodePrint";
 import RequestPayment from "./pages/payment/RequestPayment";
+import EmailConfiguration from "./pages/Settings/EmailConfiguration";
 
 function App() {
   return (
@@ -56,6 +57,10 @@ function App() {
 
           <Route path="transactions" element={<AccountantProtectedRoute><TransactionLogs/></AccountantProtectedRoute> } />
           <Route path="catalog/:name/view/:id" element={<CatalogerProtectedRoute><InfoView/></CatalogerProtectedRoute>}/>
+
+
+
+          <Route path="setting/emailConfiguration"  element={ <AdminProtectedRoute> <EmailConfiguration/></AdminProtectedRoute>}/>
         </Route>
         </Route>
       </Routes>

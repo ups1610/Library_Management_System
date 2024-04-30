@@ -119,4 +119,19 @@ export const SUB_MENU_CATALOG_ITEMS = [
 	}
   ];  
 
+  export const SUB_MENU_SETTINGS_ITEMS = [
+	{
+	  key: "general",
+	  label: "General Settings",
+	  path: "/settings/general",
+	  icon: <HiOutlineCog />,
+	},
+	{
+	  key: "email",
+	  label: "Email Settings",
+	  path: "/dashboard/setting/emailConfiguration",
+	  icon: <HiOutlineCog />,
+	},
+  ];
+
   

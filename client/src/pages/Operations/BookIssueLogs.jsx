@@ -6,11 +6,13 @@ import { useAuth } from "../../context/Authetication";
 import { PiKeyReturnLight } from "react-icons/pi";
 import { FaRegEye } from "react-icons/fa";
 import ReturnBook from "../../components/bookLog/ReturnBook";
-import { getAllIssueBook } from "../../action/OperationsAction";
+import { getAllIssueBook, sendDueMail } from "../../action/OperationsAction";
 import IssueBookPDF from "../../utils/pdf/IssueBook";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { BsFileEarmarkPdf } from "react-icons/bs";
 import toast from "react-hot-toast"
+import {Tooltip as ReactTooltip} from 'react-tooltip';
+import { IoMailUnreadOutline } from "react-icons/io5";
 function BookIssueLogs() {
   const [issueBooks, setIssueBooks] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -45,6 +47,26 @@ function BookIssueLogs() {
   )
     
   };
+
+  const sendReminder = async (id, token) => {
+    toast.promise(
+      sendDueMail(id, token),
+      {
+        loading: 'Sending Reminder',
+        success: (resp) => {
+          if (resp.success) {
+            return "Reminder sent Successfully";
+          } else {
+            throw new Error(resp.data); 
+          }
+        },
+        error: (err) => {
+          return err.message || "Something went wrong"; 
+        },
+      }
+    );
+  };
+  
 
   const handleReturnButtonClick = (issueId) => {
     setShowReturnModelMap((prevMap) => ({
@@ -238,18 +260,35 @@ function BookIssueLogs() {
                       <Link
                         to={`${issueBook.bookIssueId}/view`}
                         className="text-gray-500 border-[1px] border-gray-300 p-1 "
+
+                        data-tip="View"
                       >
                         <FaRegEye />
                       </Link>
                       {!isReturned && (
+                        <>
                         <button
                           className="text-white bg-red-500 p-1 rounded-sm ml-1"
                           onClick={() =>
                             handleReturnButtonClick(issueBook.bookIssueId)
                           }
+
+                          data-tip="Return Book"
                         >
                           <PiKeyReturnLight />
                         </button>
+
+                        <button
+                          className="text-white bg-blue-500 p-1 rounded-sm ml-1"
+                          data-tip="Send Reminder Mail"
+                          onClick={()=>{
+                            sendReminder(issueBook.bookIssueId)
+                          }}
+                        >
+                          <IoMailUnreadOutline />
+                        </button>
+                       
+                        </>
                       )}
                       {showReturnModelMap[issueBook.bookIssueId] && (
                         <ReturnBook
@@ -266,6 +305,7 @@ function BookIssueLogs() {
                 );
               })
             )}
+             <ReactTooltip />
           </tbody>
         </table>
       </div>

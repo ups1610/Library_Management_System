@@ -24,6 +24,8 @@ import AddMembership from "../Membership/AddMembership";
 import { getIssueBookByMember } from "../../action/OperationsAction";
 import { FaRegEye } from "react-icons/fa";
 import { BsToggle2Off, BsToggle2On } from "react-icons/bs";
+import { IoMailOutline } from "react-icons/io5";
+import MailEditor from "../Membership/MailEditor";
 
 export default function MemberInfoPage() {
   const { id } = useParams();
@@ -118,7 +120,12 @@ export default function MemberInfoPage() {
 }
 
 function Options({ member }) {
+
+  const [mailModel,setMailModel]=useState(false);
   return (
+   <div>
+     {mailModel && <MailEditor onClose={() => setMailModel(false)} id={member.memberId}/>}
+
     <table className="table table-auto w-full">
       <thead>
         <caption className="text-lg flex flex-row gap-2 m-2 font-medium items-center group">
@@ -137,11 +144,22 @@ function Options({ member }) {
               </span>
               <span className="ms-3">Update Details</span>
             </Link>
+
+          
           </td>
         </tr>
-        <tr className="border-b text-sm font-normal"></tr>
+        <tr className="border-b text-sm font-normal">
+        <button className="flex items-center p-2 rounded-lg group"
+              onClick={()=>setMailModel(true)}
+            >
+            <IoMailOutline /> <span className="ms-3">
+              Send Mail
+            </span>
+            </button>
+        </tr>
       </tbody>
     </table>
+    </div>
   );
 }
 

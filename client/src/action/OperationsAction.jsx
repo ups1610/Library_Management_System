@@ -409,3 +409,32 @@ export const getMember = (token) => {
       }
     });
 };
+
+export const sendDueMail = (id, token) => {
+  return axios
+    .post(url + `/books/return/dueMail/${id}`, {
+      headers: {
+       Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+    .then((resp) => {
+      return {
+        success: true,
+        data: resp.data,
+      };
+    })
+    .catch((err) => {
+      if (err.response) {
+        return {
+          success: false,
+          data: err.response.data.error,
+        };
+      } else {
+        return {
+          success: false,
+          data: "Something Went wrong. Try later!",
+        };
+      }
+    });
+};

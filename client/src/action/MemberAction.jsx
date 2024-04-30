@@ -551,3 +551,41 @@ const getAllMembership = async (token) => {
 
 
 export { getAllMembership };
+
+
+
+const sendMail = async (mail,token) => {
+  return  axios
+     .post("http://localhost:8088/membershipService/member/sendMail", 
+     mail,
+     {
+       headers: {
+         Authorization: `Bearer ${token}`,
+       },
+     })
+     .then((resp) => {
+       return {
+         success: true,
+         data: resp.data,
+       };
+     })
+     .catch((err) => {
+       if (err.response) {
+         return {
+           success: false,
+           data: err.response.data.error,
+         };
+       } else {
+         return {
+           success: false,
+           data: "Something Went wrong. Try later!",
+         };
+       }
+     });
+ };
+ 
+ 
+ 
+ 
+ 
+ export { sendMail };
