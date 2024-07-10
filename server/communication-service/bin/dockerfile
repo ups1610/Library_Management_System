@@ -1,0 +1,7 @@
+from java:8
+
+EXPOSE 8089
+
+ADD target/communication-service.jar communication-service.jar
+
+ENTRYPOINT [ "java","-jar","communication-service.jar"]

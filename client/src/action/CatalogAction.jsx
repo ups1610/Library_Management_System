@@ -1,10 +1,11 @@
 import axios from 'axios';
+import config from '../config/config';
 
 // const token = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzYjg1MjNjZS05ZjlmLTQyMjktOGEwYi02M2ExOTJjOGY5MzEiLCJpc3MiOiJTYWdhclRlY2giLCJzdWIiOiJzYWtzaGkiLCJpYXQiOjE3MTI1NTU0NDEsImV4cCI6MTcxMjU5MTQ0MX0.tjKSzCcYJW0DACLq4kc42LUG7X7xdJvsD7xkIrLZkbw"
-
+const url= config.server_url+"/catalog";
 const fetchBooks = async (token) => {
     try {
-      const response = await axios.get('http://localhost:8088/catalog/books/all', {
+      const response = await axios.get(url+'/books/all', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -20,7 +21,7 @@ const fetchBooks = async (token) => {
 
   const fetchBooksById = async (bookId,token) => {
     try {
-      const response = await axios.get(`http://localhost:8088/catalog/books/${bookId}`, {
+      const response = await axios.get(`${url}/books/${bookId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -36,7 +37,7 @@ const fetchBooks = async (token) => {
   const fetchInstanceById = async (bookId,token) => {
     console.log("--bid--",bookId);
     try {
-      const response = await axios.get(`http://localhost:8088/catalog/books/${bookId}/instances`, {
+      const response = await axios.get(`${url}/books/${bookId}/instances`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -52,7 +53,7 @@ const fetchBooks = async (token) => {
   const createBooks = async (bookData,token) => {
     try {
       const response = await axios.post(
-        'http://localhost:8088/catalog/books/create',
+        `${url}/books/create`,
         bookData,
         {
           headers: {
@@ -72,7 +73,7 @@ const fetchBooks = async (token) => {
   const updateBook = async (bookId, bookData,token) => {
     try {
       const response = await axios.put(
-        `http://localhost:8088/catalog/books/${bookId}/update`,
+        `${url}/books/${bookId}/update`,
         bookData,
         {
           headers: {
@@ -92,7 +93,7 @@ const fetchBooks = async (token) => {
   const deleteBook = async (bookId,token) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8088/catalog/books/${bookId}/delete`,
+        `${url}/books/${bookId}/delete`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -111,7 +112,7 @@ const fetchBooks = async (token) => {
 
   const fetchAuthors = async (token) => {
     try {
-      const response = await axios.get('http://localhost:8088/catalog/authors/all', {
+      const response = await axios.get(`${url}/authors/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -137,7 +138,7 @@ const fetchBooks = async (token) => {
 
   const fetchAuthorsById = async (authorId,token) => {
     try {
-      const response = await axios.get(`http://localhost:8088/catalog/authors/${authorId}`, {
+      const response = await axios.get(`${url}/authors/${authorId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -152,7 +153,7 @@ const fetchBooks = async (token) => {
 
   const fetchAuthorsBookById = async (authorId,token) => {
     try {
-      const response = await axios.get(`http://localhost:8088/catalog/authors/${authorId}/books`, {
+      const response = await axios.get(`${url}/authors/${authorId}/books`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -169,7 +170,7 @@ const fetchBooks = async (token) => {
   const createAuthor = async (authorData,token) => {
     try {
       const response = await axios.post(
-        'http://localhost:8088/catalog/authors/create',
+        `${url}/authors/create`,
         authorData,
         {
           headers: {
@@ -189,7 +190,7 @@ const fetchBooks = async (token) => {
   const updateAuthor = async (authorId, authorData,token) => {
     try {
       const response = await axios.put(
-        `http://localhost:8088/catalog/authors/${authorId}/update`,
+        `${url}/authors/${authorId}/update`,
         authorData,
         {
           headers: {
@@ -210,7 +211,7 @@ const fetchBooks = async (token) => {
   const deleteAuthor = async (authorId,token) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8088/catalog/authors/${authorId}/delete`,
+        `${url}/authors/${authorId}/delete`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -229,7 +230,7 @@ const fetchBooks = async (token) => {
 
   const fetchBookshelf = async (token) => {
     try {
-      const response = await axios.get('http://localhost:8088/catalog/bookshelves/all', {
+      const response = await axios.get(`${url}/bookshelves/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -245,7 +246,7 @@ const fetchBooks = async (token) => {
 
   const fetchBookshelfById = async (bookshelfId,token) => {
     try {
-      const response = await axios.get(`http://localhost:8088/catalog/bookshelves/${bookshelfId}`, {
+      const response = await axios.get(`${url}/bookshelves/${bookshelfId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -261,7 +262,7 @@ const fetchBooks = async (token) => {
   const createBookshelf = async (bookshelfData,token) => {
     try {
       const response = await axios.post(
-        'http://localhost:8088/catalog/bookshelves/create',
+        `${url}/bookshelves/create`,
         bookshelfData,
         {
           headers: {
@@ -280,7 +281,7 @@ const fetchBooks = async (token) => {
 
   const fetchBookshelfBookById = async (bookshelfId,token) => {
     try {
-      const response = await axios.get(`http://localhost:8088/catalog/bookshelves/${bookshelfId}/books`, {
+      const response = await axios.get(`${url}/bookshelves/${bookshelfId}/books`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -296,7 +297,7 @@ const fetchBooks = async (token) => {
   const updateBookshelf = async (bookshelfId, bookshelfData,token) => {
     try {
       const response = await axios.put(
-        `http://localhost:8088/catalog/bookshelves/${bookshelfId}/update`,
+        `${url}/bookshelves/${bookshelfId}/update`,
         bookshelfData,
         {
           headers: {
@@ -316,7 +317,7 @@ const fetchBooks = async (token) => {
   const deleteBookshelf = async (bookshelfId, token) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8088/catalog/bookshelves/${bookshelfId}/delete`,
+        `${url}/bookshelves/${bookshelfId}/delete`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -335,7 +336,7 @@ const fetchBooks = async (token) => {
 
   const fetchGenre = async (token) => {
     try {
-      const response = await axios.get('http://localhost:8088/catalog/genre/all', {
+      const response = await axios.get(`${url}/genre/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -351,7 +352,7 @@ const fetchBooks = async (token) => {
 
   const fetchGenreById = async (genreId, token) => {
     try {
-      const response = await axios.get(`http://localhost:8088/catalog/genre/${genreId}`, {
+      const response = await axios.get(`${url}/genre/${genreId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -366,7 +367,7 @@ const fetchBooks = async (token) => {
 
   const fetchGenreBookById = async (genreId, token) => {
     try {
-      const response = await axios.get(`http://localhost:8088/catalog/genre/${genreId}/books`, {
+      const response = await axios.get(`${url}/genre/${genreId}/books`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -382,7 +383,7 @@ const fetchBooks = async (token) => {
   const createGenre = async (genreData, token) => {
     try {
       const response = await axios.post(
-        'http://localhost:8088/catalog/genre/create',
+        `${url}/genre/create`,
         genreData,
         {
           headers: {
@@ -402,7 +403,7 @@ const fetchBooks = async (token) => {
   const updateGenre = async (genreId, genreData, token) => {
     try {
       const response = await axios.put(
-        `http://localhost:8088/catalog/genre/${genreId}/update`,
+        `${url}/genre/${genreId}/update`,
         genreData,
         {
           headers: {
@@ -422,7 +423,7 @@ const fetchBooks = async (token) => {
   const deleteGenre = async (genreId, token) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8088/catalog/genre/${genreId}/delete`,
+        `${url}/genre/${genreId}/delete`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -440,7 +441,7 @@ const fetchBooks = async (token) => {
 
   const fetchInstance = async (token) => {
     try {
-      const response = await axios.get('http://localhost:8088/catalog/book-instances', {
+      const response = await axios.get(`${url}/book-instances`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -457,7 +458,7 @@ const fetchBooks = async (token) => {
   const createInstance = async (instanceData, token) => {
     try {
       const response = await axios.post(
-        'http://localhost:8088/catalog/book-instances',
+        `${url}/book-instances`,
         instanceData,
         {
           headers: {
@@ -477,7 +478,7 @@ const fetchBooks = async (token) => {
   const deleteInstance = async (instanceId, token) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8088/catalog/book-instances/${instanceId}`,
+        `${url}/book-instances/${instanceId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

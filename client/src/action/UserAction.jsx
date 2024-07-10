@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useAuth } from "../context/Authetication";
+import config from "../config/config";
 
-const url = "http://localhost:8088/auth";
+const url =`${config.server_url}/auth`;
 
 export const login = (userName, password) => {
   return axios

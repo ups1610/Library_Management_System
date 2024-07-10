@@ -28,6 +28,7 @@ import RequestPayment from "./pages/payment/RequestPayment";
 import EmailConfiguration from "./pages/Settings/EmailConfiguration";
 
 function App() {
+
   return (
     <Router>
       <AuthenticationProvider>

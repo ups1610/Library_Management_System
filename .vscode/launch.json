@@ -71,6 +71,17 @@
             "mainClass": "com.gateway.ApiGateway.ApiGatewayApplication",
             "projectName": "ApiGateway",
             "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-CommunicationServiceApplication<communication-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.lms.communicationservice.CommunicationServiceApplication",
+            "projectName": "communication-service",
+            "args": "",
             "envFile": "${workspaceFolder}/.env"
         }
     ]

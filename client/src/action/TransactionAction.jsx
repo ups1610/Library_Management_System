@@ -1,6 +1,7 @@
 import axios from "axios";
+import config from "../config/config";
 
-const url = "http://localhost:8088/transaction";
+const url = `${config.server_url}/transaction`;
 
 export const getAllTransaction = (token) => {
   return axios

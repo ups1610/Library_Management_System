@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import PaymentSuccess from '../../components/Membership/PaymentSuccess';
 import { toast } from 'react-hot-toast';
+import config from '../../config/config';
 export default function RequestPayment() {
     const { orderId } = useParams();
     const [order, setOrder] = useState(null);
@@ -33,7 +34,7 @@ export default function RequestPayment() {
     const checkoutHandler = async (order, logo) => {
         console.log(order);
         const options = {
-            key: "rzp_test_ohi0Hlve3YUNIK",
+            key: config.razorpay_key,
             amount: order.amount,
             currency: "INR",
             name: "Libsphere",

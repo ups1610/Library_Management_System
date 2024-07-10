@@ -1,6 +1,7 @@
 import axios from "axios";
+import config from "../config/config";
 
-const url = "http://localhost:8088/communicate";
+const url = `${config.server_url}/communicate`;
 
 export  const setEmailConfigurations=(config,token)=>{
     return axios

@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useAuth } from "../context/Authetication";
 import toast from "react-hot-toast";
-const url = "http://localhost:8088/library";
+import config from "../config/config";
+const url = `${config.server_url}/library`;
 
 export const issueBook = (book, token) => {
   return axios
